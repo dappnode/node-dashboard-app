@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { usePoolCardInfo } from '../hooks/usePoolCardInfo'
+import closeImg from '../assets/closePool.svg'
 import APRDetails from './APRDetails'
 import {
   Input,
@@ -7,7 +9,7 @@ import {
   Inter400,
   GreenButton,
   SimpleButton,
-} from './Styles.js'
+} from './Styles'
 import {
   Token,
   Earned,
@@ -15,9 +17,9 @@ import {
   Button,
   PoolCardSection,
   ClosePool,
-} from './PoolCardStyle.js'
+} from './PoolCardStyle'
 
-function PoolCard({ provider, name, poolAddress, owner, logo }) {
+function PoolCard({ name, poolAddress, owner, logo }) {
   const [poolState, setPoolState] = useState('default')
   const { poolInfo } = usePoolCardInfo()
 
@@ -53,7 +55,7 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo }) => (
   <div>
     <label>Balancer</label>
     <h1>
-      <img alt="logo" src={logo} /> {name}
+      <Image alt="logo" src={logo} /> {name}
     </h1>
     <SpaceBetween>
       <h2>50% DN 50% ETH</h2>{' '}
@@ -96,10 +98,10 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo }) => (
 const Manage = ({ deposit, withdraw, close }) => (
   <>
     <ClosePool onClick={close}>
-      <img alt="close" src='../assets/closePool.svg' />
+      <Image alt="close" src={closeImg} />
     </ClosePool>
     <div>
-      <Inter600>Manage yourr LP tokens</Inter600>
+      <Inter600>Manage your LP tokens</Inter600>
       <Inter400>
         You currently have 56 staked Liquidity Provider tokens
       </Inter400>
@@ -112,7 +114,7 @@ const Manage = ({ deposit, withdraw, close }) => (
 const Deposit = ({ close }) => (
   <>
     <ClosePool onClick={close}>
-      <img alt="close" src='../assets/closePool.svg' />
+      <Image alt="close" src={closeImg} />
     </ClosePool>
     <div>
       <Inter600>Deposit LP tokens</Inter600>
@@ -129,7 +131,7 @@ const Deposit = ({ close }) => (
 const Withdraw = ({ close }) => (
   <>
     <ClosePool onClick={close}>
-      <img alt="close" src='../assets/closePool.svg' />
+      <Image alt="close" src={closeImg} />
     </ClosePool>
     <div>
       <Inter600>Withdraw LP tokens</Inter600>

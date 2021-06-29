@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { useOnboardAndNotify } from './useOnboardAndNotify'
+import { useState } from 'react'
+import { useOnboard } from './useOnboard'
 
 export function usePoolCardInfo() {
-  const { provider, address } = useOnboardAndNotify()
+  const { provider, address } = useOnboard()
   let owner = address
 
   const poolAddress = {

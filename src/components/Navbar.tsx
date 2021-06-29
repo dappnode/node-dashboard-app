@@ -1,35 +1,25 @@
 import React from 'react'
+import Image from 'next/image'
 import styled from 'styled-components'
-import { networkAllowed } from '../lib/web3-utils'
+import logo from '../assets/mini-logo.svg'
 import ConnectionInfo from './ConnectionInfo'
 
-const Navbar = ({
-  address,
-  ethBalance,
-  network,
-  wallet,
-  onboard,
-  openSidebar,
-}) => (
-  <NavbarSection>
-    {networkAllowed(network) && <ConnectedLine />}
-    <Container>
-      <h1 onClick={openSidebar}>
-        <Image src='../assets/mini-logo.svg' alt="logo" />
-        DAppNode Dashboard
-      </h1>
-      <div>
-        <ConnectionInfo
-          address={address}
-          ethBalance={ethBalance}
-          network={network}
-          wallet={wallet}
-          onboard={onboard}
-        />
-      </div>
-    </Container>
-  </NavbarSection>
-)
+function Navbar(openSidebar) {
+
+  return (
+    <NavbarSection>
+      <Container>
+        <h1 onClick={openSidebar}>
+          <Image src={logo} alt="logo" />
+          DAppNode Dashboard
+        </h1>
+        <div>
+            <ConnectionInfo />
+        </div>
+      </Container>
+    </NavbarSection>
+  )
+}
 
 const ConnectedLine = styled.div`
   background: #54d4cb;
@@ -45,7 +35,6 @@ const NavbarSection = styled.section`
   overflow: hidden;
   position: relative;
   z-index: 1;
-}
 `
 
 const Container = styled.div`

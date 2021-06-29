@@ -1,5 +1,5 @@
+
 import React, { Component } from 'react'
-import Image from 'next/image'
 import styled from 'styled-components'
 import BurgerMenu from 'react-burger-menu'
 import ConnectionInfo from './ConnectionInfo'
@@ -13,7 +13,7 @@ import {
   BigCurrency,
   GreenButton,
   WhiteGreenButtonLink
-} from './Styles.js'
+} from './Styles'
 
 class MenuWrap extends Component {
   constructor(props) {
@@ -48,16 +48,9 @@ class MenuWrap extends Component {
   }
 }
 
-function Sidebar({
-  address,
-  ethBalance,
-  network,
-  wallet,
-  onboard,
-  isOpen,
-  closeSidebar,
-}) {
+function Sidebar({ isOpen, closeSidebar }) {
   const Menu = BurgerMenu['slide']
+
   return (
     <MenuWrap>
       <Menu
@@ -71,13 +64,7 @@ function Sidebar({
         onClose={closeSidebar}
       >
         <Top>
-          <ConnectionInfo
-            address={address}
-            ethBalance={ethBalance}
-            network={network}
-            wallet={wallet}
-            onboard={onboard}
-          />
+          <ConnectionInfo />
         </Top>
         <div style={{ padding: '0 15px' }}>
           <Inter700>Your DN balance</Inter700>
@@ -121,7 +108,7 @@ function Sidebar({
                 <Inter400>103.20</Inter400>
               </BalanceBox>
               <br/>
-              <WhiteGreenButtonLink>Get more DN <Image alt="link" src={external}/></WhiteGreenButtonLink>
+              <WhiteGreenButtonLink>Get more DN <img alt="link" src={external}/></WhiteGreenButtonLink>
             </div>
           </SidebarCard>
           <br />

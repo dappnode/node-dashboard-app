@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-export const bn = x => new ethers.utils.BigNumber(x)
+export const bn = x => ethers.BigNumber.from(x)
 
 export const ZERO = bn('0')
 

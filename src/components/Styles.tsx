@@ -103,6 +103,7 @@ export const GreenButton = styled.button`
   line-height: 16px;
   text-align: center;
   color: white;
+  cursor: pointer;
   padding: 8px 16px;
   box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
     0px 0px 8px rgba(8, 43, 41, 0.06);
@@ -152,6 +153,7 @@ export const SimpleButton = styled.button`
   color: #2fbcb2;
   background: transparent;
   border: solid 0px transparent;
+  cursor: pointer;
 `
 
 export const NavbarButton = styled.div`

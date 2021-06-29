@@ -78,6 +78,7 @@ export const ClosePool = styled.button`
   width: 50px;
   height: 50px;
   position: absolute;
+  cursor: pointer;
   top: 0;
   right: 0;
 `

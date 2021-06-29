@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
 import Seed from '../assets/seed.js'
 import Time from '../assets/time.js'
-import { BigCurrency, GreenButton } from './Styles.js'
+import { BigCurrency, GreenButton } from './Styles'
 
-function Rewards({ wallet, network, onboard }) {
-  console.log('asset', wallet)
-  if (!wallet.provider) {
+import { useOnboard } from '../hooks/useOnboard'
+
+function Rewards() {
+  const { connect, address, network, isReady, provider } = useOnboard()
+
+  if (!isReady) {
     return (
       <WarnSection>
         <div>
@@ -15,15 +18,12 @@ function Rewards({ wallet, network, onboard }) {
             Please connect to a wallet
           </WarnMessage>
           <GreenButton
-            onClick={() => {
-              onboard.walletSelect()
-            }}
-            css={`
-              margin-top: 25px;
-            `}
+            onClick={connect}
+            css={`margin-top: 25px;`}
           >
             Connect Wallet
           </GreenButton>
+
         </div>
       </WarnSection>
     )
@@ -59,7 +59,7 @@ function Rewards({ wallet, network, onboard }) {
               />
               <div>
                 <BigCurrency>
-                  <h1>900</h1>
+                  <h1>0</h1>
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
@@ -79,21 +79,21 @@ function Rewards({ wallet, network, onboard }) {
               />
               <div>
                 <BigCurrency>
-                  <h1>10</h1>
+                  <h1>0</h1>
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
-                  <h3>Locked</h3>
+                  <h3>Claimable</h3>
                 </div>
               </div>
             </Inline>
-            <BlueButton disabled={!isMainnet(network)}>Claim</BlueButton>
+            <BlueButton disabled={!isMainnet(network)}>Assign</BlueButton>
           </SpaceBetween>
         </Row>
       </RewardsSection>
       <RewardsSection>
         <SpaceBetween>
-          <label className={isDN(network) ? 'green' : 'disabled'}>DN</label>
+          <label className={isDN(network) ? 'green' : 'disabled'}>RBN</label>
           {!isDN(network) && (
             <p>
               <b>Connect to this network</b> to claim your tokens.{' '}
@@ -110,7 +110,7 @@ function Rewards({ wallet, network, onboard }) {
               />
               <div>
                 <BigCurrency>
-                  <h1>900</h1>
+                  <h1>0</h1>
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
@@ -119,7 +119,11 @@ function Rewards({ wallet, network, onboard }) {
               </div>
             </Inline>
 
-            <GreenButton disabled={!isDN(network)}>Claim</GreenButton>
+            <GreenButton
+              disabled={!isDN(network)}
+            >
+              Claim
+            </GreenButton>
           </SpaceBetween>
         </Row>
         <Row>
@@ -132,15 +136,17 @@ function Rewards({ wallet, network, onboard }) {
 
               <div>
                 <BigCurrency>
-                  <h1>10</h1>
+                  <h1>0</h1>
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
-                  <h3>Locked</h3>
+                  <h3>Claimable</h3>
                 </div>
               </div>
             </Inline>
-            <GreenButton disabled={!isDN(network)}>Claim</GreenButton>
+            <GreenButton disabled={!isDN(network)}>
+              Claim
+            </GreenButton>
           </SpaceBetween>
         </Row>
       </RewardsSection>
@@ -153,7 +159,6 @@ const BlueButton = styled.button`
     props.disabled
       ? '#DDE3E3'
       : 'linear-gradient(99.61deg, #86BDE4 -0.13%, #0D91F0 99.3%);'};
-
   border: solid 0px transparent;
   border-radius: 27px;
   font-family: 'Inter-Bold';
@@ -170,7 +175,6 @@ const BlueButton = styled.button`
       props.disabled
         ? '#DDE3E3'
         : 'linear-gradient(99.61deg, #7cadd0 -0.13%, #075c98 99.3%);'};
-
     transition: all 0.25s ease-in-out;
   }
 `
@@ -232,7 +236,6 @@ const RewardsSection = styled.section`
   flex-grow: 1;
   margin: 0 10px;
   background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
-
   label {
     background: #eefcfb;
     border-radius: 16px;
