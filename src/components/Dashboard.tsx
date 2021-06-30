@@ -9,7 +9,6 @@ import Tokens from '../assets/Tokens.svg'
 import dnEth from '../assets/dn-eth-logos.svg'
 import dn from '../assets/dn-logo.svg'
 import external from '../assets/external-link-green.svg'
-import TransferFunds from './Popups/TransferFunds'
 
 import { useOnboard } from '../hooks/useOnboard'
 import { networkAllowed } from '../lib/web3-utils'
@@ -21,7 +20,6 @@ function Dashboard() {
 
   return (
     <DashboardSection>
-        <TransferFunds />
         <Inter700>
           <Image alt="tokens" src={Tokens} />
           <span style={{ marginLeft: '10px' }}>My tokens</span>

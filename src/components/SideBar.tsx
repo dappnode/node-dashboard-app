@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import Image from 'next/image'
 import styled from 'styled-components'
 import BurgerMenu from 'react-burger-menu'
 import ConnectionInfo from './ConnectionInfo'
@@ -15,7 +16,7 @@ import {
   WhiteGreenButtonLink
 } from './Styles'
 
-class MenuWrap extends Component {
+class MenuWrap extends Component<{}, { hidden: boolean }> {
   constructor(props) {
     super(props)
     this.state = {
@@ -108,7 +109,7 @@ function Sidebar({ isOpen, closeSidebar }) {
                 <Inter400>103.20</Inter400>
               </BalanceBox>
               <br/>
-              <WhiteGreenButtonLink>Get more DN <img alt="link" src={external}/></WhiteGreenButtonLink>
+              <WhiteGreenButtonLink>Get more DN <Image alt="link" src={external}/></WhiteGreenButtonLink>
             </div>
           </SidebarCard>
           <br />
