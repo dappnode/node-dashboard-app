@@ -83,7 +83,7 @@ function Rewards() {
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
-                  <h3>Claimable</h3>
+                  <h3>Locked</h3>
                 </div>
               </div>
             </Inline>
@@ -140,7 +140,7 @@ function Rewards() {
                   <h2>DN</h2>
                 </BigCurrency>
                 <div>
-                  <h3>Claimable</h3>
+                  <h3>Locked</h3>
                 </div>
               </div>
             </Inline>

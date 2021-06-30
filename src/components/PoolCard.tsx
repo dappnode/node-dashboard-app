@@ -7,6 +7,7 @@ import {
   Input,
   Inter600,
   Inter400,
+  Inter500Green,
   GreenButton,
   SimpleButton,
 } from './Styles'
@@ -18,6 +19,7 @@ import {
   PoolCardSection,
   ClosePool,
 } from './PoolCardStyle'
+
 
 function PoolCard({ name, poolAddress, owner, logo }) {
   const [poolState, setPoolState] = useState('default')
@@ -89,6 +91,12 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo }) => (
       </div>
     </h2>
     <div>
+      { false &&
+        <>
+          <Inter400>You will start earning once your deposit transaction is confirmed.</Inter400>
+          <GreenButton className="long">Harvest</GreenButton>
+        </>
+      }
       <Button>Provide liquidity</Button>
       <Button onClick={deposit}>Stake LP token</Button>
     </div>
@@ -103,7 +111,7 @@ const Manage = ({ deposit, withdraw, close }) => (
     <div>
       <Inter600>Manage your LP tokens</Inter600>
       <Inter400>
-        You currently have 56 staked Liquidity Provider tokens
+        You currently have <b>56</b> staked Liquidity Provider tokens
       </Inter400>
       <Button onClick={deposit}>Deposit LP tokens</Button>
       <Button onClick={withdraw}>Withdraw LP tokens</Button>
@@ -119,10 +127,16 @@ const Deposit = ({ close }) => (
     <div>
       <Inter600>Deposit LP tokens</Inter600>
       <Inter400>
-        You currently have 56 staked Liquidity Provider tokens. Deposit more to
-        accrue more
+        You currently have <b>56</b> staked Liquidity Provider tokens. Deposit more to
+        accrue more.
       </Inter400>
-      <Input type="number" placeholder="Amount" />
+      <div>
+        <Input type="number" placeholder="Amount" />
+        <Inter500Green>25%</Inter500Green>
+        <Inter500Green>50%</Inter500Green>
+        <Inter500Green>75%</Inter500Green>
+        <Inter500Green>100%</Inter500Green>
+      </div>
       <GreenButton className="long">Deposit LP tokens</GreenButton>
     </div>
   </>

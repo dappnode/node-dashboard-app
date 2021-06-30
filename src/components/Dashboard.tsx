@@ -2,12 +2,14 @@ import React from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
 import Rewards from './Rewards'
-import { Inter700 } from './Styles'
+import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
 import Pools from '../assets/Pools.svg'
 import Tokens from '../assets/Tokens.svg'
 import dnEth from '../assets/dn-eth-logos.svg'
 import dn from '../assets/dn-logo.svg'
+import external from '../assets/external-link-green.svg'
+import TransferFunds from './Popups/TransferFunds'
 
 import { useOnboard } from '../hooks/useOnboard'
 import { networkAllowed } from '../lib/web3-utils'
@@ -19,18 +21,24 @@ function Dashboard() {
 
   return (
     <DashboardSection>
-      <Inter700>
-        <Image alt="tokens" src={Tokens} />
-        <span style={{ marginLeft: '10px' }}>My tokens</span>
-      </Inter700>
+        <TransferFunds />
+        <Inter700>
+          <Image alt="tokens" src={Tokens} />
+          <span style={{ marginLeft: '10px' }}>My tokens</span>
+        </Inter700>
       <PoolsContainer>
         <Rewards />
       </PoolsContainer>
       <br />
-      <Inter700>
-        <Image alt="pools" src={Pools} />
-        <span style={{ marginLeft: '10px' }}>Staking Pools</span>
-      </Inter700>
+      <SpaceBetween>
+        <Inter700>
+          <Image alt="pools" src={Pools} />
+          <span style={{ marginLeft: '10px' }}>Staking Pools</span>
+        </Inter700>
+        <WhiteGreenLink>
+              How does this work? <Image alt="link" src={external} />
+        </WhiteGreenLink>
+      </SpaceBetween>
       <PoolsContainer>
         <PoolCard
           logo={dnEth}

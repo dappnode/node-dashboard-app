@@ -30,6 +30,15 @@ export const Inter500 = styled.p`
   color: #222a29;
 `
 
+export const Inter500Green = styled.a`
+  font-family: 'Inter-Medium';
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  color: #23C8BC;
+  cursor: pointer;
+`
+
 export const Inter400 = styled.p`
   font-family: 'Inter';
   font-size: 14px;
@@ -73,13 +82,17 @@ export const Input = styled.input`
   background: #f4f5f6;
   border-radius: 8px;
   height: 48px;
-  color: #818b98;
+  color: #222A29;
   font-family: 'Inter';
   border: solid 0px transparent;
   font-size: 14px;
   line-height: 16px;
   margin: 16px 0;
   width: calc(100% - 12px);
+  &:focus {
+    outline: none;
+    background: #EEFCFB;
+  }
 `
 
 export const SpaceBetween = styled.div`
@@ -140,6 +153,28 @@ export const WhiteGreenButtonLink = styled.a`
   cursor: pointer;
   img {
     padding-left: 5px;
+  }
+`
+
+export const WhiteGreenLink = styled.a`
+  color: #2fbcb2;
+  background: transparent;
+  font-family: 'Inter-Bold';
+  padding: 25px 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  letter-spacing: 0.27px;
+  line-height: 19px;
+  text-align: center;
+  padding: 11px;
+  margin: 6px 0px;
+  cursor: pointer;
+  text-underline-offset: 3px;
+  text-decoration-line: underline;
+  img {
+    margin-left: 55px;
   }
 `
 
