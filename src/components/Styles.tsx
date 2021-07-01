@@ -87,11 +87,19 @@ export const Input = styled.input`
   border: solid 0px transparent;
   font-size: 14px;
   line-height: 16px;
-  margin: 16px 0;
+  margin-top: 16px;
   width: calc(100% - 12px);
   &:focus {
     outline: none;
     background: #EEFCFB;
+  }
+  &[type=number] {
+  -moz-appearance: textfield;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
   }
 `
 
@@ -214,4 +222,9 @@ export const NavbarButton = styled.div`
 export const LightGreenButton = styled(NavbarButton)`
   background: #c4f3ef;
   color: #144b52;
+`
+
+export const LightBlueButton = styled(NavbarButton)`
+  background:#42A7F0;
+  color: #FFF;
 `

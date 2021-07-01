@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { shortenAddress, getNetworkType } from '../lib/web3-utils'
-import { LightGreenButton, NavbarButton } from './Styles'
+import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
 
@@ -11,13 +11,6 @@ function Connection() {
 
   return (
     <>
-      {isReady && (
-        <ConnectWallet
-          onClick={disconnect}
-        >
-          Disconnect Wallet
-        </ConnectWallet>
-      )}
       {!isReady && (
         <ConnectWallet
           onClick={connect}
@@ -25,7 +18,10 @@ function Connection() {
           Connect Wallet
         </ConnectWallet>
       )}
-      {network && (
+      {network === 1 && (
+        <LightBlueButton>Network: {getNetworkType(network)} </LightBlueButton>
+      )}
+      {network === 4 && (
         <LightGreenButton>Network: {getNetworkType(network)} </LightGreenButton>
       )}
       {address && (

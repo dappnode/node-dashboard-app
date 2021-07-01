@@ -1,18 +1,19 @@
 import React from 'react'
-import Image from 'next/image'
 import styled from 'styled-components'
 import logo from '../assets/mini-logo.svg'
 import ConnectionInfo from './ConnectionInfo'
 
-function Navbar(openSidebar) {
+import { Inter700 } from './Styles'
+
+function Navbar({openSidebar}) {
 
   return (
     <NavbarSection>
       <Container>
-        <h1 onClick={openSidebar}>
-          <Image src={logo} alt="logo" />
-          DAppNode Dashboard
-        </h1>
+        <div onClick={openSidebar}>
+          <img src={logo} alt="logo" />
+          <Inter700>DAppNode Dashboard</Inter700>
+        </div>
         <div>
             <ConnectionInfo />
         </div>
@@ -46,16 +47,13 @@ const Container = styled.div`
   justify-content: space-between;
   flex-direction: row;
   h1 {
-    font-family: 'Inter';
-    font-weight: 500;
     font-size: 24px;
     display: flex;
     align-items: center;
     letter-spacing: 0.2px;
     color: #35403f;
-    cursor: pointer;
     img {
-      padding-right: 22px;
+      padding-right: 32px;
     }
   }
   div {
@@ -63,6 +61,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
+    cursor: pointer;
     p {
       margin: 0 15px;
     }

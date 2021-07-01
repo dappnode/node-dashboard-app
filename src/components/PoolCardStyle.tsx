@@ -6,8 +6,9 @@ export const PoolCardSection = styled.section`
   justify-content: center;
   align-items: center;
   background-color: white;
+  height: 100%;
   width: 100%;
-  height: 400px;
+  min-height: 376px;
   max-width: 261px;
   padding: 16px;
   box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),

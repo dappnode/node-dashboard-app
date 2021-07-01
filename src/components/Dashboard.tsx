@@ -33,6 +33,7 @@ function Dashboard() {
           <Image alt="pools" src={Pools} />
           <span style={{ marginLeft: '10px' }}>Staking Pools</span>
         </Inter700>
+        <div></div>
         <WhiteGreenLink>
               How does this work? <Image alt="link" src={external} />
         </WhiteGreenLink>
@@ -40,18 +41,26 @@ function Dashboard() {
       <PoolsContainer>
         <PoolCard
           logo={dnEth}
-          name="CAR/xDAI"
+          name="NODE/xDAI"
           poolAddress="0x561807cd1f2d32f7ef7dadb1515a55d35eba207c"
           owner={address}
+          hasLiquidityPool
         />
         <PoolCard
-          name="CAR/HNY"
+          name="NODE/HNY"
           logo={dnEth}
           poolAddress="0xb755a9614bfd5eb812b9cc3d00166565f2e72b41"
           owner={address}
+          hasLiquidityPool
         />
         <PoolCard
-          name="CAR"
+          name="NODE"
+          logo={dn}
+          poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
+          owner={address}
+        />
+        <PoolCard
+          name="NODE"
           logo={dn}
           poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
           owner={address}
@@ -64,7 +73,7 @@ function Dashboard() {
 const DashboardSection = styled.section`
   height: 100%;
   width: 80%;
-  max-width: 940px;
+  max-width: 1140px;
   margin: auto;
   padding: 50px 100px;
 `

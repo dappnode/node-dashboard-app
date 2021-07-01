@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { usePoolCardInfo } from '../hooks/usePoolCardInfo'
 import closeImg from '../assets/closePool.svg'
+import external from '../assets/external-link-green.svg'
 import APRDetails from './APRDetails'
 import {
   Input,
@@ -21,7 +22,7 @@ import {
 } from './PoolCardStyle'
 
 
-function PoolCard({ name, poolAddress, owner, logo }) {
+function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) {
   const [poolState, setPoolState] = useState('default')
   const { poolInfo } = usePoolCardInfo()
 
@@ -34,6 +35,7 @@ function PoolCard({ name, poolAddress, owner, logo }) {
           stakePoolInfo={poolInfo[name].stakePoolInfo}
           manage={() => setPoolState('manage')}
           deposit={() => setPoolState('deposit')}
+          hasLiquidityPool={hasLiquidityPool}
         />
       )}
       {poolState === 'manage' && (
@@ -53,7 +55,7 @@ function PoolCard({ name, poolAddress, owner, logo }) {
   )
 }
 
-const Principal = ({ name, stakePoolInfo, manage, deposit, logo }) => (
+const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPool}) => (
   <div>
     <label>Balancer</label>
     <h1>
@@ -97,8 +99,10 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo }) => (
           <GreenButton className="long">Harvest</GreenButton>
         </>
       }
-      <Button>Provide liquidity</Button>
-      <Button onClick={deposit}>Stake LP token</Button>
+      { hasLiquidityPool &&
+        <Button>Provide liquidity <Image src={external} /></Button>
+      }
+      <Button onClick={deposit}>Stake LP tokens</Button>
     </div>
   </div>
 )
@@ -132,12 +136,14 @@ const Deposit = ({ close }) => (
       </Inter400>
       <div>
         <Input type="number" placeholder="Amount" />
-        <Inter500Green>25%</Inter500Green>
-        <Inter500Green>50%</Inter500Green>
-        <Inter500Green>75%</Inter500Green>
-        <Inter500Green>100%</Inter500Green>
+        <div>
+          <Inter500Green style={{ marginRight: '10px' }}>25%</Inter500Green>
+          <Inter500Green style={{ marginRight: '10px' }}>50%</Inter500Green>
+          <Inter500Green style={{ marginRight: '10px' }}>75%</Inter500Green>
+          <Inter500Green>100%</Inter500Green>
+        </div>
       </div>
-      <GreenButton className="long">Deposit LP tokens</GreenButton>
+      <GreenButton className="long" style={{ marginTop: '16px' }}>Deposit LP tokens</GreenButton>
     </div>
   </>
 )
@@ -154,7 +160,7 @@ const Withdraw = ({ close }) => (
         you’d like to withdraw.
       </Inter400>
       <Input type="number" placeholder="Amount" />
-      <GreenButton className="long">Withdraw LP tokens</GreenButton>
+      <GreenButton className="long" style={{ marginTop: '16px' }}>Withdraw LP tokens</GreenButton>
     </div>
   </>
 )

@@ -17,7 +17,7 @@ function Home() {
 
   console.log(network)
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   return (
     <>
@@ -29,8 +29,8 @@ function Home() {
         <Main id="page-wrap" network={network}>
           <Navbar openSidebar={() => setIsOpen(true)} />
           <div style={{ position: 'absolute', bottom: '0', right: '5%', zIndex: 0 }}>
-            { network === 1 && <Image src={ethBackground} />}
-            { network === 4 && <Image src={dnBackground} />}
+            { network === 1 && <Image alt="Ethereum" src={ethBackground} />}
+            { network === 4 && <Image alt="DAppNode" src={dnBackground} />}
           </div>
           <Dashboard />
         </Main>
