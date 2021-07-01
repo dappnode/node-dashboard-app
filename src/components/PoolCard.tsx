@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { usePoolCardInfo } from '../hooks/usePoolCardInfo'
-import closeImg from '../assets/closePool.svg'
-import external from '../assets/external-link-green.svg'
 import APRDetails from './APRDetails'
 import {
   Input,
@@ -59,7 +57,7 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPoo
   <div>
     <label>Balancer</label>
     <h1>
-      <Image alt="logo" src={logo} /> {name}
+      <img alt="logo" src={logo} /> {name}
     </h1>
     <SpaceBetween>
       <h2>50% DN 50% ETH</h2>{' '}
@@ -100,7 +98,7 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPoo
         </>
       }
       { hasLiquidityPool &&
-        <Button>Provide liquidity <Image src={external} /></Button>
+        <Button>Provide liquidity <img src='/assets/external-link-green.svg' /></Button>
       }
       <Button onClick={deposit}>Stake LP tokens</Button>
     </div>
@@ -110,7 +108,7 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPoo
 const Manage = ({ deposit, withdraw, close }) => (
   <>
     <ClosePool onClick={close}>
-      <Image alt="close" src={closeImg} />
+      <img alt="close" src='/assets/closePool.svg' />
     </ClosePool>
     <div>
       <Inter600>Manage your LP tokens</Inter600>
@@ -126,7 +124,7 @@ const Manage = ({ deposit, withdraw, close }) => (
 const Deposit = ({ close }) => (
   <>
     <ClosePool onClick={close}>
-      <Image alt="close" src={closeImg} />
+      <img alt="close" src='/assets/closePool.svg' />
     </ClosePool>
     <div>
       <Inter600>Deposit LP tokens</Inter600>
@@ -151,7 +149,7 @@ const Deposit = ({ close }) => (
 const Withdraw = ({ close }) => (
   <>
     <ClosePool onClick={close}>
-      <Image alt="close" src={closeImg} />
+      <img alt="close" src='/assets/closePool.svg' />
     </ClosePool>
     <div>
       <Inter600>Withdraw LP tokens</Inter600>

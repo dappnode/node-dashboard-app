@@ -8,9 +8,6 @@ import Dashboard from '../components/Dashboard'
 import Sidebar from '../components/SideBar'
 import { useOnboard } from '../hooks/useOnboard'
 
-import dnBackground from '../assets/dn-background.svg';
-import ethBackground from '../assets/eth-background.svg';
-
 function Home() {
 
   const { network } = useOnboard();
@@ -29,8 +26,8 @@ function Home() {
         <Main id="page-wrap" network={network}>
           <Navbar openSidebar={() => setIsOpen(true)} />
           <div style={{ position: 'absolute', bottom: '0', right: '5%', zIndex: 0 }}>
-            { network === 1 && <Image alt="Ethereum" src={ethBackground} />}
-            { network === 4 && <Image alt="DAppNode" src={dnBackground} />}
+            { network === 1 && <img alt="Ethereum" src='/assets/dn-background.svg' />}
+            { network === 4 && <img alt="DAppNode" src='/assets/eth-background.svg' />}
           </div>
           <Dashboard />
         </Main>

@@ -4,12 +4,6 @@ import styled from 'styled-components'
 import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
-import Pools from '../assets/Pools.svg'
-import Tokens from '../assets/Tokens.svg'
-import dnEth from '../assets/dn-eth-logos.svg'
-import dn from '../assets/dn-logo.svg'
-import external from '../assets/external-link-green.svg'
-
 import { useOnboard } from '../hooks/useOnboard'
 import { networkAllowed } from '../lib/web3-utils'
 import PoolCard from './PoolCard'
@@ -21,7 +15,7 @@ function Dashboard() {
   return (
     <DashboardSection>
         <Inter700>
-          <Image alt="tokens" src={Tokens} />
+          <img alt="tokens" src='/assets/Tokens.svg' />
           <span style={{ marginLeft: '10px' }}>My tokens</span>
         </Inter700>
       <PoolsContainer>
@@ -30,17 +24,17 @@ function Dashboard() {
       <br />
       <SpaceBetween>
         <Inter700>
-          <Image alt="pools" src={Pools} />
+          <img alt="pools" src='/assets/Pools.svg' />
           <span style={{ marginLeft: '10px' }}>Staking Pools</span>
         </Inter700>
         <div></div>
         <WhiteGreenLink>
-              How does this work? <Image alt="link" src={external} />
+              How does this work? <img alt="link" src='/assets/external-link-green.svg' />
         </WhiteGreenLink>
       </SpaceBetween>
       <PoolsContainer>
         <PoolCard
-          logo={dnEth}
+          logo='/assets/dn-eth-logos.svg'
           name="NODE/xDAI"
           poolAddress="0x561807cd1f2d32f7ef7dadb1515a55d35eba207c"
           owner={address}
@@ -48,20 +42,20 @@ function Dashboard() {
         />
         <PoolCard
           name="NODE/HNY"
-          logo={dnEth}
+          logo='/assets/dn-eth-logos.svg'
           poolAddress="0xb755a9614bfd5eb812b9cc3d00166565f2e72b41"
           owner={address}
           hasLiquidityPool
         />
         <PoolCard
           name="NODE"
-          logo={dn}
+          logo='/assets/dn-logo.svg'
           poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
           owner={address}
         />
         <PoolCard
           name="NODE"
-          logo={dn}
+          logo='/assets/dn-logo.svg'
           poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
           owner={address}
         />

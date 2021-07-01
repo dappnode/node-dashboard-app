@@ -182,7 +182,7 @@ export const WhiteGreenLink = styled.a`
   text-underline-offset: 3px;
   text-decoration-line: underline;
   img {
-    margin-left: 55px;
+    margin-left: 10px;
   }
 `
 

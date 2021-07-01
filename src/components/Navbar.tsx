@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import logo from '../assets/mini-logo.svg'
 import ConnectionInfo from './ConnectionInfo'
 
 import { Inter700 } from './Styles'
@@ -11,7 +10,7 @@ function Navbar({openSidebar}) {
     <NavbarSection>
       <Container>
         <div onClick={openSidebar}>
-          <img src={logo} alt="logo" />
+          <img src='/assets/mini-logo.svg' alt="logo" />
           <Inter700>DAppNode Dashboard</Inter700>
         </div>
         <div>

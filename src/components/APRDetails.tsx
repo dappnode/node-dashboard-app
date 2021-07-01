@@ -3,8 +3,6 @@ import Image from 'next/image'
 import Popup from 'reactjs-popup'
 import styled from 'styled-components'
 import 'reactjs-popup/dist/index.css'
-import closeModal from '../assets/closeModal.svg'
-import external from '../assets/external-link-green.svg'
 import {
   WhiteGreenButtonLink,
   Inter400,
@@ -20,7 +18,7 @@ function APRDetails() {
         <div className="modal">
           <Spaced>
             <h2>APR Details</h2>
-            <Image alt="close" src={closeModal} onClick={close} />
+            <img alt="close" src='/assets/closeModal.svg' onClick={close} />
           </Spaced>
           <div className="apr-table">
             <div>
@@ -47,7 +45,7 @@ function APRDetails() {
           </div>
           <div className="actions">
             <WhiteGreenButtonLink>
-              Get more DN <Image alt="link" src={external} />
+              Get more DN <img alt="link" src='/assets/external-link-green.svg' />
             </WhiteGreenButtonLink>
           </div>
         </div>

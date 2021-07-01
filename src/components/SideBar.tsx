@@ -4,7 +4,6 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import BurgerMenu from 'react-burger-menu'
 import ConnectionInfo from './ConnectionInfo'
-import external from '../assets/external-link-green.svg'
 import {
   Inter700,
   Inter500,
@@ -109,7 +108,9 @@ function Sidebar({ isOpen, closeSidebar }) {
                 <Inter400>103.20</Inter400>
               </BalanceBox>
               <br/>
-              <WhiteGreenButtonLink>Get more DN <Image alt="link" src={external}/></WhiteGreenButtonLink>
+              <WhiteGreenButtonLink>
+                Get more DN <img alt="link" src='/assets/external-link-green.svg'/>
+              </WhiteGreenButtonLink>
             </div>
           </SidebarCard>
           <br />

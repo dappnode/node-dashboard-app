@@ -3,8 +3,6 @@ import Image from 'next/image'
 import Popup from 'reactjs-popup'
 import styled from 'styled-components'
 import 'reactjs-popup/dist/index.css'
-import closeModal from '../../assets/closeModal.svg'
-import external from '../../assets/external-link-green.svg'
 import {
   WhiteGreenButtonLink,
   Inter400,
@@ -23,7 +21,7 @@ function TransferFunds() {
         <div className="modal">
           <Spaced>
             <h2>Transfer Funds</h2>
-            <Image alt="close" src={closeModal} onClick={close} />
+            <img alt="close" src='/assets/closeModal.svg' onClick={close} />
           </Spaced>
           <div>
             <Inter700>From</Inter700>
