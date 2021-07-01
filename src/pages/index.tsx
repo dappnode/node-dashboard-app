@@ -26,7 +26,7 @@ function Home() {
         <Main id="page-wrap" network={network}>
           <Navbar openSidebar={() => setIsOpen(true)} />
           <div style={{ position: 'absolute', bottom: '0', right: '5%', zIndex: 0 }}>
-            { network === 1 && <img alt="Ethereum" src='/assets/dn-background.svg' />}
+            { network === 100 && <img alt="Ethereum" src='/assets/dn-background.svg' />}
             { network === 4 && <img alt="DAppNode" src='/assets/eth-background.svg' />}
           </div>
           <Dashboard />
@@ -42,9 +42,9 @@ function Home() {
 
 const handleMainBackground = network => {
   switch (network) {
-    case 1:
-      return "linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);";
     case 4:
+      return "linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);";
+    case 100:
       return "linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%)";
     default:
       return "linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)";

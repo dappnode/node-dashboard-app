@@ -1,20 +1,18 @@
 import styled from 'styled-components'
 
 export const PoolCardSection = styled.section`
+  flex-basis: 25%;
   display: flex;
   position: relative;
   justify-content: center;
   align-items: center;
   background-color: white;
-  height: 100%;
   width: 100%;
-  min-height: 376px;
-  max-width: 261px;
+  height: 400px;
   padding: 16px;
   box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
     0px 2px 8px rgba(8, 43, 41, 0.06);
   border-radius: 16px;
-  flex-grow: 1;
   margin: 0 10px;
   h1 {
     font-family: 'Inter';

@@ -38,16 +38,16 @@ export function getNetworkType(chainId) {
 //TODO: Add DN network id
 export function networkAllowed(chainId) {
   chainId = String(chainId)
-  return (chainId === '4' || chainId === '1')
+  return (chainId === '4' || chainId === '100')
 }
 
 export function isMainnet(chainId) {
   chainId = String(chainId)
-  return (chainId === '1')
+  return (chainId === '4')
 }
 
 //TODO: Change networtk
 export function isDN(chainId) {
   chainId = String(chainId)
-  return (chainId === '4')
+  return (chainId === '100')
 }

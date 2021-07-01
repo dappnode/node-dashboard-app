@@ -2,7 +2,7 @@ import Notify from 'bnc-notify'
 import Onboard from 'bnc-onboard'
 
 // TODO: change data here. API keys. rpcUrl, dappId key from blocknative
-const networkId = 4
+const networkId = 1 || 4
 const rpcUrl = 'https://localhost:3001'
 const apiUrl = process.env.REACT_APP_API_URL
 const staging = process.env.REACT_APP_STAGING

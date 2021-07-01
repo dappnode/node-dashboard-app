@@ -93,7 +93,7 @@ function Rewards() {
       </RewardsSection>
       <RewardsSection>
         <SpaceBetween>
-          <label className={isDN(network) ? 'green' : 'disabled'}>RBN</label>
+          <label className={isDN(network) ? 'green' : 'disabled'}>DN</label>
           {!isDN(network) && (
             <p>
               <b>Connect to this network</b> to claim your tokens.{' '}

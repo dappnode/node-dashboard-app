@@ -30,6 +30,8 @@ function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) 
         <Principal
           name={name}
           logo={logo}
+          platform={poolInfo[name].name}
+          composition={poolInfo[name].composition}
           stakePoolInfo={poolInfo[name].stakePoolInfo}
           manage={() => setPoolState('manage')}
           deposit={() => setPoolState('deposit')}
@@ -53,14 +55,14 @@ function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) 
   )
 }
 
-const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPool}) => (
+const Principal = ({ name, composition, platform, stakePoolInfo, manage, deposit, logo, hasLiquidityPool}) => (
   <div>
-    <label>Balancer</label>
+    <label>{platform}</label>
     <h1>
       <img alt="logo" src={logo} /> {name}
     </h1>
     <SpaceBetween>
-      <h2>50% DN 50% ETH</h2>{' '}
+      <h2>{composition}</h2>{' '}
       <SimpleButton onClick={deposit}>Add more</SimpleButton>
     </SpaceBetween>
     <SpaceBetween>
@@ -97,9 +99,7 @@ const Principal = ({ name, stakePoolInfo, manage, deposit, logo, hasLiquidityPoo
           <GreenButton className="long">Harvest</GreenButton>
         </>
       }
-      { hasLiquidityPool &&
-        <Button>Provide liquidity <img src='/assets/external-link-green.svg' /></Button>
-      }
+      <Button>Provide liquidity <img src='/assets/external-link-green.svg' /></Button>
       <Button onClick={deposit}>Stake LP tokens</Button>
     </div>
   </div>

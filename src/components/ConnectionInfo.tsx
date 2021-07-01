@@ -18,10 +18,10 @@ function Connection() {
           Connect Wallet
         </ConnectWallet>
       )}
-      {network === 1 && (
+      {network === 4 && (
         <LightBlueButton>Network: {getNetworkType(network)} </LightBlueButton>
       )}
-      {network === 4 && (
+      {network === 100 && (
         <LightGreenButton>Network: {getNetworkType(network)} </LightGreenButton>
       )}
       {address && (

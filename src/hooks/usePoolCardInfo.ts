@@ -19,6 +19,8 @@ export function usePoolCardInfo() {
 
   const [poolInfo, setPoolInfo] = useState({
     'NODE/xDAI': {
+      name: 'Uniswap',
+      composition: '50% NODE, 50% ETH',
       stakePoolInfo: {
         tokensInPool: '1532 DN, 0.23 ETH',
         tokensInPoolUSD: '(1400.65 USD)',
@@ -28,8 +30,30 @@ export function usePoolCardInfo() {
       },
       userStakeInfo: null,
     },
-    'NODE/HNY': { stakePoolInfo: null, userStakeInfo: null },
-    'NODE': { stakePoolInfo: null, userStakeInfo: null },
+    'NODE/HNY': {
+      name: 'Balancer',
+      composition: '50% NODE, 50% ETH',
+      stakePoolInfo: {
+        tokensInPool: '1532 DN, 0.23 ETH',
+        tokensInPoolUSD: '(1400.65 USD)',
+        lpTokens: 56,
+        APR: '148.55%',
+        earned: {amount: 900, token: 'DN'}
+      },
+      userStakeInfo: null,
+    },
+    'NODE': {
+      name: 'NODE Staking',
+      composition: '100% NODE',
+      stakePoolInfo: {
+        tokensInPool: '1532 DN, 0.23 ETH',
+        tokensInPoolUSD: '(1400.65 USD)',
+        lpTokens: 56,
+        APR: '148.55%',
+        earned: {amount: 900, token: 'DN'}
+      },
+      userStakeInfo: null,
+    },
   })
 
   return {
