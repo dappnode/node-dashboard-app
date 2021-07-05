@@ -4,14 +4,14 @@ import ConnectionInfo from './ConnectionInfo'
 
 import { Inter700 } from './Styles'
 
-function Navbar({openSidebar}) {
+function Navbar({openSidebar, title }) {
 
   return (
     <NavbarSection>
       <Container>
         <div onClick={openSidebar}>
           <img src='/assets/mini-logo.svg' alt="logo" />
-          <Inter700>DAppNode Dashboard</Inter700>
+          <Inter700>{title}</Inter700>
         </div>
         <div>
             <ConnectionInfo />
@@ -50,7 +50,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     letter-spacing: 0.2px;
-    color: #35403f;
+    margin-left: 20px;
     img {
       padding-right: 32px;
     }

@@ -7,10 +7,13 @@ export const Inter700 = styled.h1`
   line-height: 24px;
   display: flex;
   align-items: center;
-  color: #455453;
-  margin: 20px 10px;
+  color: #35403F, 100%;
+  margin-right: 10px;
   img {
     padding-right: 5px;
+  }
+  &.large {
+    font-size: 24px;
   }
 `
 
@@ -107,7 +110,12 @@ export const SpaceBetween = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+`
+
+export const FlexRow = styled.div`
+  gap: 24px;
+  display: flex;
+  flex-direction: row;
 `
 
 export const GreenButton = styled.button`

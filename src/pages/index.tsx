@@ -14,7 +14,7 @@ function Home() {
 
   console.log(network)
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
@@ -24,7 +24,7 @@ function Home() {
       <div id="outer-container" style={{ height: '100%' }}>
         <Rectangle />
         <Main id="page-wrap" network={network}>
-          <Navbar openSidebar={() => setIsOpen(true)} />
+          <Navbar title="DAppNode Dashboard" openSidebar={() => setIsOpen(true)} />
           <div style={{ position: 'absolute', bottom: '0', right: '5%', zIndex: 0 }}>
             { network === 100 && <img alt="Ethereum" src='/assets/dn-background.svg' />}
             { network === 4 && <img alt="DAppNode" src='/assets/eth-background.svg' />}
