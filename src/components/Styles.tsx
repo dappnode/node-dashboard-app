@@ -124,7 +124,7 @@ export const GreenButton = styled.button`
       ? '#DDE3E3'
       : 'linear-gradient(99.61deg, #86e4dd -0.13%, #2fbcb2 99.3%)'};
 
-  border: solid 0px transparent;
+  border: solid 1px transparent;
   border-radius: 27px;
   font-family: 'Inter-Bold';
   font-weight: bold;
@@ -147,6 +147,21 @@ export const GreenButton = styled.button`
   &.long {
     width: -webkit-fill-available;
   }
+`
+
+export const Button = styled.a`
+  color: #2fbcb2;
+  background: transparent;
+  border: solid 1px #2fbcb2;
+  font-family: 'Interstate', sans-serif;
+  border-radius: 38px;
+  padding: 25px 100px;
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 0.27px;
+  line-height: 16px;
+  text-align: center;
+  padding: 8px 16px;
 `
 
 export const WhiteGreenButtonLink = styled.a`

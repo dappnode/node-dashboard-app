@@ -1,14 +1,71 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
+import { ethers, Contract } from 'ethers'
+import { isMainnet, isDN } from '../lib/web3-utils'
 import Seed from '../assets/seed.js'
 import Time from '../assets/time.js'
 import { BigCurrency, FlexRow, GreenButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
+import { bn, ZERO } from '../lib/numbers'
+import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
+
+const DN_MERKLE_ADDRESS = '0xD457eeF6cBE5D08F7d2B52923449630DA7f09bf9'
+const ETH_MERKLE_ADDRESS = '0xF2ab5010f9A7C0e1E531fEB8eD668f10b7825F1D'
+import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
 
 function Rewards() {
-  const { connect, address, network, isReady, provider } = useOnboard()
+  const [dnClaimable, setDnClaimable] = useState(ZERO);
+  const [ethClaimable, setEthClaimable] = useState(ZERO);
+
+  const { connect, address, network, provider } = useOnboard()
+
+  async function updateClaimableAmount() {
+    if (!address) return
+    const dnAmount = await fetchDnClaimData(address)
+    const dnAmountBN = bn(dnAmount.amount)
+    const ethAmount = await fetchDnClaimData(address)
+    const ethAmountBN = bn(ethAmount.amount)
+    setDnClaimable(dnAmountBN)
+    setEthClaimable(ethAmountBN)
+  }
+
+  useEffect(() => {
+    updateClaimableAmount()
+  }, [])
+
+  async function handleDnClaim() {
+    if (!provider) return
+    const signer = await provider.getSigner()
+    const claimData = await fetchDnClaimData(address)
+    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    console.log(signer)
+
+    const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
+    const canClaim = Boolean(claimData && isClaimedResult === false)
+
+    if (!canClaim) return
+
+    const args = [claimData.index, address, claimData.amount, claimData.proof]
+    const result = await merkleContract.connect(signer).claim(...args)
+    console.log(result)
+  }
+
+  async function handleEthClaim() {
+    if (!provider) return
+    const signer = await provider.getSigner()
+    const claimData = await fetchDnClaimData(address)
+    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, signer)
+
+    const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
+    const canClaim = Boolean(claimData && isClaimedResult === false)
+
+    if (!canClaim) return
+
+    const args = [claimData.index, address, claimData.amount, claimData.proof]
+    const result = await merkleContract.connect(signer).claim(...args)
+    console.log(result)
+  }
 
   return (
     <FlexRow>
@@ -33,15 +90,20 @@ function Rewards() {
               />
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
-                  <h2>DN</h2>
+                  <h1>{parseFloat(ethers.utils.formatEther(ethClaimable)).toFixed(2)}</h1>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Claimable</h3>
                 </div>
               </div>
             </Inline>
-            <BlueButton disabled={!isMainnet(network)}>Claim</BlueButton>
+            <BlueButton
+              onClick={handleEthClaim}
+              disabled={!isMainnet(network) || !ethClaimable.gt(ZERO)}
+            >
+              Claim
+            </BlueButton>
           </SpaceBetween>
         </Row>
       </RewardsSection>
@@ -64,8 +126,8 @@ function Rewards() {
               />
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
-                  <h2>DN</h2>
+                  <h1>{parseFloat(ethers.utils.formatEther(dnClaimable)).toFixed(2)}</h1>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Claimable</h3>
@@ -74,7 +136,8 @@ function Rewards() {
             </Inline>
 
             <GreenButton
-              disabled={!isDN(network)}
+              onClick={handleDnClaim}
+              disabled={!isDN(network) || !dnClaimable.gt(ZERO)}
             >
               Claim
             </GreenButton>

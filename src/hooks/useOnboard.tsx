@@ -48,15 +48,6 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
     }
   }, [])
 
-  useEffect(() => {
-    const previouslySelectedWallet = window.localStorage.getItem('selectedWallet')
-
-    if (previouslySelectedWallet && onboard) {
-      onboard.walletSelect(previouslySelectedWallet)
-      setIsReady(true)
-    }
-  }, [onboard])
-
   async function connect() {
     const selected = await onboard.walletSelect()
     if (!selected) return

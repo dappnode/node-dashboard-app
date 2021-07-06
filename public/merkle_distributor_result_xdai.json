@@ -1,0 +1,582 @@
+{
+    "merkleRoot": "0x35933b21851859a5f1985e5ba6f45bd3bc19f5280b504fb584f8c0b953c32df3",
+    "tokenTotal": "0x08306813465e9baef6c000",
+    "claims": {
+        "0x00d18ca9782bE1CaEF611017c2Fbc1a39779A57C": {
+            "index": 0,
+            "amount": "0x2d554a3a461da8a88000",
+            "proof": [
+                "0x50cf2d2a3c126e7e144b8ff3138487c00bfcad2de7ed78689357d436ec1bb44f",
+                "0x329363b9e89348f6ea663f7b0f757a504b7432c1a14009247bfa8f3cf7d53cbd",
+                "0xd8775847b8b873709dc6ee3ab0ef06be37e382109165d9c8750c00233d486a25",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0x01E33b6E31dE8395dF77e2C82a901EC6Eaa142dC": {
+            "index": 1,
+            "amount": "0x3073ebc7a8db9b100000",
+            "proof": [
+                "0xc6711b0d2ec15435400120228cf7e71143d8250e8781211e0e9fe84df818961e",
+                "0xe60a9f55fa9f7332fba2b76923345c1f9783d020641f2fce9998f05d30cb0c7b",
+                "0xdbf1b03c1e2fe12c30dc8b83ce88f639e40212a7ad68c74040c83211c66f69fb",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": false,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x05A1ff0a32bc24265BCB39499d0c5D9A6cb2011c": {
+            "index": 2,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x154e7971a1d2aab1f8a8f791ca9b7126ccd3559e59e3ed02dcdc779ebd650bf0",
+                "0x447df7ef07d077618600df7d6f38020b18d8e6f29df589b0c9fe119e54d9f9a0",
+                "0x911fc48405c3f2e48763ff3d95b4b0f0f3ea062bcb6cb5c3648bdf491c494b28",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x0CB0F554A2e8a5B7B5634F37840B037214925815": {
+            "index": 3,
+            "amount": "0x30f0ec9455901010c000",
+            "proof": [
+                "0x66f8d56915660f5d4904e21ceff50cd0c5a43969d59aa524ac34ed524395c3c7",
+                "0x763177dca3470e6f1e5e3db8e5a71907a2ff5fa0c2e8235084a555c2646dce44",
+                "0xbd4675d64e080ab275bf117093a9be7c4ca1a41dca256c45c92bb21e55eaafe7",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x10a84b835C5df26f2A380B3E00bCC84A66cD2d34": {
+            "index": 4,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x7a8aeb1e4de3b66acbf9cb07df13e3e182391634b7629bea4c555d9095a58a74",
+                "0x6ec134e5431fe5b535f47c66f48a1688f15ade4c41c68147583babcfd71efa50",
+                "0x4df0b7dc478a7586475f6070de4e1d08e560267961e4ae101bbde876e688b51c",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x2d0895E23BB48D7AF5d036e106A6E124C8280955": {
+            "index": 5,
+            "amount": "0x1a9d80e9a3cf3833e000",
+            "proof": [
+                "0x4d8a3bd83f5ec142eb045aee67e197c5282463170675d3bdb68437d7d20713b0",
+                "0xb528407b1feb64fa6eb984389f56319202983907949c5e33eff851f1fba7326c",
+                "0xd0142db8e394527f47867b0642eeaef730dd892584acbb6f2ab643bc1c9b45f6",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": false,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0x301E35D012EB2ed3f2F4687552eD26ec11094756": {
+            "index": 6,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x2c2ffbf6c9a817e43301012be0074d2b1d1d3db34861155cd89f89d07bd25b55",
+                "0x06f247feacd865c82ac90610b83a3f1fa313c1c995aa514323dbd3cb1a185c96",
+                "0x911fc48405c3f2e48763ff3d95b4b0f0f3ea062bcb6cb5c3648bdf491c494b28",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x3c5F27FB61C562323Ce17D0E338aBFC0918a92B5": {
+            "index": 7,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0xcea8acba5e7c3d6d2d4d7f092b17073b7c7a19a42d3122224f21e3afcac6e3f7",
+                "0xe60a9f55fa9f7332fba2b76923345c1f9783d020641f2fce9998f05d30cb0c7b",
+                "0xdbf1b03c1e2fe12c30dc8b83ce88f639e40212a7ad68c74040c83211c66f69fb",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0x5AC583Feb2b1f288C0A51d6Cdca2e8c814BFE93B": {
+            "index": 8,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x5e2cb008e206b0c4ac4bf11cbca54cd16cdceed39e30d80dd3fb64f49f62c614",
+                "0xaf8fd57ee9dcca1b064093eaeec0e009e10864eddc0eb442bfa3d0a38093ca5e",
+                "0xd8775847b8b873709dc6ee3ab0ef06be37e382109165d9c8750c00233d486a25",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x5D28FE1e9F895464aab52287d85Ebff32B351674": {
+            "index": 9,
+            "amount": "0x1a9d80e9a3cf3833e000",
+            "proof": [
+                "0xc254a260c7b32fd9598468b92eb7e1ade1f8dd97e4ca7d1d2b6cfa998164c56d",
+                "0x588eeebc72e164f731bf0f7919bae133c4f7d1dc98be0d1970f3085708244489",
+                "0xdbf1b03c1e2fe12c30dc8b83ce88f639e40212a7ad68c74040c83211c66f69fb",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": false,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0x701d0ECB3BA780De7b2b36789aEC4493A426010a": {
+            "index": 10,
+            "amount": "0x2d554a3a461da8a88000",
+            "proof": [
+                "0xd6587f7f0c5b2ecbd7d92f0ae850358cc7905ba21f9fff872621a1007f933892",
+                "0xb2db7d301881fc001bbf732edef562fcf5d352931728124753c686354a73b8cb",
+                "0x5e311b74bb083b35813c9d1c1c83707b048434ed66e1973003c6f5929c861627",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0x826976d7C600d45FB8287CA1d7c76FC8eb732030": {
+            "index": 11,
+            "amount": "0x55667d9c40c406f88000",
+            "proof": [
+                "0x73d43ab2da4d37ce38798a8b071a833dc56da39ac8e9d525f14145a33728145e",
+                "0xbfea8de820ba0208eb625c74e423b64c47cb9d293cd242ec4bde9aaca39368f0",
+                "0xbd4675d64e080ab275bf117093a9be7c4ca1a41dca256c45c92bb21e55eaafe7",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x839395e20bbB182fa440d08F850E6c7A8f6F0780": {
+            "index": 12,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x49e4e52b7a6423243ed93117114125747d89e3dafa76db532d7178499fe1b29c",
+                "0xdb41fa91039881654f0e662c2353ffd264fc7c85f159fb38034c1a8c72d2b9b4",
+                "0xd0142db8e394527f47867b0642eeaef730dd892584acbb6f2ab643bc1c9b45f6",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x86720c82097D0E976b738dF05577E6E67d02d05c": {
+            "index": 13,
+            "amount": "0x2d554a3a461da8a88000",
+            "proof": [
+                "0x6324b11a6f3d839de5aa0e892cd1a9661f1ac33e543f41148a3dcef727d9f089",
+                "0xaf8fd57ee9dcca1b064093eaeec0e009e10864eddc0eb442bfa3d0a38093ca5e",
+                "0xd8775847b8b873709dc6ee3ab0ef06be37e382109165d9c8750c00233d486a25",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0x8F48094a12c8F99d616AE8F3305D5eC73cBAA6b6": {
+            "index": 14,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x69108d037f3497bf6dec50739a5c1d6222423e4879270707b04f53cc7c67b4e7",
+                "0x763177dca3470e6f1e5e3db8e5a71907a2ff5fa0c2e8235084a555c2646dce44",
+                "0xbd4675d64e080ab275bf117093a9be7c4ca1a41dca256c45c92bb21e55eaafe7",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": false,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0x9758106Dc25403609105e10c11184bCAEc93B40e": {
+            "index": 15,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0xa2c9fb6c27969589ef348bfa64be7fc6876357ffe8191472c9b8ac453f271f29",
+                "0xde08d48a2b4aaf21f33d316a9a111246aa32ca7b0a1f95b883159ac19ef44703",
+                "0xcf3ed40f9700e681fed4b0044ef82143d9e530cc55f5cb9601e3fac15f83d572",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xB20A327C9b4Da091f454B1Ce0E2e4DC5C128b5B4": {
+            "index": 16,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0xc1b63bef5926471f6a19320c9253001d0b8c103a924f6b8bc5f2ef6fb8b91ad9",
+                "0x588eeebc72e164f731bf0f7919bae133c4f7d1dc98be0d1970f3085708244489",
+                "0xdbf1b03c1e2fe12c30dc8b83ce88f639e40212a7ad68c74040c83211c66f69fb",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xB3B86DC02F997e74E875EbAdF3fc0694788227Ac": {
+            "index": 17,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x3f94f8e52a0b11a5b3d3deb01beed45b949da217c753a4f7db6c42712ae005b3",
+                "0xdb41fa91039881654f0e662c2353ffd264fc7c85f159fb38034c1a8c72d2b9b4",
+                "0xd0142db8e394527f47867b0642eeaef730dd892584acbb6f2ab643bc1c9b45f6",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xB7805B7b514B4BDBce556772915B2Aa9179507A4": {
+            "index": 18,
+            "amount": "0x55667d9c40c406f88000",
+            "proof": [
+                "0x9e3f42e0dacfc3060713bfff872604215a7b3bfdc74345a9dd1be6bdf2f25f61",
+                "0x0fbd840d3c6f0b71818d73862442b1dce2e889c8aee234af961097516298a1c7",
+                "0xcf3ed40f9700e681fed4b0044ef82143d9e530cc55f5cb9601e3fac15f83d572",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xC46c67Bb7E84490D7EbdD0b8ecDaca68Cf3823F4": {
+            "index": 19,
+            "amount": "0x55667d9c40c406f88000",
+            "proof": [
+                "0x7d8b8f831dfb7ef54c876bdf85ea269b046327e8d732db6e9f0ab46a8718e4d1",
+                "0xd04b8ca1726b9137df454bc4e6f1adef8e8a8277f79fd24d1e89347d2436244f",
+                "0x4df0b7dc478a7586475f6070de4e1d08e560267961e4ae101bbde876e688b51c",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xCA7A1A193a02e0520B6b745cD2eb24967c27cA00": {
+            "index": 20,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0x3e2c7ee6b32633a8b8e0c69be07077eebd560da71231e1ce75d71f7410104423",
+                "0x06f247feacd865c82ac90610b83a3f1fa313c1c995aa514323dbd3cb1a185c96",
+                "0x911fc48405c3f2e48763ff3d95b4b0f0f3ea062bcb6cb5c3648bdf491c494b28",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xD11E5aC326869525b772B8D144AEaC4bC7500419": {
+            "index": 21,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0x9d8eeaf6db97c14a50a7a9ef62ad805f96b5adbdda55f13c9f9cafffdfe92610",
+                "0x0fbd840d3c6f0b71818d73862442b1dce2e889c8aee234af961097516298a1c7",
+                "0xcf3ed40f9700e681fed4b0044ef82143d9e530cc55f5cb9601e3fac15f83d572",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xE1AE6CA07035cCa70Bfec5F9CB70cb89Cf2FC695": {
+            "index": 22,
+            "amount": "0x3f9012be3bb7a41c6000",
+            "proof": [
+                "0xdf619e343fdef4f482a61f3d82943cd461063e809fb003fb27c9b74bc6219b97",
+                "0xb2db7d301881fc001bbf732edef562fcf5d352931728124753c686354a73b8cb",
+                "0x5e311b74bb083b35813c9d1c1c83707b048434ed66e1973003c6f5929c861627",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0xE64F06F695De4C4E21BA8F383a2675Fd884Ac720": {
+            "index": 23,
+            "amount": "0x3f9012be3bb7a41c6000",
+            "proof": [
+                "0x884215c07bf47b8f0208c6799f47dfdab5bcb7140dd9a6e1ba0abc8faa903c5e",
+                "0xd04b8ca1726b9137df454bc4e6f1adef8e8a8277f79fd24d1e89347d2436244f",
+                "0x4df0b7dc478a7586475f6070de4e1d08e560267961e4ae101bbde876e688b51c",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0xF23eA0b5F14afcbe532A1df273F7B233EBe41C78": {
+            "index": 24,
+            "amount": "0x3f9012be3bb7a41c6000",
+            "proof": [
+                "0x69fc806f80b224d08ea45397bd66cfa877c15c0ddf0c36ec7c952e5e97d0e893",
+                "0xbfea8de820ba0208eb625c74e423b64c47cb9d293cd242ec4bde9aaca39368f0",
+                "0xbd4675d64e080ab275bf117093a9be7c4ca1a41dca256c45c92bb21e55eaafe7",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": false
+            }
+        },
+        "0xF35960302a07022aBa880DFFaEC2Fdd64d5BF1c1": {
+            "index": 25,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0x784044ed6de5a097811e284f220e94118d16467b26aa6bf64453bc035150e0c5",
+                "0x6ec134e5431fe5b535f47c66f48a1688f15ade4c41c68147583babcfd71efa50",
+                "0x4df0b7dc478a7586475f6070de4e1d08e560267961e4ae101bbde876e688b51c",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xF3E343DBBB17adF671b627d849Ba29Ef4ba31bE3": {
+            "index": 26,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0x5257ce9cbf05ee126c91cd781757dbdfdd6b3ad04847cf78fe9c2b8d01f262cc",
+                "0x329363b9e89348f6ea663f7b0f757a504b7432c1a14009247bfa8f3cf7d53cbd",
+                "0xd8775847b8b873709dc6ee3ab0ef06be37e382109165d9c8750c00233d486a25",
+                "0x709a9685ccfd19c78edb1750d67d2eaec97a652e2648ca1d156245e78d8843df",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xa33Ff32C48cc7eE58F8d7329FF9Abe3558aB1204": {
+            "index": 27,
+            "amount": "0x3a4bfbe5f04059c3e000",
+            "proof": [
+                "0xe1847bd307e228d7f890b28692b1ba0a20e3432e70a482c4671c073a7a8edbe4",
+                "0x0525b1b81a23a70ae2742c8b8c41807645cc84d9ffd8516ce44f02afb39fe2a0",
+                "0x5e311b74bb083b35813c9d1c1c83707b048434ed66e1973003c6f5929c861627",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": false,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xb7be0F2761fdEE65339BBEf4A16653C0d3BFbcbe": {
+            "index": 28,
+            "amount": "0x4d03c536928eca388000",
+            "proof": [
+                "0xf6f66ce87394a6be78428291a0a8dde439f15e8a60524154ef1d85cb6a3b31da",
+                "0x0525b1b81a23a70ae2742c8b8c41807645cc84d9ffd8516ce44f02afb39fe2a0",
+                "0x5e311b74bb083b35813c9d1c1c83707b048434ed66e1973003c6f5929c861627",
+                "0x566a25b1b41b8c95775b2a1fd182da06d394b2a950fd06c3f1a31d850af5d413",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": false,
+                "isContributors": true
+            }
+        },
+        "0xc0f2A154abA3f12D71AF25e87ca4f225B9C52203": {
+            "index": 29,
+            "amount": "0x55667d9c40c406f88000",
+            "proof": [
+                "0xaece684d01e5d7e76c7e7fd6ddf9b8d7f6fd18986e42d8d077addc2dabf73a0e",
+                "0xde08d48a2b4aaf21f33d316a9a111246aa32ca7b0a1f95b883159ac19ef44703",
+                "0xcf3ed40f9700e681fed4b0044ef82143d9e530cc55f5cb9601e3fac15f83d572",
+                "0xb54a2f30b074d92c47832477607443e05f3d00570e2bfb5ae760e2932dce7932",
+                "0xaaf6ad68b3866117cebc1d5a01082fc53352ed091fe72dee84aa676a8bc0e54c"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xcA5720267Fcb7ccA13007AfA096ae01B0864f765": {
+            "index": 30,
+            "amount": "0x432bb5184b2a0b84a000",
+            "proof": [
+                "0x169ccb5fad997f9e3e7d417ce908a01d0bbf286450ce7e200a8491a246607a1c",
+                "0x447df7ef07d077618600df7d6f38020b18d8e6f29df589b0c9fe119e54d9f9a0",
+                "0x911fc48405c3f2e48763ff3d95b4b0f0f3ea062bcb6cb5c3648bdf491c494b28",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": false,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        },
+        "0xed8DB37778804A913670d9367aAf4F043AAd938b": {
+            "index": 31,
+            "amount": "0x55667d9c40c406f88000",
+            "proof": [
+                "0x4d96c4fe0e7269fb5e47ea8b5076772e0c0ea50eb9d27abdd25d864c5da17749",
+                "0xb528407b1feb64fa6eb984389f56319202983907949c5e33eff851f1fba7326c",
+                "0xd0142db8e394527f47867b0642eeaef730dd892584acbb6f2ab643bc1c9b45f6",
+                "0x7789b51855a04d34112ff9d756793b257ad1d80da5f25920ac01cbcaf2fba642",
+                "0xb80f0be9368917b50ca7f7b15860a95f9249b09dfb04b8ae5a457fe4b79de837"
+            ],
+            "flags": {
+                "isEthstaker": true,
+                "isDonor": true,
+                "isNodler": true,
+                "isSourcecred": true,
+                "isContributors": true
+            }
+        }
+    }
+}

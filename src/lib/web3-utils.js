@@ -38,7 +38,7 @@ export function getNetworkType(chainId) {
 //TODO: Add DN network id
 export function networkAllowed(chainId) {
   chainId = String(chainId)
-  return (chainId === '4' || chainId === '100')
+  return (chainId === '4' || chainId === '5')
 }
 
 export function isMainnet(chainId) {
@@ -49,5 +49,5 @@ export function isMainnet(chainId) {
 //TODO: Change networtk
 export function isDN(chainId) {
   chainId = String(chainId)
-  return (chainId === '100')
+  return (chainId === '5')
 }

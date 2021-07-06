@@ -11,13 +11,6 @@ function Connection() {
 
   return (
     <>
-      {!isReady && (
-        <ConnectWallet
-          onClick={connect}
-        >
-          Connect Wallet
-        </ConnectWallet>
-      )}
       {network === 4 && (
         <LightBlueButton>Network: {getNetworkType(network)} </LightBlueButton>
       )}
@@ -27,12 +20,6 @@ function Connection() {
       {address && (
         <NavbarButton>
           {address && <p>{shortenAddress(address)}</p>}
-        </NavbarButton>
-      )}
-      {address && (
-        <NavbarButton>
-          {Number(10) > 0 ? 10 / 1000000000000000000 : 10}{' '}
-          <span> ETH</span>
         </NavbarButton>
       )}
     </>
