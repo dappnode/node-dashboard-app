@@ -54,8 +54,8 @@ function Rewards() {
   async function handleEthClaim() {
     if (!provider) return
     const signer = await provider.getSigner()
-    const claimData = await fetchDnClaimData(address)
-    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, signer)
+    const claimData = await fetchEthClaimData(address)
+    const merkleContract = new Contract(ETH_MERKLE_ADDRESS, MERKLE_ABI, signer)
 
     const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -102,7 +102,7 @@ function Rewards() {
               onClick={handleEthClaim}
               disabled={!isMainnet(network) || !ethClaimable.gt(ZERO)}
             >
-              Claim
+              Request
             </BlueButton>
           </SpaceBetween>
         </Row>
@@ -139,7 +139,7 @@ function Rewards() {
               onClick={handleDnClaim}
               disabled={!isDN(network) || !dnClaimable.gt(ZERO)}
             >
-              Claim
+              Request
             </GreenButton>
           </SpaceBetween>
         </Row>
