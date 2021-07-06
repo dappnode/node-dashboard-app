@@ -46,7 +46,13 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
       })
       setOnboard(onboard)
     }
-  }, [])
+  }, [onboard])
+
+  useEffect(() => {
+    if (!wallet.provider) return
+    const ethersProvider = new ethers.providers.Web3Provider(wallet.provider)
+    setProvider(ethersProvider)
+  }, [network, wallet])
 
   async function connect() {
     const selected = await onboard.walletSelect()

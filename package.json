@@ -10,9 +10,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ethersproject/providers": "^5.4.1",
     "bnc-notify": "^1.6.2",
     "bnc-onboard": "^1.27.0",
-    "ethers": "^5.3.1",
+    "ethers": "^5.4.1",
     "next": "11.0.0",
     "react": "17.0.2",
     "react-burger-menu": "^3.0.6",
