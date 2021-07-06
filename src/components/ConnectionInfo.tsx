@@ -14,7 +14,7 @@ function Connection() {
       {network === 4 && (
         <LightBlueButton>Network: {getNetworkType(network)} </LightBlueButton>
       )}
-      {network === 100 && (
+      {network === 5 && (
         <LightGreenButton>Network: {getNetworkType(network)} </LightGreenButton>
       )}
       {address && (

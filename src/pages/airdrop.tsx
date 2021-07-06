@@ -145,7 +145,7 @@ const handleMainBackground = network => {
   switch (network) {
     case 4:
       return "linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);";
-    case 100:
+    case 5:
       return "linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%)";
     default:
       return "linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)";
