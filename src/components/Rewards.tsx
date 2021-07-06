@@ -60,7 +60,7 @@ function Rewards() {
               <div>
                 <BigCurrency>
                   <h1>0</h1>
-                  <h2>DN</h2>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Claimable</h3>
@@ -80,7 +80,7 @@ function Rewards() {
               <div>
                 <BigCurrency>
                   <h1>0</h1>
-                  <h2>DN</h2>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Locked</h3>
@@ -93,7 +93,7 @@ function Rewards() {
       </RewardsSection>
       <RewardsSection>
         <SpaceBetween>
-          <label className={isDN(network) ? 'green' : 'disabled'}>DN</label>
+          <label className={isDN(network) ? 'green' : 'disabled'}>XDAI</label>
           {!isDN(network) && (
             <p>
               <b>Connect to this network</b> to claim your tokens.{' '}
@@ -111,7 +111,7 @@ function Rewards() {
               <div>
                 <BigCurrency>
                   <h1>0</h1>
-                  <h2>DN</h2>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Claimable</h3>
@@ -137,7 +137,7 @@ function Rewards() {
               <div>
                 <BigCurrency>
                   <h1>0</h1>
-                  <h2>DN</h2>
+                  <h2>NODE</h2>
                 </BigCurrency>
                 <div>
                   <h3>Locked</h3>

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import styled from 'styled-components'
 import { ethers, Contract } from 'ethers'
 import { isMainnet, isDN } from '../lib/web3-utils'
@@ -10,8 +11,9 @@ import { useOnboard } from '../hooks/useOnboard'
 import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
-const DN_MERKLE_ADDRESS = '0xD457eeF6cBE5D08F7d2B52923449630DA7f09bf9'
-const ETH_MERKLE_ADDRESS = '0xF2ab5010f9A7C0e1E531fEB8eD668f10b7825F1D'
+const DN_MERKLE_ADDRESS = '0xC3F0C5a44e9256f13360cdAe98B0E72D3481cf71'
+const ETH_MERKLE_ADDRESS = '0x52F17267A9a2f429C2c9cccDDD94AEfB1b4109f2'
+
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
 
 function Rewards() {
@@ -20,18 +22,62 @@ function Rewards() {
 
   const { connect, address, network, provider } = useOnboard()
 
-  async function updateClaimableAmount() {
+  async function getEthClaimableAmount() {
     if (!address) return
-    const dnAmount = await fetchDnClaimData(address)
-    const dnAmountBN = bn(dnAmount.amount)
-    const ethAmount = await fetchDnClaimData(address)
-    const ethAmountBN = bn(ethAmount.amount)
-    setDnClaimable(dnAmountBN)
-    setEthClaimable(ethAmountBN)
+
+    const provider = new JsonRpcProvider(
+      'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080'
+    )
+
+    const claimData = await fetchEthClaimData(address)
+    const merkleContract = new Contract(ETH_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    const isClaimedResult = await merkleContract.isClaimed(claimData.index)
+    const canClaim = Boolean(claimData && isClaimedResult === false)
+    console.log(canClaim)
+
+    if (!canClaim) return ZERO
+
+    const ethAmountBN = bn(claimData.amount)
+
+    return ethAmountBN
   }
 
-  useEffect(() => {
+  async function getXDaiClaimableAmount() {
+    if (!address) return
+
+    const provider = new JsonRpcProvider(
+      'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080'
+    )
+
+    const claimData = await fetchDnClaimData(address)
+    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    const isClaimedResult = await merkleContract.isClaimed(claimData.index)
+    const canClaim = Boolean(claimData && isClaimedResult === false)
+    console.log(canClaim)
+
+    if (!canClaim) return ZERO
+
+    const ethAmountBN = bn(claimData.amount)
+
+    return ethAmountBN
+  }
+
+  async function updateClaimableAmount() {
+    const dnmount = await getXDaiClaimableAmount()
+    const ethAmount = await getEthClaimableAmount()
+    setDnClaimable(dnmount)
+    setEthClaimable(ethAmount)
+  }
+
+  useEffect(()=>{
+
     updateClaimableAmount()
+
+    const interval = setInterval(() => {
+      updateClaimableAmount()
+     }, 15000)
+
+     return () => clearInterval(interval)
   }, [])
 
   async function handleDnClaim() {
@@ -39,7 +85,6 @@ function Rewards() {
     const signer = await provider.getSigner()
     const claimData = await fetchDnClaimData(address)
     const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
-    console.log(signer)
 
     const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -109,7 +154,7 @@ function Rewards() {
       </RewardsSection>
       <RewardsSection>
         <SpaceBetween>
-          <label className={isDN(network) ? 'green' : 'disabled'}>DN</label>
+          <label className={isDN(network) ? 'green' : 'disabled'}>XDAI</label>
           {!isDN(network) && (
             <p>
               <b>Connect to this network</b> to claim your tokens.{' '}
@@ -161,6 +206,7 @@ const BlueButton = styled.button`
   line-height: 16px;
   text-align: center;
   color: white;
+  cursor: pointer;
   padding: 8px 16px;
   box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
     0px 0px 8px rgba(8, 43, 41, 0.06);
