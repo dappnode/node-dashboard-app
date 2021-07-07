@@ -53,12 +53,6 @@ function Dashboard() {
           poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
           owner={address}
         />
-        <PoolCard
-          name="NODE"
-          logo='/assets/dn-logo.svg'
-          poolAddress="0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e"
-          owner={address}
-        />
       </PoolsContainer>
     </DashboardSection>
   )

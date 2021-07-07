@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ethersproject/providers": "^5.4.1",
+    "bignumber.js": "^9.0.1",
     "bnc-notify": "^1.6.2",
     "bnc-onboard": "^1.27.0",
     "ethers": "^5.4.1",

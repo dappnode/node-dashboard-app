@@ -22,7 +22,7 @@ import {
 
 function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) {
   const [poolState, setPoolState] = useState('default')
-  const { poolInfo } = usePoolCardInfo()
+  const { poolsInfo } = usePoolCardInfo()
 
   return (
     <PoolCardSection>
@@ -30,9 +30,9 @@ function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) 
         <Principal
           name={name}
           logo={logo}
-          platform={poolInfo[name].name}
-          composition={poolInfo[name].composition}
-          stakePoolInfo={poolInfo[name].stakePoolInfo}
+          platform={poolsInfo[name].name}
+          composition={poolsInfo[name].composition}
+          stakePoolInfo={poolsInfo[name].stakePoolInfo}
           manage={() => setPoolState('manage')}
           deposit={() => setPoolState('deposit')}
           hasLiquidityPool={hasLiquidityPool}

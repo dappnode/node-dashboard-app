@@ -11,10 +11,9 @@ import { useOnboard } from '../hooks/useOnboard'
 import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
-const DN_MERKLE_ADDRESS = '0xC3F0C5a44e9256f13360cdAe98B0E72D3481cf71'
-const ETH_MERKLE_ADDRESS = '0x52F17267A9a2f429C2c9cccDDD94AEfB1b4109f2'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
+import config from "../configuration";
 
 function Rewards() {
   const [dnClaimable, setDnClaimable] = useState(ZERO);
@@ -25,12 +24,10 @@ function Rewards() {
   async function getEthClaimableAmount() {
     if (!address) return
 
-    const provider = new JsonRpcProvider(
-      'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080'
-    )
+    const provider = new JsonRpcProvider(config.nodeUrl)
 
     const claimData = await fetchEthClaimData(address)
-    const merkleContract = new Contract(ETH_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    const merkleContract = new Contract(config.ETH_MERKLE_ADDRESS, MERKLE_ABI, provider)
     const isClaimedResult = await merkleContract.isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
     console.log(canClaim)
@@ -46,11 +43,11 @@ function Rewards() {
     if (!address) return
 
     const provider = new JsonRpcProvider(
-      'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080'
+      config.xdaiNodeUrl
     )
 
     const claimData = await fetchDnClaimData(address)
-    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    const merkleContract = new Contract(config.DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
     const isClaimedResult = await merkleContract.isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
     console.log(canClaim)
@@ -84,7 +81,7 @@ function Rewards() {
     if (!provider) return
     const signer = await provider.getSigner()
     const claimData = await fetchDnClaimData(address)
-    const merkleContract = new Contract(DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
+    const merkleContract = new Contract(config.DN_MERKLE_ADDRESS, MERKLE_ABI, provider)
 
     const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -100,7 +97,7 @@ function Rewards() {
     if (!provider) return
     const signer = await provider.getSigner()
     const claimData = await fetchEthClaimData(address)
-    const merkleContract = new Contract(ETH_MERKLE_ADDRESS, MERKLE_ABI, signer)
+    const merkleContract = new Contract(config.ETH_MERKLE_ADDRESS, MERKLE_ABI, signer)
 
     const isClaimedResult = await merkleContract.connect(signer).isClaimed(claimData.index)
     const canClaim = Boolean(claimData && isClaimedResult === false)
