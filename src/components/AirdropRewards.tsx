@@ -1,27 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { JsonRpcProvider } from '@ethersproject/providers'
+import React, {useEffect, useState} from 'react'
+import {JsonRpcProvider} from '@ethersproject/providers'
 import styled from 'styled-components'
-import { ethers, Contract } from 'ethers'
-import { isMainnet, isDN } from '../lib/web3-utils'
-import Seed from '../assets/seed.js'
-import Time from '../assets/time.js'
-import { BigCurrency, FlexRow, GreenButton } from './Styles'
+import {Contract, ethers} from 'ethers'
+import {isDN, isMainnet} from '../lib/web3-utils'
+import Seed from '../assets/seed'
+import {BigCurrency, FlexRow, GreenButton} from './Styles'
 
-import { useOnboard } from '../hooks/useOnboard'
-import { bn, ZERO } from '../lib/numbers'
-import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
+import {useOnboard} from '../hooks/useOnboard'
+import {bn, ZERO} from '../lib/numbers'
+import {fetchDnClaimData, fetchEthClaimData} from '../helpers/claim'
 
 
-import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
+import {abi as MERKLE_ABI} from '../artifacts/MerkleDrop.json'
 import config from "../configuration";
 
 function Rewards() {
   const [dnClaimable, setDnClaimable] = useState(ZERO);
   const [ethClaimable, setEthClaimable] = useState(ZERO);
 
-  const { connect, address, network, provider } = useOnboard()
+  const { address, network, provider } = useOnboard()
 
-  async function getEthClaimableAmount() {
+  async function getEthClaimableAmount(): Promise<any> {
     if (!address) return
 
     const provider = new JsonRpcProvider(config.nodeUrl)
@@ -39,7 +38,7 @@ function Rewards() {
     return ethAmountBN
   }
 
-  async function getXDaiClaimableAmount() {
+  async function getXDaiClaimableAmount(): Promise<any> {
     if (!address) return
 
     const provider = new JsonRpcProvider(

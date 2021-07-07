@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Image from 'next/image'
 import { usePoolCardInfo } from '../hooks/usePoolCardInfo'
 import APRDetails from './APRDetails'
 import {
@@ -20,7 +19,7 @@ import {
 } from './PoolCardStyle'
 
 
-function PoolCard({ name, poolAddress, owner, logo, hasLiquidityPool = false }) {
+function PoolCard({ name, logo, hasLiquidityPool = false }) {
   const [poolState, setPoolState] = useState('default')
   const { poolsInfo } = usePoolCardInfo()
 

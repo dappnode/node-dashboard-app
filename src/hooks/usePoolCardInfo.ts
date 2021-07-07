@@ -1,24 +1,11 @@
-import {useCallback, useEffect, useState} from 'react'
-import { useOnboard } from './useOnboard'
-import {PoolInfo, StakePoolInfo, uniswapFetchStakePoolInfo} from "../services/pool";
-
+import {useEffect, useState} from 'react'
+import {useOnboard} from './useOnboard'
+import {PoolInfo, uniswapFetchStakePoolInfo} from "../services/pool";
 
 
 export function usePoolCardInfo() {
-  const { provider, address } = useOnboard()
-  let owner = address
+  const { address } = useOnboard()
 
-  const poolAddress = {
-    'NODE/xDAI': '0x561807cd1f2d32f7ef7dadb1515a55d35eba207c',
-    'NODE/HNY': '0xb755a9614bfd5eb812b9cc3d00166565f2e72b41',
-    'NODE': '0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e',
-  }
-
-  const [contracts, setContracts] = useState({
-    'NODE/xDAI': {},
-    'NODE/HNY': {},
-    'NODE': {},
-  })
 
   const [poolsInfo, setPoolsInfo] = useState<{[index: string]: PoolInfo}>({
     'NODE/xDAI': {
@@ -81,11 +68,9 @@ export function usePoolCardInfo() {
           }
         })
       })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return {
     poolsInfo,
-    contracts,
   }
 }
