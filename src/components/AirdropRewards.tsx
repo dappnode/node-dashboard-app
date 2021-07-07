@@ -122,7 +122,6 @@ function Rewards() {
             </p>
           )}
         </SpaceBetween>
-        <br />
         <Row>
           <SpaceBetween>
             <Inline>
@@ -158,7 +157,6 @@ function Rewards() {
             </p>
           )}
         </SpaceBetween>
-        <br />
         <Row disabled={!isDN(network)}>
           <SpaceBetween>
             <Inline>
@@ -221,7 +219,6 @@ const Row = styled.div`
     0px 0px 8px rgba(8, 43, 41, 0.06);
   border-radius: 16px;
   padding: 12px;
-  margin: 4px 0;
   h3 {
     font-family: 'Inter';
     font-size: 12px;
@@ -297,6 +294,7 @@ const RewardsSection = styled.section`
     align-items: center;
     color: #5c706f;
     b {
+      cursor: pointer;
       font-family: 'Inter-Bold';
       color: #0d91f0;
       text-decoration-line: underline;
