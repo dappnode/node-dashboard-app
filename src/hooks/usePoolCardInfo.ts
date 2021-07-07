@@ -31,7 +31,7 @@ export function usePoolCardInfo() {
       userStakeInfo: null,
     },
     'NODE/HNY': {
-      name: 'Balancer',
+      name: 'Sushiswap',
       composition: '50% NODE, 50% ETH',
       stakePoolInfo: {
         tokensInPool: '1532 DN, 0.23 ETH',

@@ -87,13 +87,12 @@ function Rewards() {
                 </div>
               </div>
             </Inline>
-            <BlueButton disabled={!isMainnet(network)}>Assign</BlueButton>
           </SpaceBetween>
         </Row>
       </RewardsSection>
       <RewardsSection>
         <SpaceBetween>
-          <label className={isDN(network) ? 'green' : 'disabled'}>XDAI</label>
+          <label className={isDN(network) ? 'green' : 'disabled'}>xDAI</label>
           {!isDN(network) && (
             <p>
               <b>Connect to this network</b> to claim your tokens.{' '}
@@ -144,9 +143,6 @@ function Rewards() {
                 </div>
               </div>
             </Inline>
-            <GreenButton disabled={!isDN(network)}>
-              Claim
-            </GreenButton>
           </SpaceBetween>
         </Row>
       </RewardsSection>
@@ -168,6 +164,7 @@ const BlueButton = styled.button`
   text-align: center;
   color: white;
   padding: 8px 16px;
+  cursor: pointer;
   box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
     0px 0px 8px rgba(8, 43, 41, 0.06);
   &:hover {
@@ -263,6 +260,7 @@ const RewardsSection = styled.section`
     align-items: center;
     color: #5c706f;
     b {
+      cursor: pointer;
       font-family: 'Inter-Bold';
       color: #0d91f0;
       text-decoration-line: underline;

@@ -144,9 +144,13 @@ function Airdrop() {
 const handleMainBackground = network => {
   switch (network) {
     case 4:
-      return "linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);";
+      return `
+        background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
+      `;
     case 5:
-      return "linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%)";
+      return `
+        background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
+      `;
     default:
       return "linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)";
   }
@@ -176,8 +180,9 @@ const WarnSection = styled.section`
 `
 
 const Main = styled.main`
-  background: ${({ network }) => handleMainBackground(network)};
-  min-height: 100vh;
+  ${({ network }) => handleMainBackground(network)};
+  background-position: bottom right;
+  background-repeat: no-repeat;
 `
 
 const Rectangle = styled.div`
