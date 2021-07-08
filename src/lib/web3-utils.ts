@@ -17,15 +17,15 @@ export function shortenAddress(address, charsLength = 4) {
 
 // TODO: Add DN network id
 export function getNetworkType(chainId) {
-	chainId = String(chainId)
+	const chainIdString = String(chainId)
 
-	if (chainId === '1') return 'main'
-	if (chainId === '3') return 'ropsten'
-	if (chainId === '4') return 'rinkeby'
-	if (chainId === '5') return 'goerli'
-	if (chainId === '42') return 'kovan'
-	if (chainId === '100') return 'xDAI'
-	if (chainId === 'localhost') return 'localhost'
+	if (chainIdString === '1') return 'main'
+	if (chainIdString === '3') return 'ropsten'
+	if (chainIdString === '4') return 'rinkeby'
+	if (chainIdString === '5') return 'goerli'
+	if (chainIdString === '42') return 'kovan'
+	if (chainIdString === '100') return 'xDAI'
+	if (chainIdString === 'localhost') return 'localhost'
 
 	return DEFAULT_LOCAL_CHAIN
 }
@@ -37,12 +37,12 @@ export function networkAllowed(chainId: number | string): boolean {
 }
 
 export function isMainnet(chainId) {
-	chainId = String(chainId)
-	return chainId === '4'
+	const chainIdString = String(chainId)
+	return chainIdString === '4'
 }
 
 // TODO: Change networtk
 export function isDN(chainId) {
-	chainId = String(chainId)
-	return chainId === '5'
+	const chainIdString = String(chainId)
+	return chainIdString === '5'
 }

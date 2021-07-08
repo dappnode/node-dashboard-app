@@ -40,10 +40,11 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
 				address: setAddress,
 				network: setNetwork,
 				// balance: setBalance,
-				wallet: w => {
+				wallet: wallet => {
 					if (wallet.provider) {
 						setWallet(wallet)
-						const ethersProvider = new ethers.providers.Web3Provider(w.provider)
+						const ethersProvider =
+							new ethers.providers.Web3Provider(wallet.provider)
 						setProvider(ethersProvider)
 					} else {
 						setProvider(null)
@@ -57,7 +58,9 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
 
 	useEffect(() => {
 		if (!wallet.provider) return
-		const ethersProvider = new ethers.providers.Web3Provider(wallet.provider)
+		const ethersProvider = new ethers.providers.Web3Provider(
+			wallet.provider
+		)
 		setProvider(ethersProvider)
 	}, [network, wallet])
 
