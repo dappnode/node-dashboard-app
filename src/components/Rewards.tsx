@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { constants, Contract, BigNumber, utils } from 'ethers'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import styled from 'styled-components'
 import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
 import Seed from '../assets/seed.js'
@@ -7,8 +9,91 @@ import { BigCurrency, GreenButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
 
+import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
+
+type AddressType = { [chainId: number]: string }
+
+const TOKEN_DISTRO_ADDRESS: AddressType = {
+  4: '0xfCc819A029F86ed71F2686Df9f652850Cd8ccdbB',
+  5: '0xbC6AE55C69EC1086F4d5aE158b1691be57C26a5F',
+}
+
+const PROVIDER_ENDPOINT: AddressType = {
+  4: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+  5: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+}
+
+interface ITokenDistro {
+  claimable: BigNumber
+  locked: BigNumber
+}
+
 function Rewards() {
   const { connect, address, network, isReady, provider } = useOnboard()
+
+  const [ethLocked, setEthLocked] = useState<BigNumber>(constants.Zero)
+  const [xDaiLocked, setXDaiLocked] = useState<BigNumber>(constants.Zero)
+  const [ethClaimable, setEthClaimable] = useState<BigNumber>(constants.Zero)
+  const [xDaiClaimable, setXDaiClaimable] = useState<BigNumber>(constants.Zero)
+
+  async function handleClaim(network: number) {
+    const signer = provider.getSigner()
+
+    const tokenDistro = new Contract(
+      TOKEN_DISTRO_ADDRESS[network],
+      TOKEN_DISTRO_ABI,
+      signer
+    )
+
+    const claim = await tokenDistro.claim()
+
+    return claim
+  }
+
+  async function getTokenDistroAmounts(
+    address: string,
+    network: number
+  ): Promise<ITokenDistro> {
+    const provider = new JsonRpcProvider(PROVIDER_ENDPOINT[network])
+
+    const tokenDistro = new Contract(
+      TOKEN_DISTRO_ADDRESS[network],
+      TOKEN_DISTRO_ABI,
+      provider
+    )
+
+    const balances = await tokenDistro.balances(address)
+    const claimable = await tokenDistro.claimableNow(address)
+
+    const locked = balances[0].sub(balances[1])
+
+    return { claimable, locked }
+  }
+
+  async function updateTokenDistroAmounts() {
+    if (!address) return
+    console.log('run')
+    const { claimable: _ethClaimable, locked: _ethLocked } =
+      await getTokenDistroAmounts(address, 4)
+
+    const { claimable: _xDaiClaimable, locked: _xDaiLocked } =
+      await getTokenDistroAmounts(address, 5)
+
+    setEthLocked(_ethLocked || constants.Zero)
+    setEthClaimable(_ethClaimable || constants.Zero)
+    setXDaiLocked(_xDaiLocked || constants.Zero)
+    setXDaiClaimable(_xDaiClaimable || constants.Zero)
+  }
+
+  useEffect(() => {
+    updateTokenDistroAmounts()
+
+    const interval = setInterval(() => {
+      updateTokenDistroAmounts()
+    }, 15000)
+
+    return () => clearInterval(interval)
+  }, [address])
 
   if (!isReady) {
     return (
@@ -19,11 +104,12 @@ function Rewards() {
           </WarnMessage>
           <GreenButton
             onClick={connect}
-            css={`margin-top: 25px;`}
+            css={`
+              margin-top: 25px;
+            `}
           >
             Connect Wallet
           </GreenButton>
-
         </div>
       </WarnSection>
     )
@@ -59,7 +145,9 @@ function Rewards() {
               />
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
+                  <h1>
+                    {parseFloat(utils.formatEther(ethClaimable)).toFixed(2)}
+                  </h1>
                   <h2>NODE</h2>
                 </BigCurrency>
                 <div>
@@ -67,7 +155,12 @@ function Rewards() {
                 </div>
               </div>
             </Inline>
-            <BlueButton disabled={!isMainnet(network)}>Claim</BlueButton>
+            <BlueButton
+              onClick={() => handleClaim(4)}
+              disabled={!isMainnet(network) || !ethClaimable.gt(constants.Zero)}
+            >
+              Claim
+            </BlueButton>
           </SpaceBetween>
         </Row>
         <Row>
@@ -79,7 +172,7 @@ function Rewards() {
               />
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
+                  <h1>{parseFloat(utils.formatEther(ethLocked)).toFixed(2)}</h1>
                   <h2>NODE</h2>
                 </BigCurrency>
                 <div>
@@ -109,7 +202,9 @@ function Rewards() {
               />
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
+                  <h1>
+                    {parseFloat(utils.formatEther(xDaiClaimable)).toFixed(2)}
+                  </h1>
                   <h2>NODE</h2>
                 </BigCurrency>
                 <div>
@@ -119,7 +214,8 @@ function Rewards() {
             </Inline>
 
             <GreenButton
-              disabled={!isDN(network)}
+              onClick={() => handleClaim(5)}
+              disabled={!isDN(network) || !xDaiClaimable.gt(constants.Zero)}
             >
               Claim
             </GreenButton>
@@ -135,7 +231,9 @@ function Rewards() {
 
               <div>
                 <BigCurrency>
-                  <h1>0</h1>
+                  <h1>
+                    {parseFloat(utils.formatEther(xDaiLocked)).toFixed(2)}
+                  </h1>
                   <h2>NODE</h2>
                 </BigCurrency>
                 <div>
@@ -151,7 +249,7 @@ function Rewards() {
 }
 
 const BlueButton = styled.button`
-  background: ${props =>
+  background: ${(props) =>
     props.disabled
       ? '#DDE3E3'
       : 'linear-gradient(99.61deg, #86BDE4 -0.13%, #0D91F0 99.3%);'};
@@ -168,7 +266,7 @@ const BlueButton = styled.button`
   box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
     0px 0px 8px rgba(8, 43, 41, 0.06);
   &:hover {
-    background: ${props =>
+    background: ${(props) =>
       props.disabled
         ? '#DDE3E3'
         : 'linear-gradient(99.61deg, #7cadd0 -0.13%, #075c98 99.3%);'};
@@ -231,8 +329,8 @@ const RewardsSection = styled.section`
     0px 2px 8px rgba(8, 43, 41, 0.06);
   border-radius: 16px;
   flex-grow: 1;
-  margin: 0 10px;
-  background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
+  margin: 10px;
+  background: ${(props) => (props.disabled ? '#F4F6F6' : 'white')};
   label {
     background: #eefcfb;
     border-radius: 16px;

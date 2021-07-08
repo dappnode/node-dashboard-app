@@ -13,9 +13,9 @@ function Dashboard() {
 				<img alt='tokens' src='/assets/Tokens.svg' />
 				<span style={{ marginLeft: '10px' }}>My tokens</span>
 			</Inter700>
-			<PoolsContainer>
+			<RewardsContainer>
 				<Rewards />
-			</PoolsContainer>
+			</RewardsContainer>
 			<br />
 			<SpaceBetween>
 				<Inter700>
@@ -76,6 +76,12 @@ const DashboardSection = styled.section`
 
 const PoolsContainer = styled.div`
 	display: flex;
+`
+
+const RewardsContainer = styled(PoolsContainer)`
+	@media (max-width: 1024px) {
+		flex-direction: column;
+	}
 `
 
 export default Dashboard

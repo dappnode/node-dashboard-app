@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import Image from 'next/image'
 import styled from 'styled-components'
@@ -12,9 +11,10 @@ import {
   RoundedCard,
   BigCurrency,
   GreenButton,
-  WhiteGreenButtonLink
+  WhiteGreenButtonLink,
 } from './Styles'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 class MenuWrap extends Component<{}, { hidden: boolean }> {
   constructor(props) {
     super(props)
@@ -107,9 +107,10 @@ function Sidebar({ isOpen, closeSidebar }) {
                 <Inter500>Claimable in ETH Network</Inter500>
                 <Inter400>103.20</Inter400>
               </BalanceBox>
-              <br/>
+              <br />
               <WhiteGreenButtonLink>
-                Get more DN <img alt="link" src='/assets/external-link-green.svg'/>
+                Get more DN{' '}
+                <img alt="link" src="/assets/external-link-green.svg" />
               </WhiteGreenButtonLink>
             </div>
           </SidebarCard>
