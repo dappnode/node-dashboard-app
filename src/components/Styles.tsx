@@ -7,7 +7,7 @@ export const Inter700 = styled.h1`
   line-height: 24px;
   display: flex;
   align-items: center;
-  color: #35403F, 100%;
+  color: #35403f, 100%;
   margin-right: 10px;
   img {
     padding-right: 5px;
@@ -38,7 +38,7 @@ export const Inter500Green = styled.a`
   font-weight: 500;
   font-size: 12px;
   line-height: 17px;
-  color: #23C8BC;
+  color: #23c8bc;
   cursor: pointer;
 `
 
@@ -85,7 +85,7 @@ export const Input = styled.input`
   background: #f4f5f6;
   border-radius: 8px;
   height: 48px;
-  color: #222A29;
+  color: #222a29;
   font-family: 'Inter';
   border: solid 0px transparent;
   font-size: 14px;
@@ -94,15 +94,15 @@ export const Input = styled.input`
   width: calc(100% - 12px);
   &:focus {
     outline: none;
-    background: #EEFCFB;
+    background: #eefcfb;
   }
-  &[type=number] {
-  -moz-appearance: textfield;
+  &[type='number'] {
+    -moz-appearance: textfield;
   }
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
 `
 
@@ -119,12 +119,12 @@ export const FlexRow = styled.div`
 `
 
 export const GreenButton = styled.button`
-  background: ${props =>
+  background: ${(props) =>
     props.disabled
       ? '#DDE3E3'
       : 'linear-gradient(99.61deg, #86e4dd -0.13%, #2fbcb2 99.3%)'};
 
-  border: solid 1px transparent;
+  border: solid 0px transparent;
   border-radius: 27px;
   font-family: 'Inter-Bold';
   font-weight: bold;
@@ -137,7 +137,7 @@ export const GreenButton = styled.button`
   box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
     0px 0px 8px rgba(8, 43, 41, 0.06);
   &:hover {
-    background: ${props =>
+    background: ${(props) =>
       props.disabled
         ? '#DDE3E3'
         : 'linear-gradient(99.61deg, #76ccc5 -0.13%, #218c84 99.3%)'};
@@ -146,6 +146,32 @@ export const GreenButton = styled.button`
   }
   &.long {
     width: -webkit-fill-available;
+  }
+`
+
+export const BlueButton = styled.button`
+  background: ${(props) =>
+    props.disabled
+      ? '#DDE3E3'
+      : 'linear-gradient(99.61deg, #86BDE4 -0.13%, #0D91F0 99.3%);'};
+  border: solid 0px transparent;
+  border-radius: 27px;
+  font-family: 'Inter-Bold';
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: white;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
+    0px 0px 8px rgba(8, 43, 41, 0.06);
+  &:hover {
+    background: ${(props) =>
+      props.disabled
+        ? '#DDE3E3'
+        : 'linear-gradient(99.61deg, #7cadd0 -0.13%, #075c98 99.3%);'};
+    transition: all 0.25s ease-in-out;
   }
 `
 
@@ -248,6 +274,6 @@ export const LightGreenButton = styled(NavbarButton)`
 `
 
 export const LightBlueButton = styled(NavbarButton)`
-  background:#42A7F0;
-  color: #FFF;
+  background: #42a7f0;
+  color: #fff;
 `
