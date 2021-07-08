@@ -18,12 +18,14 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "rules": {
         "react/jsx-filename-extension": [
             1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
         ],
+        "prettier/prettier": "error",
         "import/prefer-default-export": "off",
         "react/prop-types": "off",
         "jsx-a11y/label-has-associated-control": "off",
