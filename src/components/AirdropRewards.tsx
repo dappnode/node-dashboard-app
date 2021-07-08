@@ -97,7 +97,12 @@ function Rewards() {
 
 		if (!canClaim) return
 
-		const args = [claimData.index, address, claimData.amount, claimData.proof]
+		const args = [
+			claimData.index,
+			address,
+			claimData.amount,
+			claimData.proof,
+		]
 		const result = await merkleContract.connect(signer).claim(...args)
 		console.log(result)
 	}
@@ -119,7 +124,12 @@ function Rewards() {
 
 		if (!canClaim) return
 
-		const args = [claimData.index, address, claimData.amount, claimData.proof]
+		const args = [
+			claimData.index,
+			address,
+			claimData.amount,
+			claimData.proof,
+		]
 		const result = await merkleContract.connect(signer).claim(...args)
 		console.log(result)
 	}
@@ -129,7 +139,9 @@ function Rewards() {
 			{/* @ts-ignore */}
 			<RewardsSection disabled={!isMainnet(network)}>
 				<SpaceBetween>
-					<label className={isMainnet(network) ? 'blue' : 'disabled'}>ETH</label>
+					<label className={isMainnet(network) ? 'blue' : 'disabled'}>
+						ETH
+					</label>
 					{!isMainnet(network) && (
 						<p>
 							<b>Connect to this network</b> to claim your tokens.{' '}
@@ -140,13 +152,21 @@ function Rewards() {
 					<SpaceBetween>
 						<Inline>
 							<Seed
-								fillColor={isMainnet(network) ? '#EEF6FC' : '#F4F6F6'}
-								strokeColor={isMainnet(network) ? '#0D91F0' : '#819896'}
+								fillColor={
+									isMainnet(network) ? '#EEF6FC' : '#F4F6F6'
+								}
+								strokeColor={
+									isMainnet(network) ? '#0D91F0' : '#819896'
+								}
 							/>
 							<div>
 								<BigCurrency>
 									<h1>
-										{parseFloat(ethers.utils.formatEther(ethClaimable)).toFixed(2)}
+										{parseFloat(
+											ethers.utils.formatEther(
+												ethClaimable
+											)
+										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
 								</BigCurrency>
@@ -157,7 +177,9 @@ function Rewards() {
 						</Inline>
 						<BlueButton
 							onClick={handleEthClaim}
-							disabled={!isMainnet(network) || !ethClaimable.gt(ZERO)}
+							disabled={
+								!isMainnet(network) || !ethClaimable.gt(ZERO)
+							}
 						>
 							Request
 						</BlueButton>
@@ -166,7 +188,9 @@ function Rewards() {
 			</RewardsSection>
 			<RewardsSection>
 				<SpaceBetween>
-					<label className={isDN(network) ? 'green' : 'disabled'}>XDAI</label>
+					<label className={isDN(network) ? 'green' : 'disabled'}>
+						XDAI
+					</label>
 					{!isDN(network) && (
 						<p>
 							<b>Connect to this network</b> to claim your tokens.{' '}
@@ -178,12 +202,22 @@ function Rewards() {
 					<SpaceBetween>
 						<Inline>
 							<Seed
-								fillColor={isDN(network) ? '#EEFCFB' : '#F4F6F6'}
-								strokeColor={isDN(network) ? '#248F8B' : '#819896'}
+								fillColor={
+									isDN(network) ? '#EEFCFB' : '#F4F6F6'
+								}
+								strokeColor={
+									isDN(network) ? '#248F8B' : '#819896'
+								}
 							/>
 							<div>
 								<BigCurrency>
-									<h1>{parseFloat(ethers.utils.formatEther(dnClaimable)).toFixed(2)}</h1>
+									<h1>
+										{parseFloat(
+											ethers.utils.formatEther(
+												dnClaimable
+											)
+										).toFixed(2)}
+									</h1>
 									<h2>NODE</h2>
 								</BigCurrency>
 								<div>
@@ -246,34 +280,6 @@ const Row = styled.div`
 		margin-bottom: 0;
 		margin-top: 2px;
 	}
-`
-
-const WarnMessage = styled.div`
-	font-family: 'Inter';
-	font-size: 16px;
-	display: flex;
-	align-items: center;
-	text-align: center;
-	color: #5c706f;
-	margin: auto;
-	&.margin-bottom {
-		margin-bottom: 20px;
-	}
-`
-const WarnSection = styled.section`
-	background-color: white;
-	height: 212px;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
-	padding: 16px;
-	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
-		0px 2px 8px rgba(8, 43, 41, 0.06);
-	border-radius: 16px;
-	flex-grow: 1;
-	margin: 0 10px;
 `
 
 const RewardsSection = styled.section`

@@ -23,10 +23,16 @@ function Home() {
 				<Rectangle />
 				{/* @ts-ignore */}
 				<Main id='page-wrap' network={network}>
-					<Navbar title='DAppNode Dashboard' openSidebar={() => setIsOpen(true)} />
+					<Navbar
+						title='DAppNode Dashboard'
+						openSidebar={() => setIsOpen(true)}
+					/>
 					<Dashboard />
 				</Main>
-				<Sidebar isOpen={isOpen} closeSidebar={() => setIsOpen(false)} />
+				<Sidebar
+					isOpen={isOpen}
+					closeSidebar={() => setIsOpen(false)}
+				/>
 			</div>
 		</>
 	)

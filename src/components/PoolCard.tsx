@@ -82,14 +82,17 @@ const Principal = ({
 			</SpaceBetween>
 			<SpaceBetween>
 				<h2>
-					<b>APR:</b> {APR && <div className='pool-info-text'>{APR}%</div>}
+					<b>APR:</b>{' '}
+					{APR && <div className='pool-info-text'>{APR}%</div>}
 				</h2>
 				<APRDetails />
 			</SpaceBetween>
 			<SpaceBetween>
 				<h2>
 					<b>LP token:</b>{' '}
-					{lpTokens && <div className='pool-info-text'>{lpTokens}</div>}
+					{lpTokens && (
+						<div className='pool-info-text'>{lpTokens}</div>
+					)}
 				</h2>
 				<SimpleButton onClick={manage}>Manage</SimpleButton>
 			</SpaceBetween>
@@ -106,18 +109,26 @@ const Principal = ({
 				{false && (
 					<>
 						<Inter400>
-							You will start earning once your deposit transaction is confirmed.
+							You will start earning once your deposit transaction
+							is confirmed.
 						</Inter400>
 						<GreenButton className='long'>Harvest</GreenButton>
 					</>
 				)}
-				<Button
-					onClick={() => {
-						if (provideLiquidityLink) document.location.href = provideLiquidityLink
-					}}
-				>
-					Provide liquidity <img src='/assets/external-link-green.svg' />
-				</Button>
+				{hasLiquidityPool && (
+					<Button
+						onClick={() => {
+							if (provideLiquidityLink)
+								document.location.href = provideLiquidityLink
+						}}
+					>
+						Provide liquidity{' '}
+						<img
+							src='/assets/external-link-green.svg'
+							alt='external'
+						/>
+					</Button>
+				)}
 				<Button onClick={deposit}>Stake LP tokens</Button>
 			</div>
 		</div>
@@ -148,15 +159,21 @@ const Deposit = ({ close }) => (
 		<div>
 			<Inter600>Deposit LP tokens</Inter600>
 			<Inter400>
-				You currently have <b>56</b> staked Liquidity Provider tokens. Deposit more
-				to accrue more.
+				You currently have <b>56</b> staked Liquidity Provider tokens.
+				Deposit more to accrue more.
 			</Inter400>
 			<div>
 				<Input type='number' placeholder='Amount' />
 				<div>
-					<Inter500Green style={{ marginRight: '10px' }}>25%</Inter500Green>
-					<Inter500Green style={{ marginRight: '10px' }}>50%</Inter500Green>
-					<Inter500Green style={{ marginRight: '10px' }}>75%</Inter500Green>
+					<Inter500Green style={{ marginRight: '10px' }}>
+						25%
+					</Inter500Green>
+					<Inter500Green style={{ marginRight: '10px' }}>
+						50%
+					</Inter500Green>
+					<Inter500Green style={{ marginRight: '10px' }}>
+						75%
+					</Inter500Green>
 					<Inter500Green>100%</Inter500Green>
 				</div>
 			</div>
@@ -175,8 +192,8 @@ const Withdraw = ({ close }) => (
 		<div>
 			<Inter600>Withdraw LP tokens</Inter600>
 			<Inter400>
-				You currently have 56 staked Liquidity Provider tokens. Enter the amount
-				you’d like to withdraw.
+				You currently have 56 staked Liquidity Provider tokens. Enter
+				the amount you’d like to withdraw.
 			</Inter400>
 			<Input type='number' placeholder='Amount' />
 			<GreenButton className='long' style={{ marginTop: '16px' }}>

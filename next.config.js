@@ -1,7 +1,7 @@
 module.exports = {
-  reactStrictMode: false,
-  target: 'serverless',
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+	reactStrictMode: false,
+	target: 'serverless',
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 }

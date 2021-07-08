@@ -3,31 +3,32 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import { networkAllowed } from '../lib/web3-utils'
 import Navbar from '../components/Navbar'
-import Dashboard from '../components/Dashboard'
 
 import { useOnboard } from '../hooks/useOnboard'
 
-import { Button, GreenButton, Inter400, Inter700, SpaceBetween } from '../components/Styles'
+import { GreenButton, Inter400, Inter700 } from '../components/Styles'
 
 import AirdropRewards from '../components/AirdropRewards'
 
 function Airdrop() {
+	const { connect, network, isReady } = useOnboard()
 
-  const { connect, network, isReady } = useOnboard();
+	const [, setIsOpen] = useState(false)
 
-  const [isOpen, setIsOpen] = useState(false)
+	return (
+		<>
+			<Head>
+				<title>NODEdrop</title>
+			</Head>
+			<div id='outer-container' style={{ height: '100%' }}>
+				<Rectangle />
+				<Main id='page-wrap' network={network}>
+					<Navbar
+						title='NODEdrop'
+						openSidebar={() => setIsOpen(true)}
+					/>
 
-  return (
-    <>
-      <Head>
-        <title>NODEdrop</title>
-      </Head>
-      <div id="outer-container" style={{ height: '100%' }}>
-        <Rectangle />
-        <Main id="page-wrap" network={network}>
-          <Navbar title="NODEdrop" openSidebar={() => setIsOpen(true)} />
-
-          {/* <QuizSection>
+					{/* <QuizSection>
             <Inter700 className="large"><TextGradient>1000 NODE</TextGradient> &nbsp; tokens are waiting for you!</Inter700>
             <Inter400Subtitle>
               Now take some minutes to learn a little bit about what we do. Complete the following steps to claim your airdrop.
@@ -84,45 +85,50 @@ function Airdrop() {
             </SpaceBetween>
           </QuizSection> */}
 
-          <div style={{ margin: '50px auto' }} />
+					<div style={{ margin: '50px auto' }} />
 
-          <QuizSection>
+					<QuizSection>
+						{!isReady && (
+							<WarnSection>
+								<div>
+									<WarnMessage className='margin-bottom'>
+										Please connect to a wallet
+									</WarnMessage>
+									<GreenButton
+										onClick={connect}
+										css={`
+											margin-top: 25px;
+										`}
+									>
+										Connect Wallet
+									</GreenButton>
+								</div>
+							</WarnSection>
+						)}
 
-            { !isReady && (
-                <WarnSection>
-                  <div>
-                    <WarnMessage className="margin-bottom">
-                      Please connect to a wallet
-                    </WarnMessage>
-                    <GreenButton
-                      onClick={connect}
-                      css={`margin-top: 25px;`}
-                    >
-                      Connect Wallet
-                    </GreenButton>
+						{isReady && !networkAllowed(network) && (
+							<WarnSection>
+								<WarnMessage>
+									Please connect to the right network
+								</WarnMessage>
+							</WarnSection>
+						)}
+						{isReady && networkAllowed(network) && (
+							<>
+								<Inter700 className='large'>
+									Congrats! You’re ready to claim your
+									NODEdrop.
+								</Inter700>
+								<Inter400Subtitle>
+									Claim your rewards in the xDAI and ETH
+									networks.
+								</Inter400Subtitle>
+								<AirdropRewards />
+							</>
+						)}
+					</QuizSection>
 
-                  </div>
-                </WarnSection>
-              )
-            }
-
-            { isReady && !networkAllowed(network) && (
-                <WarnSection>
-                  <WarnMessage>Please connect to the right network</WarnMessage>
-                </WarnSection>
-              )
-            }
-            { isReady && networkAllowed(network) && (
-              <>
-                <Inter700 className="large">Congrats! You’re ready to claim your NODEdrop.</Inter700>
-                <Inter400Subtitle>Claim your rewards in the xDAI and ETH networks.</Inter400Subtitle>
-                <AirdropRewards />
-              </>
-              )
-            }
-          </QuizSection>
-
-          {/* <div style={{ margin: '20px auto' }} />
+					{/* <div style={{ margin: '20px auto' }} />
 
           <QuizSection>
             <Flex>
@@ -130,116 +136,86 @@ function Airdrop() {
               <GreenButton>Go to dashboard</GreenButton>
             </Flex>
           </QuizSection> */}
-
-        </Main>
-        {/* <Sidebar
+				</Main>
+				{/* <Sidebar
           isOpen={isOpen}
           closeSidebar= {() => setIsOpen(false)}
         /> */}
-      </div>
-    </>
-  )
+			</div>
+		</>
+	)
 }
 
 const handleMainBackground = network => {
-  switch (network) {
-    case 4:
-      return `
+	switch (network) {
+		case 4:
+			return `
         background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
-      `;
-    case 5:
-      return `
+      `
+		case 5:
+			return `
         background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
-      `;
-    default:
-      return "linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)";
-  }
-};
+      `
+		default:
+			return 'linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)'
+	}
+}
 
 const WarnMessage = styled.div`
-  font-family: 'Inter';
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #5c706f;
-  margin: auto;
-  &.margin-bottom {
-    margin-bottom: 20px;
-  }
+	font-family: 'Inter';
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	color: #5c706f;
+	margin: auto;
+	&.margin-bottom {
+		margin-bottom: 20px;
+	}
 `
 const WarnSection = styled.section`
-  height: 212px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 16px;
-  flex-grow: 1;
+	height: 212px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 16px;
+	flex-grow: 1;
 `
 
 const Main = styled.main`
-  ${({ network }) => handleMainBackground(network)};
-  background-position: bottom right;
-  background-repeat: no-repeat;
+	${({ network }) => handleMainBackground(network)};
+	background-position: bottom right;
+	background-repeat: no-repeat;
 `
 
 const Rectangle = styled.div`
-  height: 2px;
-  width: 100%;
-  background: #54D4CB;
-  box-shadow: 0px 0px 12px #54D4CB;
+	height: 2px;
+	width: 100%;
+	background: #54d4cb;
+	box-shadow: 0px 0px 12px #54d4cb;
 `
 
 export const Flex = styled.div`
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 `
 
 const Inter400Subtitle = styled(Inter400)`
-  color: #5C706F;
-  font-size: 20px;
-  line-height: 28px;
-`
-
-const TextGradient = styled.span`
-  background: linear-gradient(99.61deg, #1EFFEF -0.13%, #2F78BC 99.3%);
-  background-size: 100%;
-  -moz-background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+	color: #5c706f;
+	font-size: 20px;
+	line-height: 28px;
 `
 
 const QuizSection = styled.div`
-  margin: 110px auto;
-  max-width: 800px;
-  padding: 18px 32px;
-  border-radius: 16px;
-  background: #FFFFFF;
-  box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04), 0px 2px 16px rgba(8, 43, 41, 0.06);
-`
-
-const QuizQuestion = styled.div`
-  padding: 24px;
-  cursor: pointer;
-  margin-bottom: 16px;
-  border-radius: 16px;
-  border: 1px solid #BECAC9;
-
-  &:hover {
-    transition: .3s;
-    border: 1px solid #86E4DD;
-  }
-`
-
-const QuizNumber = styled.span`
-  font-family: 'Inter-Bold';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 32px;
-  color: #C4F3EF;
+	margin: 110px auto;
+	max-width: 800px;
+	padding: 18px 32px;
+	border-radius: 16px;
+	background: #ffffff;
+	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
+		0px 2px 16px rgba(8, 43, 41, 0.06);
 `
 
 export default Airdrop
