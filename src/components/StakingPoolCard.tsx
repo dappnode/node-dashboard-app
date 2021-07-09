@@ -57,6 +57,7 @@ const StakingPoolCard = ({
 	const userInfoPoll = useRef(null)
 	useEffect(() => {
 		if (!address) return
+		if (name === 'NODE') return
 		const cb = () =>
 			fetchUserInfo(
 				address,

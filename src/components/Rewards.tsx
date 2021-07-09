@@ -10,18 +10,7 @@ import { BigCurrency, GreenButton } from './Styles'
 import { useOnboard } from '../hooks/useOnboard'
 
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
-
-type AddressType = { [chainId: number]: string }
-
-const TOKEN_DISTRO_ADDRESS: AddressType = {
-	4: '0xfCc819A029F86ed71F2686Df9f652850Cd8ccdbB',
-	5: '0xbC6AE55C69EC1086F4d5aE158b1691be57C26a5F',
-}
-
-const PROVIDER_ENDPOINT: AddressType = {
-	4: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
-	5: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
-}
+import { PROVIDER_ENDPOINT, TOKEN_DISTRO_ADDRESS } from '../configuration'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -35,7 +24,7 @@ function Rewards() {
 	const [xDaiLocked, setXDaiLocked] = useState<BigNumber>(constants.Zero)
 	const [ethClaimable, setEthClaimable] = useState<BigNumber>(constants.Zero)
 	const [xDaiClaimable, setXDaiClaimable] = useState<BigNumber>(
-		constants.Zero
+		constants.Zero,
 	)
 
 	async function handleClaim(network: number) {
@@ -44,7 +33,7 @@ function Rewards() {
 		const tokenDistro = new Contract(
 			TOKEN_DISTRO_ADDRESS[network],
 			TOKEN_DISTRO_ABI,
-			signer
+			signer,
 		)
 
 		const claim = await tokenDistro.claim()
@@ -54,14 +43,14 @@ function Rewards() {
 
 	async function getTokenDistroAmounts(
 		address: string,
-		network: number
+		network: number,
 	): Promise<ITokenDistro> {
 		const provider = new JsonRpcProvider(PROVIDER_ENDPOINT[network])
 
 		const tokenDistro = new Contract(
 			TOKEN_DISTRO_ADDRESS[network],
 			TOKEN_DISTRO_ABI,
-			provider
+			provider,
 		)
 
 		const balances = await tokenDistro.balances(address)
@@ -153,7 +142,7 @@ function Rewards() {
 								<BigCurrency>
 									<h1>
 										{parseFloat(
-											utils.formatEther(ethClaimable)
+											utils.formatEther(ethClaimable),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
@@ -189,7 +178,7 @@ function Rewards() {
 								<BigCurrency>
 									<h1>
 										{parseFloat(
-											utils.formatEther(ethLocked)
+											utils.formatEther(ethLocked),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
@@ -229,7 +218,7 @@ function Rewards() {
 								<BigCurrency>
 									<h1>
 										{parseFloat(
-											utils.formatEther(xDaiClaimable)
+											utils.formatEther(xDaiClaimable),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
@@ -267,7 +256,7 @@ function Rewards() {
 								<BigCurrency>
 									<h1>
 										{parseFloat(
-											utils.formatEther(xDaiLocked)
+											utils.formatEther(xDaiLocked),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
