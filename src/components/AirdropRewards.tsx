@@ -32,6 +32,7 @@ function Rewards() {
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
+		// eslint-disable-next-line no-console
 		console.log(canClaim)
 
 		if (!canClaim) return ZERO
@@ -54,6 +55,7 @@ function Rewards() {
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
+		// eslint-disable-next-line no-console
 		console.log(canClaim)
 
 		if (!canClaim) return ZERO
@@ -104,6 +106,7 @@ function Rewards() {
 			claimData.proof,
 		]
 		const result = await merkleContract.connect(signer).claim(...args)
+		// eslint-disable-next-line no-console
 		console.log(result)
 	}
 
@@ -131,6 +134,7 @@ function Rewards() {
 			claimData.proof,
 		]
 		const result = await merkleContract.connect(signer).claim(...args)
+		// eslint-disable-next-line no-console
 		console.log(result)
 	}
 

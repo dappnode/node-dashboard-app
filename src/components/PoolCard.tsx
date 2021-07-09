@@ -31,6 +31,7 @@ function PoolCard({
 }) {
 	const [poolState, setPoolState] = useState('default')
 
+	// eslint-disable-next-line no-unused-vars
 	const { lpTokens, earned } = stakePoolInfo
 
 	return (

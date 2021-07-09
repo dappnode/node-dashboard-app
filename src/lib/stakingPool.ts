@@ -1,9 +1,7 @@
 import { Contract, ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { signDaiPermit } from 'eth-permit'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
-import { abi as NODE_ABI } from '../artifacts/DNToken.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, INFURA_ENDPOINTS } from '../configuration'
 
@@ -85,6 +83,7 @@ export const fetchUserInfo = async (
 		lmContract.earned(validAddress),
 	])
 
+	// eslint-disable-next-line no-console
 	console.log(ethers.utils.formatEther(earned))
 
 	return {
@@ -114,6 +113,7 @@ export const stakeTokens = async (
 
 	const stake = await lmContract.stake(ethers.BigNumber.from(amount))
 
+	// eslint-disable-next-line no-console
 	console.log(stake)
 
 	// DRAFT FOR CLAIMING ON XDAI
@@ -151,6 +151,7 @@ export const harvestTokens = async (lmAddress: string, signer) => {
 
 	const harvest = await lmContract.getReward()
 
+	// eslint-disable-next-line no-console
 	console.log(harvest)
 }
 
@@ -163,5 +164,6 @@ export const withdrawTokens = async (
 
 	const withdraw = await lmContract.withdraw(ethers.BigNumber.from(amount))
 
+	// eslint-disable-next-line no-console
 	console.log(withdraw)
 }
