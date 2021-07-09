@@ -159,6 +159,7 @@ export async function stakeTokens(
 			rawPermitCall.data,
 		)
 
+	// eslint-disable-next-line no-console
 	console.log('stakeWithPermit txResponse', txResponse)
 
 	return txResponse

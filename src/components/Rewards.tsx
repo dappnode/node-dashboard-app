@@ -27,6 +27,7 @@ function Rewards() {
 		constants.Zero,
 	)
 
+	// eslint-disable-next-line no-shadow
 	async function handleClaim(network: number) {
 		const signer = provider.getSigner()
 
@@ -42,9 +43,12 @@ function Rewards() {
 	}
 
 	async function getTokenDistroAmounts(
+		// eslint-disable-next-line no-shadow
 		address: string,
+		// eslint-disable-next-line no-shadow
 		network: number,
 	): Promise<ITokenDistro> {
+		// eslint-disable-next-line no-shadow
 		const provider = new JsonRpcProvider(PROVIDER_ENDPOINT[network])
 
 		const tokenDistro = new Contract(

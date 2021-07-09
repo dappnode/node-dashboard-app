@@ -170,6 +170,7 @@ const Deposit = ({
 	close,
 	deposit,
 	stakedLpTokens,
+	// eslint-disable-next-line no-unused-vars
 	allowance,
 	notStakedLpTokens,
 }) => {
