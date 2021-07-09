@@ -43,7 +43,7 @@ const StakingPoolCard = ({
 				network,
 				true,
 			).then(setStakePoolInfo)
-		cb().then()
+		cb()
 
 		stakePoolPoll.current = setInterval(cb, 15000)
 		return () => {
@@ -57,7 +57,6 @@ const StakingPoolCard = ({
 	const userInfoPoll = useRef(null)
 	useEffect(() => {
 		if (!address) return
-		if (name === 'NODE') return
 		const cb = () =>
 			fetchUserInfo(
 				address,

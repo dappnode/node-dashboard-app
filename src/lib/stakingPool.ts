@@ -5,6 +5,7 @@ import {
 	TransactionResponse,
 	Web3Provider,
 } from '@ethersproject/providers'
+import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, INFURA_ENDPOINTS } from '../configuration'
@@ -99,17 +100,11 @@ export const fetchUserInfo = async (
 	}
 }
 
-export async function stakeTokens(
-	amount: number,
-	poolAddress: string,
-	lmAddress: string,
-	provider: Web3Provider,
-): Promise<TransactionResponse> {
+async function permitTokensMainnet(provider, poolAddress, lmAddress, amount) {
 	const signer = provider.getSigner()
 	const signerAddress = await signer.getAddress()
 
 	const poolContract = new Contract(poolAddress, UNI_ABI, signer)
-	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 
 	const domain = {
 		name: await poolContract.name(),
@@ -152,6 +147,81 @@ export async function stakeTokens(
 		signature.s,
 	)
 
+	return rawPermitCall
+}
+
+async function permitTokensXDai(provider, poolAddress, lmAddress) {
+	const signer = provider.getSigner()
+	const signerAddress = await signer.getAddress()
+
+	const poolContract = new Contract(poolAddress, BRIDGE_ABI, signer)
+
+	const domain = {
+		name: await poolContract.name(),
+		version: '1',
+		chainId: provider.network.chainId,
+		verifyingContract: poolContract.address,
+	}
+
+	// The named list of all type definitions
+	const types = {
+		Permit: [
+			{ name: 'holder', type: 'address' },
+			{ name: 'spender', type: 'address' },
+			{ name: 'nonce', type: 'uint256' },
+			{ name: 'expiry', type: 'uint256' },
+			{ name: 'allowed', type: 'bool' },
+		],
+	}
+
+	const nonce = await poolContract.nonces(signerAddress)
+	const expiry = Math.floor(Date.now() / 1000) + 3600
+	const value = {
+		holder: signerAddress,
+		spender: lmAddress,
+		nonce,
+		expiry,
+		allowed: true,
+	}
+
+	// eslint-disable-next-line no-underscore-dangle
+	const rawSignature = await signer._signTypedData(domain, types, value)
+	const sign = ethers.utils.splitSignature(rawSignature)
+
+	const rawPermitCall = await poolContract.populateTransaction.permit(
+		signerAddress,
+		lmAddress,
+		nonce,
+		expiry,
+		true,
+		sign.v,
+		sign.r,
+		sign.s,
+	)
+
+	return rawPermitCall
+}
+
+export async function stakeTokens(
+	amount: number,
+	poolAddress: string,
+	lmAddress: string,
+	provider: Web3Provider,
+): Promise<TransactionResponse> {
+	const signer = provider.getSigner()
+
+	const lmContract = new Contract(lmAddress, LM_ABI, signer)
+
+	const rawPermitCall =
+		provider.network.chainId === 4
+			? await permitTokensMainnet(
+					provider,
+					poolAddress,
+					lmAddress,
+					amount,
+			  )
+			: await permitTokensXDai(provider, poolAddress, lmAddress)
+
 	const txResponse: TransactionResponse = await lmContract
 		.connect(signer)
 		.stakeWithPermit(
@@ -163,37 +233,6 @@ export async function stakeTokens(
 	console.log('stakeWithPermit txResponse', txResponse)
 
 	return txResponse
-
-	// eslint-disable-next-line no-console
-
-	// DRAFT FOR CLAIMING ON XDAI
-
-	// const poolContract = new Contract(poolAddress, NODE_ABI, signer)
-
-	// const result = await signDaiPermit(
-	// 	provider,
-	// 	poolAddress,
-	// 	address,
-	// 	lmAddress
-	// )
-
-	// console.log(result)
-
-	// const stake = await poolContract.permit(
-	// 	address,
-	// 	lmAddress,
-	// 	ethers.BigNumber.from(amount),
-	// 	result.expiry,
-	// 	result.v,
-	// 	result.r,
-	// 	result.s,
-	// 	{
-	// 		gasLimit: 100000,
-	// 		gasPrice: ethers.BigNumber.from(50),
-	// 	}
-	// )
-
-	// console.log(stake)
 }
 
 export const harvestTokens = async (lmAddress: string, signer) => {

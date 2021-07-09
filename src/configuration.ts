@@ -1,6 +1,6 @@
 export const config = {
-	nodeUrl: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
-	xdaiNodeUrl: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+	nodeUrl: 'https://rinkeby.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
+	xdaiNodeUrl: 'https://goerli.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
 
 	TOKEN_ADDRESS: '0x3CCF83cF290c186840ECaD76897cfa246f5d6819',
 	DN_MERKLE_ADDRESS: '0x9cf0b63Bf9F8790354D103DaC01Df8A12E048eDf',
@@ -11,8 +11,8 @@ export const config = {
 }
 
 export const INFURA_ENDPOINTS = {
-	4: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
-	5: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+	4: 'https://rinkeby.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
+	5: 'https://goerli.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
 }
 
 export const MAINNET_ADDRESSES = {
