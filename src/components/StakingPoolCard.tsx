@@ -48,7 +48,7 @@ const StakingPoolCard = ({
 		stakePoolPoll.current = setInterval(cb, 15000)
 		return () => {
 			if (stakePoolPoll.current) {
-				stakePoolPoll.current.unsubscribe()
+				clearInterval(stakePoolPoll.current)
 				stakePoolPoll.current = null
 			}
 		}
@@ -74,12 +74,12 @@ const StakingPoolCard = ({
 				},
 			)
 
-		cb().then()
+		cb()
 
 		userInfoPoll.current = setInterval(cb, 15000)
 		return () => {
 			if (userInfoPoll.current) {
-				userInfoPoll.current.unsubscribe()
+				clearInterval(userInfoPoll.current)
 				userInfoPoll.current = null
 			}
 		}

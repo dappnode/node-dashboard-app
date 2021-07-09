@@ -87,9 +87,6 @@ export const fetchUserInfo = async (
 			poolContract.allowance(validAddress, lmAddress),
 		])
 
-	// eslint-disable-next-line no-console
-	console.log(ethers.utils.formatEther(earned))
-
 	return {
 		stakedLpTokens: ethers.utils.formatEther(stakedLpTokens),
 		earned: ethers.utils.formatEther(earned),
