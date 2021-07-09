@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
-import PoolCard from './PoolCard'
-import UniswapPoolCard from './UniswapPoolCard'
+import StakingPoolCard from './StakingPoolCard'
 
 function Dashboard() {
 	return (
@@ -29,37 +28,37 @@ function Dashboard() {
 				</WhiteGreenLink>
 			</SpaceBetween>
 			<PoolsContainer>
-				<UniswapPoolCard />
-				<PoolCard
-					name='NODE/HNY'
-					logo='/assets/dn-eth-logos.svg'
-					platform='Sushiswap'
+				<StakingPoolCard
+					name='NODE/ETH'
+					platform='Uniswap'
+					option='UNISWAP'
 					composition='50% NODE, 50% ETH'
-					stakePoolInfo={{
-						tokensInPool: '1532 DN, 0.23 ETH',
-						tokensInPoolUSD: '(1400.65 USD)',
-						lpTokens: 56,
-						APR: '148.55%',
-						earned: { amount: 900, token: 'DN' },
-					}}
-					// poolAddress='0xb755a9614bfd5eb812b9cc3d00166565f2e72b41'
-					// owner={address}
-					hasLiquidityPool
+					logo='/assets/dn-eth-logos.svg'
+					network={4}
 				/>
-				<PoolCard
+				<StakingPoolCard
+					name='NODE/ETH'
+					platform='Sushiswap'
+					option='SUSHISWAP'
+					composition='50% NODE, 50% ETH'
+					logo='/assets/dn-eth-logos.svg'
+					network={4}
+				/>
+				<StakingPoolCard
 					name='NODE'
-					logo='/assets/dn-logo.svg'
 					platform='NODE Staking'
+					option='NODE'
 					composition='100% NODE'
-					stakePoolInfo={{
-						tokensInPool: '1532 DN, 0.23 ETH',
-						tokensInPoolUSD: '(1400.65 USD)',
-						lpTokens: 56,
-						APR: '148.55%',
-						earned: { amount: 900, token: 'DN' },
-					}}
-					// poolAddress='0xf43913aF72af30d6b34782D08C4De3F6a14Ce42e'
-					// owner={address}
+					logo='/assets/dn-logo.svg'
+					network={4}
+				/>
+				<StakingPoolCard
+					name='NODE'
+					platform='NODE Staking'
+					option='NODE'
+					composition='100% NODE'
+					logo='/assets/dn-logo.svg'
+					network={5}
 				/>
 			</PoolsContainer>
 		</DashboardSection>

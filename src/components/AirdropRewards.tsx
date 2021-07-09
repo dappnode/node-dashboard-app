@@ -11,7 +11,7 @@ import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import config from '../configuration'
+import { config } from '../configuration'
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState(ZERO)

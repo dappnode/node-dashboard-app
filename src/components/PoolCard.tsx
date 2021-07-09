@@ -25,8 +25,13 @@ function PoolCard({
 	stakePoolInfo,
 	logo,
 	hasLiquidityPool = false,
+	handleStake,
+	handleHarvest,
+	handleWithdraw,
 }) {
 	const [poolState, setPoolState] = useState('default')
+
+	const { lpTokens, earned } = stakePoolInfo
 
 	return (
 		<PoolCardSection>
@@ -40,20 +45,30 @@ function PoolCard({
 					manage={() => setPoolState('manage')}
 					deposit={() => setPoolState('deposit')}
 					hasLiquidityPool={hasLiquidityPool}
+					harvest={handleHarvest}
 				/>
 			)}
 			{poolState === 'manage' && (
 				<Manage
+					lpTokens={lpTokens}
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
 				/>
 			)}
 			{poolState === 'deposit' && (
-				<Deposit close={() => setPoolState('default')} />
+				<Deposit
+					lpTokens={lpTokens}
+					deposit={handleStake}
+					close={() => setPoolState('default')}
+				/>
 			)}
 			{poolState === 'withdraw' && (
-				<Withdraw close={() => setPoolState('default')} />
+				<Withdraw
+					lpTokens={lpTokens}
+					withdraw={handleWithdraw}
+					close={() => setPoolState('default')}
+				/>
 			)}
 		</PoolCardSection>
 	)
@@ -68,6 +83,7 @@ const Principal = ({
 	deposit,
 	logo,
 	hasLiquidityPool,
+	harvest,
 }) => {
 	const { APR, lpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
@@ -106,22 +122,8 @@ const Principal = ({
 				)}
 			</h2>
 			<div>
-				{false && (
-					<>
-						<Inter400>
-							You will start earning once your deposit transaction
-							is confirmed.
-						</Inter400>
-						<GreenButton className='long'>Harvest</GreenButton>
-					</>
-				)}
 				{hasLiquidityPool && (
-					<Button
-						onClick={() => {
-							if (provideLiquidityLink)
-								document.location.href = provideLiquidityLink
-						}}
-					>
+					<Button href={provideLiquidityLink} target='_blank'>
 						Provide liquidity{' '}
 						<img
 							src='/assets/external-link-green.svg'
@@ -130,12 +132,19 @@ const Principal = ({
 					</Button>
 				)}
 				<Button onClick={deposit}>Stake LP tokens</Button>
+				{earned && (
+					<>
+						<GreenButton className='long' onClick={harvest}>
+							Harvest
+						</GreenButton>
+					</>
+				)}
 			</div>
 		</div>
 	)
 }
 
-const Manage = ({ deposit, withdraw, close }) => (
+const Manage = ({ deposit, withdraw, close, lpTokens }) => (
 	<>
 		<ClosePool onClick={close}>
 			<img alt='close' src='/assets/closePool.svg' />
@@ -143,7 +152,8 @@ const Manage = ({ deposit, withdraw, close }) => (
 		<div>
 			<Inter600>Manage your LP tokens</Inter600>
 			<Inter400>
-				You currently have <b>56</b> staked Liquidity Provider tokens
+				You currently have <b>{lpTokens}</b> staked Liquidity Provider
+				tokens
 			</Inter400>
 			<Button onClick={deposit}>Deposit LP tokens</Button>
 			<Button onClick={withdraw}>Withdraw LP tokens</Button>
@@ -151,7 +161,7 @@ const Manage = ({ deposit, withdraw, close }) => (
 	</>
 )
 
-const Deposit = ({ close }) => (
+const Deposit = ({ close, deposit, lpTokens }) => (
 	<>
 		<ClosePool onClick={close}>
 			<img alt='close' src='/assets/closePool.svg' />
@@ -159,8 +169,8 @@ const Deposit = ({ close }) => (
 		<div>
 			<Inter600>Deposit LP tokens</Inter600>
 			<Inter400>
-				You currently have <b>56</b> staked Liquidity Provider tokens.
-				Deposit more to accrue more.
+				You currently have <b>{lpTokens}</b> staked Liquidity Provider
+				tokens. Deposit more to accrue more.
 			</Inter400>
 			<div>
 				<Input type='number' placeholder='Amount' />
@@ -177,14 +187,18 @@ const Deposit = ({ close }) => (
 					<Inter500Green>100%</Inter500Green>
 				</div>
 			</div>
-			<GreenButton className='long' style={{ marginTop: '16px' }}>
+			<GreenButton
+				onClick={deposit}
+				className='long'
+				style={{ marginTop: '16px' }}
+			>
 				Deposit LP tokens
 			</GreenButton>
 		</div>
 	</>
 )
 
-const Withdraw = ({ close }) => (
+const Withdraw = ({ close, lpTokens, withdraw }) => (
 	<>
 		<ClosePool onClick={close}>
 			<img alt='close' src='/assets/closePool.svg' />
@@ -192,11 +206,15 @@ const Withdraw = ({ close }) => (
 		<div>
 			<Inter600>Withdraw LP tokens</Inter600>
 			<Inter400>
-				You currently have 56 staked Liquidity Provider tokens. Enter
-				the amount you’d like to withdraw.
+				You currently have {lpTokens} staked Liquidity Provider tokens.
+				Enter the amount you’d like to withdraw.
 			</Inter400>
 			<Input type='number' placeholder='Amount' />
-			<GreenButton className='long' style={{ marginTop: '16px' }}>
+			<GreenButton
+				onClick={withdraw}
+				className='long'
+				style={{ marginTop: '16px' }}
+			>
 				Withdraw LP tokens
 			</GreenButton>
 		</div>

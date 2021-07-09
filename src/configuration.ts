@@ -1,4 +1,4 @@
-const config = {
+export const config = {
 	nodeUrl: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
 	xdaiNodeUrl: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
 
@@ -10,4 +10,34 @@ const config = {
 	UNISWAP_LM_ADDRESS: '0x92944a127F16F24fDF4ee590a63F12d9B7C2476A',
 }
 
-export default config
+export const INFURA_ENDPOINTS = {
+	4: 'https://rinkeby.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+	5: 'https://goerli.infura.io/v3/dcab448d56f64ffdab03707dc9162080',
+}
+
+export const MAINNET_ADDRESSES = {
+	UNISWAP: {
+		POOL_ADDRESS: '0x9e223F8F1877C23096a30b1b25b52D311b7116D6',
+		LM_ADDRESS: '0x92944a127F16F24fDF4ee590a63F12d9B7C2476A',
+	},
+	SUSHISWAP: {
+		POOL_ADDRESS: '0x0b731102502a26B898B16bf66F0b031fCe0e0647',
+		LM_ADDRESS: '0x7F0Ccd04605E6961AB6e2337568a1Ab97b9E266c',
+	},
+	NODE: {
+		POOL_ADDRESS: '0xa2444c16F93d7319B2D2667140B41F8f2541A80e',
+		LM_ADDRESS: '0x85eAC5cF6f8075aEA3ca84D84e6a4ac7722A238e',
+	},
+}
+
+export const XDAI_ADDRESSES = {
+	NODE: {
+		POOL_ADDRESS: '0xe10600e359fB4dcD44f9E1066C2D3C338F150ff9',
+		LM_ADDRESS: '0x00F73cda03f0a37d50140F81FBFe035A3Da59Dd3',
+	},
+}
+
+export const STAKING_ADDRESSES = {
+	4: MAINNET_ADDRESSES,
+	5: XDAI_ADDRESSES,
+}
