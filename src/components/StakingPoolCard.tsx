@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PoolCard from './PoolCard'
-import { config, STAKING_ADDRESSES } from '../configuration'
+import { STAKING_ADDRESSES } from '../configuration'
 import {
 	fetchStakePoolInfo,
 	fetchUserInfo,
@@ -56,6 +56,7 @@ const StakingPoolCard = ({
 
 	const userInfoPoll = useRef(null)
 	useEffect(() => {
+		if (!address) return
 		const cb = () =>
 			fetchUserInfo(
 				address,
