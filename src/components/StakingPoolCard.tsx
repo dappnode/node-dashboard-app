@@ -59,7 +59,6 @@ const StakingPoolCard = ({
 			40,
 			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			address,
 			provider
 		)
 	}

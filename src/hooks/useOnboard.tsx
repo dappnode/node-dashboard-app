@@ -16,7 +16,7 @@ type OnboardContextData = {
 	isReady: boolean
 	address: string
 	network: number
-	provider
+	provider: Web3Provider
 }
 
 type OnboardProviderProps = {

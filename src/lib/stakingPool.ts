@@ -1,6 +1,10 @@
 import { Contract, ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
-import { JsonRpcProvider } from '@ethersproject/providers'
+import {
+	JsonRpcProvider,
+	TransactionResponse,
+	Web3Provider,
+} from '@ethersproject/providers'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, INFURA_ENDPOINTS } from '../configuration'
@@ -43,11 +47,11 @@ export const fetchStakePoolInfo = async (
 	const APR = _totalSupply.isZero()
 		? '-'
 		: toBigNumber(_rewardRate)
-			.times('31536000')
-			.times('100')
-			.div(lp)
-			.decimalPlaces(2)
-			.toFixed()
+				.times('31536000')
+				.times('100')
+				.div(lp)
+				.decimalPlaces(2)
+				.toFixed()
 
 	return {
 		tokensInPool: _totalSupply as string,
@@ -79,7 +83,6 @@ export const fetchUserInfo = async (
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 
-
 	const [lpTokens, earned] = await Promise.all([
 		poolContract.balanceOf(validAddress),
 		lmContract.earned(validAddress),
@@ -96,15 +99,14 @@ export const fetchUserInfo = async (
 	}
 }
 
-export const stakeTokens = async (
+export async function stakeTokens(
 	amount: number,
 	poolAddress: string,
 	lmAddress: string,
-	address: string,
-	provider
-) => {
+	provider: Web3Provider
+): Promise<TransactionResponse> {
 	const signer = provider.getSigner()
-	const signerAddress = await signer.getAddress();
+	const signerAddress = await signer.getAddress()
 
 	const poolContract = new Contract(poolAddress, UNI_ABI, signer)
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
@@ -114,7 +116,7 @@ export const stakeTokens = async (
 		version: '1',
 		chainId: provider.network.chainId,
 		verifyingContract: poolAddress,
-	};
+	}
 
 	// The named list of all type definitions
 	const types = {
@@ -123,9 +125,9 @@ export const stakeTokens = async (
 			{ name: 'spender', type: 'address' },
 			{ name: 'value', type: 'uint256' },
 			{ name: 'nonce', type: 'uint256' },
-			{ name: 'deadline', type: 'uint256' }
-		]
-	};
+			{ name: 'deadline', type: 'uint256' },
+		],
+	}
 
 	// The data to sign
 	const value = {
@@ -134,8 +136,9 @@ export const stakeTokens = async (
 		value: ethers.utils.parseEther(amount.toString()),
 		nonce: await poolContract.nonces(signerAddress),
 		deadline: ethers.constants.MaxUint256,
-	};
+	}
 
+	// eslint-disable-next-line no-underscore-dangle
 	const rawSignature = await signer._signTypedData(domain, types, value)
 	const signature = ethers.utils.splitSignature(rawSignature)
 
@@ -147,16 +150,18 @@ export const stakeTokens = async (
 		signature.v,
 		signature.r,
 		signature.s
-	);
+	)
 
-	const txResponse = await lmContract
+	const txResponse: TransactionResponse = await lmContract
 		.connect(signer)
 		.stakeWithPermit(
 			ethers.utils.parseEther(amount.toString()),
 			rawPermitCall.data
 		)
 
-	console.log(txResponse);
+	console.log('stakeWithPermit txResponse', txResponse)
+
+	return txResponse
 
 	// eslint-disable-next-line no-console
 
