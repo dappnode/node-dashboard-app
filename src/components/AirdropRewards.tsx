@@ -28,7 +28,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.ETH_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			nodeProvider
+			nodeProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -50,7 +50,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.DN_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			xdaiNodeProvider
+			xdaiNodeProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -87,7 +87,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.DN_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			provider
+			provider,
 		)
 
 		const isClaimedResult = await merkleContract
@@ -114,7 +114,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.ETH_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			signer
+			signer,
 		)
 
 		const isClaimedResult = await merkleContract
@@ -164,8 +164,8 @@ function Rewards() {
 									<h1>
 										{parseFloat(
 											ethers.utils.formatEther(
-												ethClaimable
-											)
+												ethClaimable,
+											),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
@@ -214,8 +214,8 @@ function Rewards() {
 									<h1>
 										{parseFloat(
 											ethers.utils.formatEther(
-												dnClaimable
-											)
+												dnClaimable,
+											),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>

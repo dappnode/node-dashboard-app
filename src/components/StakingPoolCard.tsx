@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PoolCard from './PoolCard'
 import { config, STAKING_ADDRESSES } from '../configuration'
 import {
@@ -17,6 +17,7 @@ const StakingPoolCard = ({
 	option,
 	platform,
 	network,
+	provideLiquidityLink = '',
 }) => {
 	const [stakePoolInfo, setStakePoolInfo] = useState({
 		tokensInPool: '-',
@@ -25,41 +26,71 @@ const StakingPoolCard = ({
 		earned: { amount: 0, token: 'NODE' },
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState({
-		lpTokens: '0',
+		stakedLpTokens: '0',
+		notStakedLpTokens: '0',
+		allowance: '0',
 		earned: { amount: '0', token: 'NODE' },
 	})
 	const { address, provider } = useOnboard()
 
+	const stakePoolPoll = useRef(null)
 	useEffect(() => {
 		if (name === 'NODE') return
-		fetchStakePoolInfo(
-			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
-			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			network
-		).then(setStakePoolInfo)
+		const cb = () =>
+			fetchStakePoolInfo(
+				STAKING_ADDRESSES[network][option].POOL_ADDRESS,
+				STAKING_ADDRESSES[network][option].LM_ADDRESS,
+				network,
+				true,
+			).then(setStakePoolInfo)
+		cb().then()
+
+		stakePoolPoll.current = setInterval(cb, 15000)
+		return () => {
+			if (stakePoolPoll.current) {
+				stakePoolPoll.current.unsubscribe()
+				stakePoolPoll.current = null
+			}
+		}
 	}, [])
 
+	const userInfoPoll = useRef(null)
 	useEffect(() => {
-		fetchUserInfo(
-			address,
-			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
-			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			network
-		).then(({ earned, lpTokens }) => {
-			setStakeUserInfo({
-				lpTokens,
-				earned: { amount: earned, token: 'NODE' },
-			})
-		})
+		const cb = () =>
+			fetchUserInfo(
+				address,
+				STAKING_ADDRESSES[network][option].POOL_ADDRESS,
+				STAKING_ADDRESSES[network][option].LM_ADDRESS,
+				network,
+			).then(
+				({ earned, stakedLpTokens, notStakedLpTokens, allowance }) => {
+					setStakeUserInfo({
+						stakedLpTokens,
+						notStakedLpTokens,
+						allowance,
+						earned: { amount: earned, token: 'NODE' },
+					})
+				},
+			)
+
+		cb().then()
+
+		userInfoPoll.current = setInterval(cb, 15000)
+		return () => {
+			if (userInfoPoll.current) {
+				userInfoPoll.current.unsubscribe()
+				userInfoPoll.current = null
+			}
+		}
 	}, [address])
 
-	async function handleStake() {
+	async function handleStake(amount) {
 		await stakeTokens(
-			1000000,
+			amount,
 			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
 			address,
-			provider
+			provider,
 		)
 	}
 
@@ -67,7 +98,7 @@ const StakingPoolCard = ({
 		const signer = provider.getSigner()
 		await harvestTokens(
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			signer
+			signer,
 		)
 	}
 
@@ -76,7 +107,7 @@ const StakingPoolCard = ({
 		await withdrawTokens(
 			1000000,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			signer
+			signer,
 		)
 	}
 
@@ -87,7 +118,7 @@ const StakingPoolCard = ({
 			platform={platform}
 			composition={composition}
 			stakePoolInfo={{
-				provideLiquidityLink: `https://app.uniswap.org/#/add/v2/ETH/${config.TOKEN_ADDRESS}`,
+				provideLiquidityLink,
 				...stakePoolInfo,
 				...stakeUserInfo,
 			}}

@@ -14,7 +14,7 @@ export const fetchStakePoolInfo = async (
 	poolAddress: string,
 	lmAddress: string,
 	network: number,
-	hasLiquidityPool: boolean
+	hasLiquidityPool: boolean,
 ) => {
 	if (!hasLiquidityPool) return
 
@@ -34,7 +34,7 @@ export const fetchStakePoolInfo = async (
 	const reserve = toBigNumber(
 		_token0.toLowerCase() === config.TOKEN_ADDRESS.toLowerCase()
 			? _reserve0
-			: _reserve1
+			: _reserve1,
 	)
 
 	const lp = toBigNumber(_totalSupply)
@@ -54,7 +54,7 @@ export const fetchStakePoolInfo = async (
 	return {
 		tokensInPool: _totalSupply as string,
 		tokensInPoolUSD: '-',
-		lpTokens: 0,
+		stakedLpTokens: 0,
 		APR,
 		earned: { amount: 0, token: 'DN' },
 	}
@@ -64,7 +64,7 @@ export const fetchUserInfo = async (
 	address: string,
 	poolAddress: string,
 	lmAddress: string,
-	network: number
+	network: number,
 ) => {
 	const provider = new JsonRpcProvider(INFURA_ENDPOINTS[network])
 
@@ -74,22 +74,28 @@ export const fetchUserInfo = async (
 	} catch (_) {
 		return {
 			earned: '0',
-			lpTokens: '0',
+			stakedLpTokens: '0',
 		}
 	}
 
+	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 
-	const [lpTokens, earned] = await Promise.all([
-		lmContract.balanceOf(validAddress),
-		lmContract.earned(validAddress),
-	])
+	const [stakedLpTokens, earned, notStakedLpTokens, allowance] =
+		await Promise.all([
+			lmContract.balanceOf(validAddress),
+			lmContract.earned(validAddress),
+			poolContract.balanceOf(validAddress),
+			poolContract.allowance(validAddress, lmAddress),
+		])
 
 	console.log(ethers.utils.formatEther(earned))
 
 	return {
-		lpTokens: ethers.utils.formatEther(lpTokens),
+		stakedLpTokens: ethers.utils.formatEther(stakedLpTokens),
 		earned: ethers.utils.formatEther(earned),
+		notStakedLpTokens: notStakedLpTokens.toString(),
+		allowance: allowance.toString(),
 	}
 }
 
@@ -98,19 +104,20 @@ export const stakeTokens = async (
 	poolAddress: string,
 	lmAddress: string,
 	address: string,
-	provider
+	provider,
 ) => {
 	const signer = provider.getSigner()
 
-	const poolContract = new Contract(poolAddress, UNI_ABI, signer)
+	// const poolContract = new Contract(poolAddress, UNI_ABI, signer)
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 
-	const approve = await poolContract.approve(
-		lmAddress,
-		ethers.BigNumber.from(amount)
-	)
-
-	if (!approve) return // it needs a better logic. we should wait the txn to execute the next line.
+	// TODO: implement permit functionality
+	// const approve = await poolContract.approve(
+	// 	lmAddress,
+	// 	ethers.BigNumber.from(amount),
+	// )
+	//
+	// if (!approve) return // it needs a better logic. we should wait the txn to execute the next line.
 
 	const stake = await lmContract.stake(ethers.BigNumber.from(amount))
 
@@ -157,7 +164,7 @@ export const harvestTokens = async (lmAddress: string, signer) => {
 export const withdrawTokens = async (
 	amount: number,
 	lmAddress: string,
-	signer
+	signer,
 ) => {
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 

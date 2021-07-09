@@ -4,6 +4,7 @@ import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
 import StakingPoolCard from './StakingPoolCard'
+import { config } from '../configuration'
 
 function Dashboard() {
 	return (
@@ -35,6 +36,7 @@ function Dashboard() {
 					composition='50% NODE, 50% ETH'
 					logo='/assets/dn-eth-logos.svg'
 					network={4}
+					provideLiquidityLink={`https://app.uniswap.org/#/add/v2/ETH/${config.TOKEN_ADDRESS}`}
 				/>
 				<StakingPoolCard
 					name='NODE/ETH'
