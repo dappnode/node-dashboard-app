@@ -4,15 +4,12 @@ import styled from 'styled-components'
 
 import Navbar from '../components/Navbar'
 import Dashboard from '../components/Dashboard'
-import Sidebar from '../components/SideBar'
 import { useOnboard } from '../hooks/useOnboard'
 
 function Home() {
 	const { network } = useOnboard()
 
-	console.log(network)
-
-	const [isOpen, setIsOpen] = useState(false)
+	const [, setIsOpen] = useState(false)
 
 	return (
 		<>
@@ -29,10 +26,6 @@ function Home() {
 					/>
 					<Dashboard />
 				</Main>
-				<Sidebar
-					isOpen={isOpen}
-					closeSidebar={() => setIsOpen(false)}
-				/>
 			</div>
 		</>
 	)
