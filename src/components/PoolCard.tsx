@@ -157,8 +157,8 @@ const Manage = ({ deposit, withdraw, close, stakedLpTokens }) => (
 		<div>
 			<Inter600>Manage your LP tokens</Inter600>
 			<Inter400>
-				You currently have <b>{stakedLpTokens}</b> staked Liquidity
-				Provider tokens
+				You currently have <b>{convertEthHelper(stakedLpTokens, 6)}</b>{' '}
+				staked Liquidity Provider tokens
 			</Inter400>
 			<Button onClick={deposit}>Deposit LP tokens</Button>
 			<Button onClick={withdraw}>Withdraw LP tokens</Button>
@@ -203,15 +203,16 @@ const Deposit = ({
 			<div>
 				<Inter600>Deposit LP tokens</Inter600>
 				<Inter400>
-					You currently have <b>{stakedLpTokens}</b> staked Liquidity
-					Provider tokens. Deposit more to accrue more.
+					You currently have{' '}
+					<b>{convertEthHelper(stakedLpTokens, 6)}</b> staked
+					Liquidity Provider tokens. Deposit more to accrue more.
 				</Inter400>
 				<div>
 					<Input
 						type='number'
 						placeholder='Amount'
 						value={displayAmount}
-						onChange={e => onChange(e.target.value)}
+						onChange={e => onChange(e.target.value || '0')}
 					/>
 					<div>
 						<Inter500Green
@@ -249,27 +250,42 @@ const Deposit = ({
 	)
 }
 
-const Withdraw = ({ close, stakedLpTokens, withdraw }) => (
-	<>
-		<ClosePool onClick={close}>
-			<img alt='close' src='/assets/closePool.svg' />
-		</ClosePool>
-		<div>
-			<Inter600>Withdraw LP tokens</Inter600>
-			<Inter400>
-				You currently have {stakedLpTokens} staked Liquidity Provider
-				tokens. Enter the amount you’d like to withdraw.
-			</Inter400>
-			<Input type='number' placeholder='Amount' />
-			<GreenButton
-				onClick={withdraw}
-				className='long'
-				style={{ marginTop: '16px' }}
-			>
-				Withdraw LP tokens
-			</GreenButton>
-		</div>
-	</>
-)
+const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
+	const [amount, setAmount] = useState<string>('0')
+	const [displayAmount, setDisplayAmount] = useState('0')
+
+	const onChange = useCallback(value => {
+		setDisplayAmount(convertEthHelper(value, 6))
+		setAmount(ethers.utils.parseUnits(value).toString())
+	}, [])
+	return (
+		<>
+			<ClosePool onClick={close}>
+				<img alt='close' src='/assets/closePool.svg' />
+			</ClosePool>
+			<div>
+				<Inter600>Withdraw LP tokens</Inter600>
+				<Inter400>
+					You currently have {convertEthHelper(stakedLpTokens, 6)}{' '}
+					staked Liquidity Provider tokens. Enter the amount you’d
+					like to withdraw.
+				</Inter400>
+				<Input
+					type='number'
+					placeholder='Amount'
+					value={displayAmount}
+					onChange={e => onChange(e.target.value || '0')}
+				/>
+				<GreenButton
+					onClick={() => withdraw(amount)}
+					className='long'
+					style={{ marginTop: '16px' }}
+				>
+					Withdraw LP tokens
+				</GreenButton>
+			</div>
+		</>
+	)
+}
 
 export default PoolCard

@@ -102,10 +102,10 @@ const StakingPoolCard = ({
 		)
 	}
 
-	async function handleWithdraw() {
+	async function handleWithdraw(amount) {
 		const signer = provider.getSigner()
 		await withdrawTokens(
-			1000000,
+			amount,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
 			signer,
 		)
