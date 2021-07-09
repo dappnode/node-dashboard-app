@@ -85,7 +85,7 @@ const StakingPoolCard = ({
 		}
 	}, [address])
 
-	async function handleStake(amount) {
+	async function handleStake(amount: string) {
 		await stakeTokens(
 			amount,
 			STAKING_ADDRESSES[network][option].POOL_ADDRESS,

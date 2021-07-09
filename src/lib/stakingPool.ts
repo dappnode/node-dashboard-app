@@ -203,11 +203,13 @@ async function permitTokensXDai(provider, poolAddress, lmAddress) {
 }
 
 export async function stakeTokens(
-	amount: number,
+	amount: string,
 	poolAddress: string,
 	lmAddress: string,
 	provider: Web3Provider,
 ): Promise<TransactionResponse> {
+	if (amount === '0') return
+
 	const signer = provider.getSigner()
 
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)

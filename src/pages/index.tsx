@@ -22,6 +22,7 @@ function Home() {
 			</Head>
 			<div id='outer-container' style={{ height: '100%' }}>
 				<Rectangle />
+				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 				{/* @ts-ignore */}
 				<Main id='page-wrap' network={network}>
 					<Navbar
@@ -56,6 +57,7 @@ const handleMainBackground = network => {
 
 const Main = styled.main`
 	${
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		({ network }) => handleMainBackground(network)
 	};

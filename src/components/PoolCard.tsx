@@ -19,6 +19,10 @@ import {
 } from './PoolCardStyle'
 import { convertEthHelper } from '../lib/numbers'
 
+type PoolCardProps = {
+	handleStake: (amount: string) => void
+	[key: string]: any
+}
 function PoolCard({
 	name,
 	platform,
@@ -29,10 +33,10 @@ function PoolCard({
 	handleStake,
 	handleHarvest,
 	handleWithdraw,
-}) {
+}: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
-	const { stakedLpTokens, allowance, notStakedLpTokens } = stakePoolInfo
+	const { stakedLpTokens, notStakedLpTokens } = stakePoolInfo
 
 	return (
 		<PoolCardSection>
@@ -60,7 +64,6 @@ function PoolCard({
 			{poolState === 'deposit' && (
 				<Deposit
 					stakedLpTokens={stakedLpTokens}
-					allowance={allowance}
 					notStakedLpTokens={notStakedLpTokens}
 					deposit={handleStake}
 					close={() => setPoolState('default')}
@@ -166,14 +169,19 @@ const Manage = ({ deposit, withdraw, close, stakedLpTokens }) => (
 	</>
 )
 
+interface DepositProps {
+	close: () => void
+	deposit: (amount: string) => void
+	stakedLpTokens: string
+	notStakedLpTokens: string
+}
 const Deposit = ({
 	close,
 	deposit,
 	stakedLpTokens,
 	// eslint-disable-next-line no-unused-vars
-	allowance,
 	notStakedLpTokens,
-}) => {
+}: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 
