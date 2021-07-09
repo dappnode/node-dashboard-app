@@ -35,7 +35,8 @@ const StakingPoolCard = ({
 		fetchStakePoolInfo(
 			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
-			network
+			network,
+			true
 		).then(setStakePoolInfo)
 	}, [])
 
@@ -55,7 +56,7 @@ const StakingPoolCard = ({
 
 	async function handleStake() {
 		await stakeTokens(
-			1000000,
+			40,
 			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
 			STAKING_ADDRESSES[network][option].LM_ADDRESS,
 			address,

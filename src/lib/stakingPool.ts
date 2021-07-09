@@ -43,11 +43,11 @@ export const fetchStakePoolInfo = async (
 	const APR = _totalSupply.isZero()
 		? '-'
 		: toBigNumber(_rewardRate)
-				.times('31536000')
-				.times('100')
-				.div(lp)
-				.decimalPlaces(2)
-				.toFixed()
+			.times('31536000')
+			.times('100')
+			.div(lp)
+			.decimalPlaces(2)
+			.toFixed()
 
 	return {
 		tokensInPool: _totalSupply as string,
@@ -77,13 +77,17 @@ export const fetchUserInfo = async (
 	}
 
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
+	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
+
 
 	const [lpTokens, earned] = await Promise.all([
-		lmContract.balanceOf(validAddress),
+		poolContract.balanceOf(validAddress),
 		lmContract.earned(validAddress),
 	])
 
 	// eslint-disable-next-line no-console
+	console.log(ethers.utils.formatEther(lpTokens))
+
 	console.log(ethers.utils.formatEther(earned))
 
 	return {
@@ -100,21 +104,61 @@ export const stakeTokens = async (
 	provider
 ) => {
 	const signer = provider.getSigner()
+	const signerAddress = await signer.getAddress();
 
 	const poolContract = new Contract(poolAddress, UNI_ABI, signer)
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 
-	const approve = await poolContract.approve(
+	const domain = {
+		name: await poolContract.name(),
+		version: '1',
+		chainId: provider.network.chainId,
+		verifyingContract: poolAddress,
+	};
+
+	// The named list of all type definitions
+	const types = {
+		Permit: [
+			{ name: 'owner', type: 'address' },
+			{ name: 'spender', type: 'address' },
+			{ name: 'value', type: 'uint256' },
+			{ name: 'nonce', type: 'uint256' },
+			{ name: 'deadline', type: 'uint256' }
+		]
+	};
+
+	// The data to sign
+	const value = {
+		owner: signerAddress,
+		spender: lmAddress,
+		value: ethers.utils.parseEther(amount.toString()),
+		nonce: await poolContract.nonces(signerAddress),
+		deadline: ethers.constants.MaxUint256,
+	};
+
+	const rawSignature = await signer._signTypedData(domain, types, value)
+	const signature = ethers.utils.splitSignature(rawSignature)
+
+	const rawPermitCall = await poolContract.populateTransaction.permit(
+		signerAddress,
 		lmAddress,
-		ethers.BigNumber.from(amount)
-	)
+		ethers.utils.parseEther(amount.toString()),
+		ethers.constants.MaxUint256,
+		signature.v,
+		signature.r,
+		signature.s
+	);
 
-	if (!approve) return // it needs a better logic. we should wait the txn to execute the next line.
+	const txResponse = await lmContract
+		.connect(signer)
+		.stakeWithPermit(
+			ethers.utils.parseEther(amount.toString()),
+			rawPermitCall.data
+		)
 
-	const stake = await lmContract.stake(ethers.BigNumber.from(amount))
+	console.log(txResponse);
 
 	// eslint-disable-next-line no-console
-	console.log(stake)
 
 	// DRAFT FOR CLAIMING ON XDAI
 
