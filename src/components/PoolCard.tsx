@@ -211,6 +211,7 @@ const Deposit = ({
 					<Input
 						type='number'
 						placeholder='Amount'
+						value={displayAmount}
 						defaultValue={displayAmount}
 						onChange={e => onChange(e.target.value || '0')}
 					/>
@@ -273,6 +274,7 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 				<Input
 					type='number'
 					placeholder='Amount'
+					value={displayAmount}
 					defaultValue={displayAmount}
 					onChange={e => onChange(e.target.value || '0')}
 				/>
