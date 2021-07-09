@@ -133,7 +133,7 @@ export async function stakeTokens(
 	const value = {
 		owner: signerAddress,
 		spender: lmAddress,
-		value: ethers.utils.parseEther(amount.toString()),
+		value: amount,
 		nonce: await poolContract.nonces(signerAddress),
 		deadline: ethers.constants.MaxUint256,
 	}
@@ -145,7 +145,7 @@ export async function stakeTokens(
 	const rawPermitCall = await poolContract.populateTransaction.permit(
 		signerAddress,
 		lmAddress,
-		ethers.utils.parseEther(amount.toString()),
+		amount,
 		ethers.constants.MaxUint256,
 		signature.v,
 		signature.r,
@@ -155,7 +155,7 @@ export async function stakeTokens(
 	const txResponse: TransactionResponse = await lmContract
 		.connect(signer)
 		.stakeWithPermit(
-			ethers.utils.parseEther(amount.toString()),
+			ethers.BigNumber.from(amount.toString()),
 			rawPermitCall.data,
 		)
 
