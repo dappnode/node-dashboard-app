@@ -10,6 +10,7 @@ import { useOnboard } from '../hooks/useOnboard'
 function Home() {
 	const { network } = useOnboard()
 
+	// eslint-disable-next-line no-console
 	console.log(network)
 
 	const [isOpen, setIsOpen] = useState(false)
