@@ -10,6 +10,7 @@ import { useOnboard } from '../hooks/useOnboard'
 function Home() {
 	const { network } = useOnboard()
 
+	// eslint-disable-next-line no-console
 	console.log(network)
 
 	const [isOpen, setIsOpen] = useState(false)
@@ -21,6 +22,7 @@ function Home() {
 			</Head>
 			<div id='outer-container' style={{ height: '100%' }}>
 				<Rectangle />
+				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 				{/* @ts-ignore */}
 				<Main id='page-wrap' network={network}>
 					<Navbar
@@ -55,6 +57,7 @@ const handleMainBackground = network => {
 
 const Main = styled.main`
 	${
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		({ network }) => handleMainBackground(network)
 	};

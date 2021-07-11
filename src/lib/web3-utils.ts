@@ -11,7 +11,7 @@ export function shortenAddress(address, charsLength = 4) {
 		return address
 	}
 	return `${address.slice(0, charsLength + prefixLength)}…${address.slice(
-		-charsLength
+		-charsLength,
 	)}`
 }
 

@@ -8,7 +8,7 @@ export const PoolCardSection = styled.section`
 	align-items: center;
 	background-color: white;
 	width: 100%;
-	height: 400px;
+	height: 450px;
 	padding: 16px;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
@@ -65,6 +65,7 @@ export const Button = styled.a`
 	letter-spacing: 0.27px;
 	line-height: 19px;
 	text-align: center;
+	text-decoration: none;
 	padding: 8px 16px;
 	margin: 6px 0px;
 	cursor: pointer;

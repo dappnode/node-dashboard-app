@@ -11,7 +11,7 @@ import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import config from '../configuration'
+import { config } from '../configuration'
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState(ZERO)
@@ -28,10 +28,11 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.ETH_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			nodeProvider
+			nodeProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
+		// eslint-disable-next-line no-console
 		console.log(canClaim)
 
 		if (!canClaim) return ZERO
@@ -50,10 +51,11 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.DN_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			xdaiNodeProvider
+			xdaiNodeProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
+		// eslint-disable-next-line no-console
 		console.log(canClaim)
 
 		if (!canClaim) return ZERO
@@ -87,7 +89,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.DN_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			provider
+			provider,
 		)
 
 		const isClaimedResult = await merkleContract
@@ -104,6 +106,7 @@ function Rewards() {
 			claimData.proof,
 		]
 		const result = await merkleContract.connect(signer).claim(...args)
+		// eslint-disable-next-line no-console
 		console.log(result)
 	}
 
@@ -114,7 +117,7 @@ function Rewards() {
 		const merkleContract = new Contract(
 			config.ETH_MERKLE_ADDRESS,
 			MERKLE_ABI,
-			signer
+			signer,
 		)
 
 		const isClaimedResult = await merkleContract
@@ -131,11 +134,13 @@ function Rewards() {
 			claimData.proof,
 		]
 		const result = await merkleContract.connect(signer).claim(...args)
+		// eslint-disable-next-line no-console
 		console.log(result)
 	}
 
 	return (
 		<FlexRow>
+			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 			{/* @ts-ignore */}
 			<RewardsSection disabled={!isMainnet(network)}>
 				<SpaceBetween>
@@ -164,8 +169,8 @@ function Rewards() {
 									<h1>
 										{parseFloat(
 											ethers.utils.formatEther(
-												ethClaimable
-											)
+												ethClaimable,
+											),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>
@@ -197,6 +202,7 @@ function Rewards() {
 						</p>
 					)}
 				</SpaceBetween>
+				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 				{/* @ts-ignore */}
 				<Row disabled={!isDN(network)}>
 					<SpaceBetween>
@@ -214,8 +220,8 @@ function Rewards() {
 									<h1>
 										{parseFloat(
 											ethers.utils.formatEther(
-												dnClaimable
-											)
+												dnClaimable,
+											),
 										).toFixed(2)}
 									</h1>
 									<h2>NODE</h2>

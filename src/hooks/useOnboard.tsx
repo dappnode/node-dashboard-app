@@ -16,7 +16,7 @@ type OnboardContextData = {
 	isReady: boolean
 	address: string
 	network: number
-	provider
+	provider: Web3Provider
 }
 
 type OnboardProviderProps = {
@@ -40,11 +40,11 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
 				address: setAddress,
 				network: setNetwork,
 				// balance: setBalance,
-				wallet: wallet => {
-					if (wallet.provider) {
-						setWallet(wallet)
+				wallet: w => {
+					if (w.provider) {
+						setWallet(w)
 						const ethersProvider =
-							new ethers.providers.Web3Provider(wallet.provider)
+							new ethers.providers.Web3Provider(w.provider)
 						setProvider(ethersProvider)
 					} else {
 						setProvider(null)
@@ -59,7 +59,7 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
 	useEffect(() => {
 		if (!wallet.provider) return
 		const ethersProvider = new ethers.providers.Web3Provider(
-			wallet.provider
+			wallet.provider,
 		)
 		setProvider(ethersProvider)
 	}, [network, wallet])

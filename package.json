@@ -14,6 +14,7 @@
     "bignumber.js": "^9.0.1",
     "bnc-notify": "^1.6.2",
     "bnc-onboard": "^1.27.0",
+    "eth-permit": "^0.1.10",
     "ethers": "^5.4.1",
     "next": "11.0.0",
     "react": "17.0.2",
