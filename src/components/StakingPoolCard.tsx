@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PoolCard from './PoolCard'
-import { STAKING_ADDRESSES } from '../configuration'
+import { NETWORKS_CONFIG } from '../configuration'
 import {
 	fetchStakePoolInfo,
 	fetchUserInfo,
@@ -48,8 +48,8 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		if (name === 'NODE') return
 		const cb = () =>
 			fetchStakePoolInfo(
-				STAKING_ADDRESSES[network][option].POOL_ADDRESS,
-				STAKING_ADDRESSES[network][option].LM_ADDRESS,
+				NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
 				true,
 			).then(setStakePoolInfo)
@@ -70,8 +70,8 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		const cb = () =>
 			fetchUserInfo(
 				address,
-				STAKING_ADDRESSES[network][option].POOL_ADDRESS,
-				STAKING_ADDRESSES[network][option].LM_ADDRESS,
+				NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
 			).then(setStakeUserInfo)
 
@@ -89,8 +89,8 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	async function handleStake(amount: string) {
 		await stakeTokens(
 			amount,
-			STAKING_ADDRESSES[network][option].POOL_ADDRESS,
-			STAKING_ADDRESSES[network][option].LM_ADDRESS,
+			NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
 			provider,
 		)
 	}
@@ -98,7 +98,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	async function handleHarvest() {
 		const signer = provider.getSigner()
 		await harvestTokens(
-			STAKING_ADDRESSES[network][option].LM_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
 			signer,
 		)
 	}
@@ -107,7 +107,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		const signer = provider.getSigner()
 		await withdrawTokens(
 			amount,
-			STAKING_ADDRESSES[network][option].LM_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
 			signer,
 		)
 	}

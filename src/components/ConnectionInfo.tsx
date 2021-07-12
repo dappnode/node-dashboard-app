@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { shortenAddress, getNetworkType } from '../lib/web3-utils'
 import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
 
-function Connection() {
+const Connection: React.FC = () => {
 	const { address, network } = useOnboard()
+
+	const [tokenBalance, setTokenBalance] = useState<BigNumber>(
+		new BigNumber(0),
+	)
+
+	useEffect(() => {
+
+	}, [address])
 
 	return (
 		<>

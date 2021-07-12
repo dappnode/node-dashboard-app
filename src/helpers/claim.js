@@ -25,6 +25,7 @@ export async function fetchEthMerkleResults() {
 export async function fetchDnClaimData(address) {
 	const { claims } = await fetchDnMerkleResults()
 	const formatted = isAddress(address)
+
 	return claims[formatted]
 }
 
