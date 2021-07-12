@@ -140,7 +140,6 @@ function Rewards() {
 
 	return (
 		<FlexRow>
-			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 			{/* @ts-ignore */}
 			<RewardsSection disabled={!isMainnet(network)}>
 				<SpaceBetween>
@@ -202,7 +201,7 @@ function Rewards() {
 						</p>
 					)}
 				</SpaceBetween>
-				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+
 				{/* @ts-ignore */}
 				<Row disabled={!isDN(network)}>
 					<SpaceBetween>

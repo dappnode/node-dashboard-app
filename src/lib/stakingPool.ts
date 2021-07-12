@@ -9,6 +9,8 @@ import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, INFURA_ENDPOINTS } from '../configuration'
+import { getEthPrice } from './ethPrice'
+import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
@@ -18,7 +20,7 @@ export const fetchStakePoolInfo = async (
 	lmAddress: string,
 	network: number,
 	hasLiquidityPool: boolean,
-) => {
+): Promise<StakePoolInfo> => {
 	if (!hasLiquidityPool) return
 
 	const provider = new JsonRpcProvider(INFURA_ENDPOINTS[network])
@@ -26,19 +28,34 @@ export const fetchStakePoolInfo = async (
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 
-	const [reserves, _token0, _totalSupply, _rewardRate] = await Promise.all([
+	const [reserves, _token0, _totalSupply, _rewardRate, _ethPrice]: [
+		Array<ethers.BigNumber>,
+		string,
+		ethers.BigNumber,
+		ethers.BigNumber,
+		BigNumber,
+	] = await Promise.all([
 		poolContract.getReserves(),
 		poolContract.token0(),
 		lmContract.totalSupply(),
 		lmContract.rewardRate(),
+		getEthPrice(),
 	])
 
 	const [_reserve0, _reserve1] = reserves
-	const reserve = toBigNumber(
-		_token0.toLowerCase() === config.TOKEN_ADDRESS.toLowerCase()
-			? _reserve0
-			: _reserve1,
-	)
+	let reserve: BigNumber
+	let tokenPrice: BigNumber
+	if (_token0.toLowerCase() === config.TOKEN_ADDRESS.toLowerCase()) {
+		reserve = toBigNumber(_reserve0)
+		tokenPrice = _ethPrice
+			.times(_reserve1.toString())
+			.div(_reserve0.toString())
+	} else {
+		reserve = toBigNumber(_reserve1)
+		tokenPrice = _ethPrice
+			.times(_reserve0.toString())
+			.div(_reserve1.toString())
+	}
 
 	const lp = toBigNumber(_totalSupply)
 		.times(reserve)
@@ -46,19 +63,15 @@ export const fetchStakePoolInfo = async (
 		.div(10 ** 18)
 
 	const APR = _totalSupply.isZero()
-		? '-'
-		: toBigNumber(_rewardRate)
-				.times('31536000')
-				.times('100')
-				.div(lp)
-				.decimalPlaces(2)
-				.toFixed()
+		? null
+		: toBigNumber(_rewardRate).times('31536000').times('100').div(lp)
 
 	return {
-		tokensInPool: _totalSupply as string,
-		tokensInPoolUSD: '-',
+		tokensInPool: toBigNumber(_totalSupply),
+		tokensInPoolUSD: lp.times(tokenPrice),
 		stakedLpTokens: 0,
 		APR,
+		tokenPrice,
 		earned: { amount: 0, token: 'DN' },
 	}
 }
@@ -68,7 +81,7 @@ export const fetchUserInfo = async (
 	poolAddress: string,
 	lmAddress: string,
 	network: number,
-) => {
+): Promise<StakeUserInfo> => {
 	const provider = new JsonRpcProvider(INFURA_ENDPOINTS[network])
 
 	let validAddress = ''
@@ -76,27 +89,27 @@ export const fetchUserInfo = async (
 		validAddress = ethers.utils.getAddress(address)
 	} catch (_) {
 		return {
-			earned: '0',
-			stakedLpTokens: '0',
+			earned: { amount: 0, token: config.TOKEN_NAME },
+			stakedLpTokens: 0,
 		}
 	}
 
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 
-	const [stakedLpTokens, earned, notStakedLpTokens, allowance] =
-		await Promise.all([
-			lmContract.balanceOf(validAddress),
-			lmContract.earned(validAddress),
-			poolContract.balanceOf(validAddress),
-			poolContract.allowance(validAddress, lmAddress),
-		])
+	const [stakedLpTokens, earned, notStakedLpTokens] = await Promise.all([
+		lmContract.balanceOf(validAddress),
+		lmContract.earned(validAddress),
+		poolContract.balanceOf(validAddress),
+	])
 
 	return {
-		stakedLpTokens: ethers.utils.formatEther(stakedLpTokens),
-		earned: ethers.utils.formatEther(earned),
+		stakedLpTokens: new BigNumber(ethers.utils.formatEther(stakedLpTokens)),
+		earned: {
+			amount: new BigNumber(ethers.utils.formatEther(earned)),
+			token: config.TOKEN_NAME,
+		},
 		notStakedLpTokens: notStakedLpTokens.toString(),
-		allowance: allowance.toString(),
 	}
 }
 
