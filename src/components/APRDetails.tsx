@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import Popup from 'reactjs-popup'
 import styled from 'styled-components'
 import 'reactjs-popup/dist/index.css'
+import BigNumber from 'bignumber.js'
 import {
 	WhiteGreenButtonLink,
 	Inter400,
@@ -9,8 +10,42 @@ import {
 	SimpleButton,
 	SpaceBetween,
 } from './Styles'
+import { convertEthHelper } from '../lib/numbers'
 
-function APRDetails() {
+interface APRDetailsProps {
+	APR: BigNumber | null
+	tokenPrice: BigNumber | undefined
+}
+
+interface RoiValue {
+	roi: BigNumber
+	dn: BigNumber | undefined
+}
+interface RoiValues {
+	[key: string]: RoiValue
+}
+
+const steps = ['1', '7', '30', '365']
+
+const computeValues = (APR: BigNumber, tokenPrice: BigNumber): RoiValues => {
+	// APR is in percent for 365 days
+	const dayInterest = APR.div(365 * 100)
+
+	const result: RoiValues = {}
+
+	steps.forEach(step => {
+		const roi = dayInterest.plus(1).pow(step).minus(1)
+		const dn = tokenPrice && roi.times(1000).div(tokenPrice)
+		result[step] = { roi: roi.times(100), dn }
+	})
+
+	return result
+}
+
+const APRDetails: React.FC<APRDetailsProps> = ({ APR, tokenPrice }) => {
+	if (!APR) return null
+	const values = computeValues(APR, tokenPrice)
+
 	return (
 		<StyledPopup trigger={<SimpleButton>See details</SimpleButton>} modal>
 			{close => (
@@ -33,17 +68,19 @@ function APRDetails() {
 						</div>
 						<div>
 							<Inter500>ROI</Inter500>
-							<Text>1.05%</Text>
-							<Text>10.23%</Text>
-							<Text>53.14%</Text>
-							<Text>17723.11%</Text>
+							{steps.map(step => (
+								<Text>
+									{convertEthHelper(values[step].roi, 2)}%
+								</Text>
+							))}
 						</div>
 						<div>
 							<Inter500>DN per $1000</Inter500>
-							<Text>1.24</Text>
-							<Text>9.62</Text>
-							<Text>47.88</Text>
-							<Text>15952.77</Text>
+							{steps.map(step => (
+								<Text>
+									{convertEthHelper(values[step].dn, 2)}
+								</Text>
+							))}
 						</div>
 					</div>
 					<div className='actions'>
@@ -99,4 +136,17 @@ const Spaced = styled(SpaceBetween)`
 	}
 `
 
-export default APRDetails
+const isEqual = (
+	prevProps: APRDetailsProps,
+	nextProps: APRDetailsProps,
+): boolean =>
+	Boolean(
+		prevProps.APR &&
+			nextProps.APR &&
+			prevProps.APR.isEqualTo(nextProps.APR) &&
+			prevProps.tokenPrice &&
+			nextProps.tokenPrice &&
+			prevProps.tokenPrice.isEqualTo(nextProps.tokenPrice),
+	)
+
+export default React.memo(APRDetails, isEqual)

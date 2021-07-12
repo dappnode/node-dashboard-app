@@ -14,5 +14,12 @@ export const convertEthHelper = (amount: any, decimals: number) => {
 		amt = new BigNumber(amount)
 	}
 	if (amt.eq(0)) return '0'
-	return amt.decimalPlaces(Number(decimals), BigNumber.ROUND_DOWN).toFixed()
+	if (amt.gt(10 ** 8)) {
+		return amt.toPrecision(10)
+	}
+	return amt.decimalPlaces(Number(decimals), BigNumber.ROUND_DOWN).toFormat({
+		groupSize: 3,
+		groupSeparator: ',',
+		decimalSeparator: '.',
+	})
 }

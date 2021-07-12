@@ -112,7 +112,7 @@ const Principal = ({
 						</div>
 					)}
 				</h2>
-				<APRDetails />
+				<APRDetails APR={APR} tokenPrice={tokenPrice} />
 			</SpaceBetween>
 			<SpaceBetween>
 				<h2>
