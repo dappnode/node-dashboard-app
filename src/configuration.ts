@@ -11,7 +11,7 @@ export const MAINNET_CONFIG = {
 	MERKLE_ADDRESS: '0xf2472cD3A76DE2d6F67d1E4cB7827a613D0DBAaf',
 	TOKEN_DISTRO_ADDRESS: '0x4A9305Db805e8f4465ce48a367005a6dBb5347CB',
 
-	nodeUrl: 'https://rinkeby.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
+	nodeUrl: 'https://rinkeby2.giveth.io',
 
 	UNISWAP: {
 		POOL_ADDRESS: '0x415Bd1074305Ac16d3dA4f6F1fCaC7Dd9D9b61a6',
@@ -32,7 +32,7 @@ export const XDAI_CONFIG = {
 	MERKLE_ADDRESS: '0x9cf0b63Bf9F8790354D103DaC01Df8A12E048eDf',
 	TOKEN_DISTRO_ADDRESS: '0xBaED096Ec0B98Bc221A431DFdCaa72A069F65762',
 
-	nodeUrl: 'https://goerli.infura.io/v3/1b2419720bcb411eb81d4abc9668bfac',
+	nodeUrl: 'https://goerli-geth.64c00d9aa3d08710.dyndns.dappnode.io/',
 
 	NODE: {
 		POOL_ADDRESS: '0x35bbB49985B2C1494Bec7FD1a48626781AA5ef8c',
