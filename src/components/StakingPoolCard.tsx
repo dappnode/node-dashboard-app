@@ -9,8 +9,19 @@ import {
 	withdrawTokens,
 } from '../lib/stakingPool'
 import { useOnboard } from '../hooks/useOnboard'
+import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 
-const StakingPoolCard = ({
+interface StakingPoolCardProps {
+	composition: string
+	name: string
+	logo: string
+	option: string
+	platform: string
+	network: number
+	provideLiquidityLink: string
+}
+
+const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	composition,
 	name,
 	logo,
@@ -19,17 +30,16 @@ const StakingPoolCard = ({
 	network,
 	provideLiquidityLink = '',
 }) => {
-	const [stakePoolInfo, setStakePoolInfo] = useState({
-		tokensInPool: '-',
-		tokensInPoolUSD: '-',
-		APR: '-',
+	const [stakePoolInfo, setStakePoolInfo] = useState<StakePoolInfo>({
+		tokensInPool: 0,
+		tokensInPoolUSD: 0,
+		APR: null,
 		earned: { amount: 0, token: 'NODE' },
 	})
-	const [stakeUserInfo, setStakeUserInfo] = useState({
-		stakedLpTokens: '0',
-		notStakedLpTokens: '0',
-		allowance: '0',
-		earned: { amount: '0', token: 'NODE' },
+	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
+		stakedLpTokens: 0,
+		notStakedLpTokens: 0,
+		earned: { amount: 0, token: 'NODE' },
 	})
 	const { address, provider } = useOnboard()
 
@@ -63,16 +73,7 @@ const StakingPoolCard = ({
 				STAKING_ADDRESSES[network][option].POOL_ADDRESS,
 				STAKING_ADDRESSES[network][option].LM_ADDRESS,
 				network,
-			).then(
-				({ earned, stakedLpTokens, notStakedLpTokens, allowance }) => {
-					setStakeUserInfo({
-						stakedLpTokens,
-						notStakedLpTokens,
-						allowance,
-						earned: { amount: earned, token: 'NODE' },
-					})
-				},
-			)
+			).then(setStakeUserInfo)
 
 		cb()
 

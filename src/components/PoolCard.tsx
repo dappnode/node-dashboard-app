@@ -91,7 +91,8 @@ const Principal = ({
 	hasLiquidityPool,
 	harvest,
 }) => {
-	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
+	const { APR, stakedLpTokens, earned, provideLiquidityLink, tokenPrice } =
+		stakePoolInfo
 	return (
 		<div>
 			<label>{platform}</label>
@@ -105,7 +106,11 @@ const Principal = ({
 			<SpaceBetween>
 				<h2>
 					<b>APR:</b>{' '}
-					{APR && <div className='pool-info-text'>{APR}%</div>}
+					{APR && (
+						<div className='pool-info-text'>
+							{convertEthHelper(APR, 2)}%
+						</div>
+					)}
 				</h2>
 				<APRDetails />
 			</SpaceBetween>

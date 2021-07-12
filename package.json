@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ethersproject/address": "^5.4.0",
     "@ethersproject/providers": "^5.4.1",
     "bignumber.js": "^9.0.1",
     "bnc-notify": "^1.6.2",

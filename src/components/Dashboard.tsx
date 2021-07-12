@@ -54,6 +54,7 @@ function Dashboard() {
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'
 					network={4}
+					provideLiquidityLink=''
 				/>
 				<StakingPoolCard
 					name='NODE'
@@ -62,6 +63,7 @@ function Dashboard() {
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'
 					network={5}
+					provideLiquidityLink=''
 				/>
 			</PoolsContainer>
 		</DashboardSection>
