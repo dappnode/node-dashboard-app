@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { constants, Contract, BigNumber, utils } from 'ethers'
-import { JsonRpcProvider } from '@ethersproject/providers'
 import styled from 'styled-components'
 import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
 import Seed from '../assets/seed'
@@ -10,7 +9,8 @@ import { BigCurrency, GreenButton } from './Styles'
 import { useOnboard } from '../hooks/useOnboard'
 
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
-import { PROVIDER_ENDPOINT, TOKEN_DISTRO_ADDRESS } from '../configuration'
+import { NETWORKS_CONFIG } from '../configuration'
+import { networkProviders } from '../lib/networkProvider'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -32,7 +32,7 @@ function Rewards() {
 		const signer = provider.getSigner()
 
 		const tokenDistro = new Contract(
-			TOKEN_DISTRO_ADDRESS[network],
+			NETWORKS_CONFIG[network].TOKEN_DISTRO_ADDRESS,
 			TOKEN_DISTRO_ABI,
 			signer,
 		)
@@ -48,13 +48,10 @@ function Rewards() {
 		// eslint-disable-next-line no-shadow
 		network: number,
 	): Promise<ITokenDistro> {
-		// eslint-disable-next-line no-shadow
-		const provider = new JsonRpcProvider(PROVIDER_ENDPOINT[network])
-
 		const tokenDistro = new Contract(
-			TOKEN_DISTRO_ADDRESS[network],
+			NETWORKS_CONFIG[network].TOKEN_DISTRO_ADDRESS,
 			TOKEN_DISTRO_ABI,
-			provider,
+			networkProviders[network],
 		)
 
 		const balances = await tokenDistro.balances(address)

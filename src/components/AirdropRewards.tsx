@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { JsonRpcProvider } from '@ethersproject/providers'
 import styled from 'styled-components'
 import { Contract, ethers } from 'ethers'
 import { isDN, isMainnet } from '../lib/web3-utils'
@@ -11,7 +10,8 @@ import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import { config } from '../configuration'
+import { MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState(ZERO)
@@ -22,13 +22,11 @@ function Rewards() {
 	async function getEthClaimableAmount(): Promise<any> {
 		if (!address) return
 
-		const nodeProvider = new JsonRpcProvider(config.nodeUrl)
-
 		const claimData = await fetchEthClaimData(address)
 		const merkleContract = new Contract(
-			config.ETH_MERKLE_ADDRESS,
+			MAINNET_CONFIG.MERKLE_ADDRESS,
 			MERKLE_ABI,
-			nodeProvider,
+			mainnetProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -45,13 +43,11 @@ function Rewards() {
 	async function getXDaiClaimableAmount(): Promise<any> {
 		if (!address) return
 
-		const xdaiNodeProvider = new JsonRpcProvider(config.xdaiNodeUrl)
-
 		const claimData = await fetchDnClaimData(address)
 		const merkleContract = new Contract(
-			config.DN_MERKLE_ADDRESS,
+			XDAI_CONFIG.MERKLE_ADDRESS,
 			MERKLE_ABI,
-			xdaiNodeProvider,
+			xdaiProvider,
 		)
 		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
 		const canClaim = Boolean(claimData && isClaimedResult === false)
@@ -87,7 +83,7 @@ function Rewards() {
 		const signer = await provider.getSigner()
 		const claimData = await fetchDnClaimData(address)
 		const merkleContract = new Contract(
-			config.DN_MERKLE_ADDRESS,
+			XDAI_CONFIG.MERKLE_ADDRESS,
 			MERKLE_ABI,
 			provider,
 		)
@@ -115,7 +111,7 @@ function Rewards() {
 		const signer = await provider.getSigner()
 		const claimData = await fetchEthClaimData(address)
 		const merkleContract = new Contract(
-			config.ETH_MERKLE_ADDRESS,
+			MAINNET_CONFIG.MERKLE_ADDRESS,
 			MERKLE_ABI,
 			signer,
 		)

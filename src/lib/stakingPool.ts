@@ -1,16 +1,13 @@
 import { Contract, ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
-import {
-	JsonRpcProvider,
-	TransactionResponse,
-	Web3Provider,
-} from '@ethersproject/providers'
+import { TransactionResponse, Web3Provider } from '@ethersproject/providers'
 import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
-import { config, INFURA_ENDPOINTS } from '../configuration'
+import { config, MAINNET_CONFIG, NETWORKS_CONFIG } from '../configuration'
 import { getEthPrice } from './ethPrice'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
+import { networkProviders } from './networkProvider'
 
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
@@ -23,8 +20,7 @@ export const fetchStakePoolInfo = async (
 ): Promise<StakePoolInfo> => {
 	if (!hasLiquidityPool) return
 
-	const provider = new JsonRpcProvider(INFURA_ENDPOINTS[network])
-
+	const provider = networkProviders[network]
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 
@@ -45,7 +41,7 @@ export const fetchStakePoolInfo = async (
 	const [_reserve0, _reserve1] = reserves
 	let reserve: BigNumber
 	let tokenPrice: BigNumber
-	if (_token0.toLowerCase() === config.TOKEN_ADDRESS.toLowerCase()) {
+	if (_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()) {
 		reserve = toBigNumber(_reserve0)
 		tokenPrice = _ethPrice
 			.times(_reserve1.toString())
@@ -82,7 +78,7 @@ export const fetchUserInfo = async (
 	lmAddress: string,
 	network: number,
 ): Promise<StakeUserInfo> => {
-	const provider = new JsonRpcProvider(INFURA_ENDPOINTS[network])
+	const provider = networkProviders[network]
 
 	let validAddress = ''
 	try {

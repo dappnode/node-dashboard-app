@@ -1,12 +1,52 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Contract, ethers } from 'ethers'
 import { shortenAddress, getNetworkType } from '../lib/web3-utils'
 import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
+import { NETWORKS_CONFIG } from '../configuration'
+import { convertEthHelper } from '../lib/numbers'
+import { networkProviders } from '../lib/networkProvider'
 
-function Connection() {
+const Connection: React.FC = () => {
 	const { address, network } = useOnboard()
+
+	const [tokenBalance, setTokenBalance] = useState<number | string>(0)
+
+	useEffect(() => {
+		if (network === 0 || !address) {
+			setTokenBalance(0)
+			return
+		}
+
+		const networkConfig = NETWORKS_CONFIG[network]
+
+		if (networkConfig) {
+			const tokenAddress = networkConfig.TOKEN_ADDRESS
+			const provider = networkProviders[network]
+
+			const ERC20ABI = [
+				// read balanceOf
+				{
+					constant: true,
+					inputs: [{ name: '_owner', type: 'address' }],
+					name: 'balanceOf',
+					outputs: [{ name: 'balance', type: 'uint256' }],
+					type: 'function',
+				},
+			]
+			const tokenContract = new Contract(tokenAddress, ERC20ABI, provider)
+			tokenContract
+				.balanceOf(address)
+				.then(balance => {
+					setTokenBalance(ethers.utils.formatEther(balance))
+				})
+				.catch(e => console.error('Error on fetching user balance:', e))
+		} else {
+			setTokenBalance(0)
+		}
+	}, [address, network])
 
 	return (
 		<>
@@ -21,9 +61,14 @@ function Connection() {
 				</LightGreenButton>
 			)}
 			{address && (
-				<NavbarButton>
-					{address && <p>{shortenAddress(address)}</p>}
-				</NavbarButton>
+				<>
+					<NavbarButton>
+						<p>{convertEthHelper(tokenBalance, 4)} Node</p>
+					</NavbarButton>
+					<NavbarButton>
+						<p>{shortenAddress(address)}</p>
+					</NavbarButton>
+				</>
 			)}
 		</>
 	)
