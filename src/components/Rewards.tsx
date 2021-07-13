@@ -353,7 +353,7 @@ const RewardsSection = styled.section`
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
 	border-radius: 16px;
-	flex-grow: 1;
+	flex-basis: 100%;
 	margin: 10px;
 	background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
 	label {
