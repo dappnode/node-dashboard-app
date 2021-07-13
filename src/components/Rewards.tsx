@@ -116,7 +116,10 @@ function Rewards() {
 
 	return (
 		<>
-			<RewardsSection disabled={!isMainnet(network)}>
+			<RewardsSection
+				disabled={!isMainnet(network)}
+				border='2px solid #86bde4'
+			>
 				<SpaceBetween>
 					<label className={isMainnet(network) ? 'blue' : 'disabled'}>
 						ETH
@@ -192,7 +195,10 @@ function Rewards() {
 					</SpaceBetween>
 				</Row>
 			</RewardsSection>
-			<RewardsSection disabled={!isDN(network)}>
+			<RewardsSection
+				disabled={!isDN(network)}
+				border='2px solid #86e4dd'
+			>
 				<SpaceBetween>
 					<label className={isDN(network) ? 'green' : 'disabled'}>
 						xDAI
@@ -353,6 +359,7 @@ const RewardsSection = styled.section`
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
 	border-radius: 16px;
+	border: ${props => (props.disabled ? '1px solid #dde3e3' : props.border)};
 	flex-basis: 100%;
 	margin: 10px;
 	background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
