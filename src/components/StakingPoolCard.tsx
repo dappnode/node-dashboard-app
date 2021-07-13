@@ -38,20 +38,20 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
 		stakedLpTokens: 0,
-		notStakedLpTokens: 0,
+		notStakedLpTokensWei: 0,
 		earned: { amount: 0, token: 'NODE' },
 	})
 	const { address, provider } = useOnboard()
 
 	const stakePoolPoll = useRef(null)
 	useEffect(() => {
-		if (name === 'NODE') return
+		// if (name === 'NODE') return
 		const cb = () =>
 			fetchStakePoolInfo(
 				NETWORKS_CONFIG[network][option].POOL_ADDRESS,
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
-				true,
+				name !== 'NODE',
 			).then(setStakePoolInfo)
 		cb()
 

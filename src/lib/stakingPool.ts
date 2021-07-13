@@ -4,8 +4,7 @@ import { TransactionResponse, Web3Provider } from '@ethersproject/providers'
 import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
-import { config, MAINNET_CONFIG, NETWORKS_CONFIG } from '../configuration'
-import { getEthPrice } from './ethPrice'
+import { config, MAINNET_CONFIG } from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
 
@@ -18,56 +17,63 @@ export const fetchStakePoolInfo = async (
 	network: number,
 	hasLiquidityPool: boolean,
 ): Promise<StakePoolInfo> => {
-	if (!hasLiquidityPool) return
-
 	const provider = networkProviders[network]
-	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 
-	const [reserves, _token0, _totalSupply, _rewardRate, _ethPrice]: [
-		Array<ethers.BigNumber>,
-		string,
-		ethers.BigNumber,
-		ethers.BigNumber,
-		BigNumber,
-	] = await Promise.all([
-		poolContract.getReserves(),
-		poolContract.token0(),
-		lmContract.totalSupply(),
-		lmContract.rewardRate(),
-		getEthPrice(),
-	])
+	let APR
+	let totalSupply
 
-	const [_reserve0, _reserve1] = reserves
-	let reserve: BigNumber
-	let tokenPrice: BigNumber
-	if (_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()) {
-		reserve = toBigNumber(_reserve0)
-		tokenPrice = _ethPrice
-			.times(_reserve1.toString())
-			.div(_reserve0.toString())
+	if (hasLiquidityPool) {
+		const poolContract = new Contract(poolAddress, UNI_ABI, provider)
+		const [reserves, _token0, _totalSupply, _rewardRate]: [
+			Array<ethers.BigNumber>,
+			string,
+			ethers.BigNumber,
+			ethers.BigNumber,
+		] = await Promise.all([
+			poolContract.getReserves(),
+			poolContract.token0(),
+			lmContract.totalSupply(),
+			lmContract.rewardRate(),
+		])
+
+		totalSupply = _totalSupply
+
+		const [_reserve0, _reserve1] = reserves
+		const reserve =
+			_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()
+				? toBigNumber(_reserve0)
+				: toBigNumber(_reserve1)
+
+		const lp = toBigNumber(_totalSupply)
+			.times(reserve)
+			.times(2)
+			.div(10 ** 18)
+		APR = _totalSupply.isZero()
+			? null
+			: toBigNumber(_rewardRate).times('31536000').times('100').div(lp)
 	} else {
-		reserve = toBigNumber(_reserve1)
-		tokenPrice = _ethPrice
-			.times(_reserve0.toString())
-			.div(_reserve1.toString())
+		const [_totalSupply, _rewardRate]: [
+			ethers.BigNumber,
+			ethers.BigNumber,
+		] = await Promise.all([
+			lmContract.totalSupply(),
+			lmContract.rewardRate(),
+		])
+
+		totalSupply = _totalSupply
+		APR = _totalSupply.isZero()
+			? null
+			: toBigNumber(_rewardRate)
+					.times('31536000')
+					.times('100')
+					.div(_totalSupply.toString())
 	}
 
-	const lp = toBigNumber(_totalSupply)
-		.times(reserve)
-		.times(2)
-		.div(10 ** 18)
-
-	const APR = _totalSupply.isZero()
-		? null
-		: toBigNumber(_rewardRate).times('31536000').times('100').div(lp)
-
 	return {
-		tokensInPool: toBigNumber(_totalSupply),
-		tokensInPoolUSD: lp.times(tokenPrice),
+		tokensInPool: toBigNumber(totalSupply),
 		stakedLpTokens: 0,
 		APR,
-		tokenPrice,
 		earned: { amount: 0, token: 'NODE' },
 	}
 }
@@ -93,7 +99,7 @@ export const fetchUserInfo = async (
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 
-	const [stakedLpTokens, earned, notStakedLpTokens] = await Promise.all([
+	const [stakedLpTokens, earned, notStakedLpTokensWei] = await Promise.all([
 		lmContract.balanceOf(validAddress),
 		lmContract.earned(validAddress),
 		poolContract.balanceOf(validAddress),
@@ -105,7 +111,7 @@ export const fetchUserInfo = async (
 			amount: new BigNumber(ethers.utils.formatEther(earned)),
 			token: config.TOKEN_NAME,
 		},
-		notStakedLpTokens: notStakedLpTokens.toString(),
+		notStakedLpTokensWei: notStakedLpTokensWei.toString(),
 	}
 }
 
