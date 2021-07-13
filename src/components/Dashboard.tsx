@@ -72,18 +72,29 @@ function Dashboard() {
 
 const DashboardSection = styled.section`
 	height: 100%;
-	width: 80%;
+	width: 90%;
 	max-width: 1140px;
 	margin: auto;
-	padding: 50px 100px;
+	padding: 50px;
+
+	@media (max-width: 1024px) {
+		padding: 20px 0;
+	}
 `
 
 const PoolsContainer = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	padding: 10px;
+	grid-row-gap: 24px;
+	grid-column-gap: 24px;
+	grid-template-columns: repeat(1, 1fr);
 
-	@media (max-width: 1024px) {
-		grid-template-columns: 1fr 1fr;
+	@media (min-width: 600px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (min-width: 1200px) {
+		grid-template-columns: repeat(4, 1fr);
 	}
 `
 

@@ -1,19 +1,26 @@
 import styled from 'styled-components'
 
-export const PoolCardSection = styled.section`
+interface PoolCardSectionProps {
+	poolState: string
+}
+
+export const PoolCardSection = styled.section<PoolCardSectionProps>`
 	display: flex;
 	flex-flow: column wrap;
-	justify-content: space-between;
-	min-width: 0;
-	max-width: 300px;
+	justify-content: ${props =>
+		props.poolState === 'default' ? 'space-between' : 'center'};
 	align-items: center;
 	background-color: white;
+	min-width: calc(100% - 24px);
 	height: 380px;
 	padding: 16px;
+	position: relative;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
 	border-radius: 16px;
-	margin: 0 10px;
+	div {
+		width: 100%;
+	}
 	h1 {
 		font-family: 'Inter';
 		font-style: normal;

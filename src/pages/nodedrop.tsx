@@ -120,8 +120,8 @@ function Nodedrop() {
 									NODEdrop.
 								</Inter700>
 								<Inter400Subtitle>
-									Claim your rewards in the xDAI and ETH
-									networks.
+									Claim your rewards in the xDai and ETH
+									Mainnet.
 								</Inter400Subtitle>
 								<AirdropRewards />
 							</>
