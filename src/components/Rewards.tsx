@@ -109,7 +109,7 @@ function Rewards() {
 	if (!networkAllowed(network)) {
 		return (
 			<WarnSection>
-				<WarnMessage>Please connect to the right network</WarnMessage>
+				<WarnMessage>Please connect to Ethereum or xDai</WarnMessage>
 			</WarnSection>
 		)
 	}
@@ -185,7 +185,7 @@ function Rewards() {
 									<h2>NODE</h2>
 								</BigCurrency>
 								<div>
-									<h3>Locked</h3>
+									<h3>In Reservoir</h3>
 								</div>
 							</div>
 						</Inline>
@@ -263,7 +263,7 @@ function Rewards() {
 									<h2>NODE</h2>
 								</BigCurrency>
 								<div>
-									<h3>Locked</h3>
+									<h3>In Reservoir</h3>
 								</div>
 							</div>
 						</Inline>

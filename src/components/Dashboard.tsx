@@ -79,10 +79,17 @@ const DashboardSection = styled.section`
 `
 
 const PoolsContainer = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+
+	@media (max-width: 1024px) {
+		grid-template-columns: 1fr 1fr;
+	}
 `
 
-const RewardsContainer = styled(PoolsContainer)`
+const RewardsContainer = styled.div`
+	display: flex;
+
 	@media (max-width: 1024px) {
 		flex-direction: column;
 	}

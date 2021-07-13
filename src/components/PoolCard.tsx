@@ -94,47 +94,47 @@ const Principal = ({
 	const { APR, stakedLpTokens, earned, provideLiquidityLink, tokenPrice } =
 		stakePoolInfo
 	return (
-		<div>
-			<label>{platform}</label>
-			<h1>
-				<img alt='logo' src={logo} /> {name}
-			</h1>
-			<SpaceBetween>
-				<h2>{composition}</h2>{' '}
-				<SimpleButton onClick={deposit}>Add more</SimpleButton>
-			</SpaceBetween>
-			<SpaceBetween>
-				<h2>
-					<b>APR:</b>{' '}
-					{APR && (
-						<div className='pool-info-text'>
-							{convertEthHelper(APR, 2)}%
-						</div>
-					)}
-				</h2>
-				<APRDetails APR={APR} tokenPrice={tokenPrice} />
-			</SpaceBetween>
-			<SpaceBetween>
-				<h2>
-					<b>LP token:</b>{' '}
-					{stakedLpTokens && (
-						<div className='pool-info-text'>
-							{convertEthHelper(stakedLpTokens, 6)}
-						</div>
-					)}
-				</h2>
-				<SimpleButton onClick={manage}>Manage</SimpleButton>
-			</SpaceBetween>
-			<h2>
-				<b>Earned:</b>{' '}
-				{earned && (
-					<div className='pool-info-text'>
-						<Earned>{convertEthHelper(earned.amount, 4)}</Earned>
-						<Token>{earned.token}</Token>
-					</div>
-				)}
-			</h2>
+		<>
 			<div>
+				<label>{platform}</label>
+				<h1>
+					<img alt='logo' src={logo} /> {name}
+				</h1>
+				<SpaceBetween>
+					<h2>
+						<b>APR:</b>{' '}
+						{APR && (
+							<div className='pool-info-text'>
+								{convertEthHelper(APR, 2)}%
+							</div>
+						)}
+					</h2>
+					<APRDetails APR={APR} tokenPrice={tokenPrice} />
+				</SpaceBetween>
+				<SpaceBetween>
+					<h2>
+						<b>LP token:</b>{' '}
+						{stakedLpTokens && (
+							<div className='pool-info-text'>
+								{convertEthHelper(stakedLpTokens, 6)}
+							</div>
+						)}
+					</h2>
+					<SimpleButton onClick={manage}>Manage</SimpleButton>
+				</SpaceBetween>
+				<h2>
+					<b>Earned:</b>{' '}
+					{earned && (
+						<div className='pool-info-text'>
+							<Earned>
+								{convertEthHelper(earned.amount, 4)}
+							</Earned>
+							<Token>{earned.token}</Token>
+						</div>
+					)}
+				</h2>
+			</div>
+			<div style={{ minWidth: '100%' }}>
 				{hasLiquidityPool && (
 					<Button href={provideLiquidityLink} target='_blank'>
 						Provide liquidity{' '}
@@ -144,16 +144,15 @@ const Principal = ({
 						/>
 					</Button>
 				)}
-				<Button onClick={deposit}>Stake LP tokens</Button>
-				{earned && (
-					<>
-						<GreenButton className='long' onClick={harvest}>
-							Harvest
-						</GreenButton>
-					</>
+				{earned ? (
+					<GreenButton className='long' onClick={harvest}>
+						Harvest
+					</GreenButton>
+				) : (
+					<Button onClick={deposit}>Stake LP tokens</Button>
 				)}
 			</div>
-		</div>
+		</>
 	)
 }
 
