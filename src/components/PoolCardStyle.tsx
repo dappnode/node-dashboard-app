@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const PoolCardSection = styled.section`
 	display: flex;
+	position: relative;
 	flex-flow: column wrap;
 	justify-content: space-between;
 	min-width: 0;
