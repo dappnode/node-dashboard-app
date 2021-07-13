@@ -68,7 +68,7 @@ export const fetchStakePoolInfo = async (
 		stakedLpTokens: 0,
 		APR,
 		tokenPrice,
-		earned: { amount: 0, token: 'DN' },
+		earned: { amount: 0, token: 'NODE' },
 	}
 }
 

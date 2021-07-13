@@ -75,7 +75,7 @@ const APRDetails: React.FC<APRDetailsProps> = ({ APR, tokenPrice }) => {
 							))}
 						</div>
 						<div>
-							<Inter500>DN per $1000</Inter500>
+							<Inter500>NODE per $1000</Inter500>
 							{steps.map(step => (
 								<Text>
 									{convertEthHelper(values[step].dn, 2)}
@@ -85,7 +85,7 @@ const APRDetails: React.FC<APRDetailsProps> = ({ APR, tokenPrice }) => {
 					</div>
 					<div className='actions'>
 						<WhiteGreenButtonLink>
-							Get more DN{' '}
+							Get more NODE{' '}
 							<img
 								alt='link'
 								src='/assets/external-link-green.svg'

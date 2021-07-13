@@ -26,7 +26,7 @@ function TransferFunds() {
 						<LabelNetwork
 							className={isMainnet(1) ? 'blue' : 'green'}
 						>
-							{isMainnet(1) ? 'ETH' : 'DN'} Network
+							{isMainnet(1) ? 'ETH' : 'NODE'} Network
 						</LabelNetwork>
 					</div>
 					<div>
@@ -34,7 +34,7 @@ function TransferFunds() {
 						<LabelNetwork
 							className={isMainnet(1) ? 'green' : 'blue'}
 						>
-							{isMainnet(1) ? 'DN' : 'ETH'} Network
+							{isMainnet(1) ? 'NODE' : 'ETH'} Network
 						</LabelNetwork>
 					</div>
 					<div>

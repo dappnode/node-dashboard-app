@@ -69,24 +69,24 @@ function Sidebar({ isOpen, closeSidebar }) {
 					<ConnectionInfo />
 				</Top>
 				<div style={{ padding: '0 15px' }}>
-					<Inter700>Your DN balance</Inter700>
+					<Inter700>Your NODE balance</Inter700>
 					<SidebarCard>
 						<div>
 							<BigCurrency>
 								<h1>163.20</h1>
-								<h2>DN</h2>
+								<h2>NODE</h2>
 							</BigCurrency>
 							<br />
 							<BalanceBox>
-								<Inter500>DN in your DN wallet</Inter500>
+								<Inter500>NODE in your xDai wallet</Inter500>
 								<Inter400>40</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>DN in your ETH wallet</Inter500>
+								<Inter500>NODE in your ETH wallet</Inter500>
 								<Inter400>40</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>DN in LP</Inter500>
+								<Inter500>NODE in LP</Inter500>
 								<Inter400>40</Inter400>
 							</BalanceBox>
 							<BalanceBox>
@@ -94,7 +94,7 @@ function Sidebar({ isOpen, closeSidebar }) {
 								<Inter400>103.20</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>Locked in DN Network</Inter500>
+								<Inter500>Locked in xDai Network</Inter500>
 								<Inter400>103.20</Inter400>
 							</BalanceBox>
 							<BalanceBox>
@@ -102,7 +102,7 @@ function Sidebar({ isOpen, closeSidebar }) {
 								<Inter400>103.20</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>Claimable in DN Network</Inter500>
+								<Inter500>Claimable in xDai Network</Inter500>
 								<Inter400>103.20</Inter400>
 							</BalanceBox>
 							<BalanceBox>
@@ -111,7 +111,7 @@ function Sidebar({ isOpen, closeSidebar }) {
 							</BalanceBox>
 							<br />
 							<WhiteGreenButtonLink>
-								Get more DN{' '}
+								Get more NODE{' '}
 								<img
 									alt='link'
 									src='/assets/external-link-green.svg'
