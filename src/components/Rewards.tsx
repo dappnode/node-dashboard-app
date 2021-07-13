@@ -192,7 +192,7 @@ function Rewards() {
 					</SpaceBetween>
 				</Row>
 			</RewardsSection>
-			<RewardsSection>
+			<RewardsSection disabled={!isDN(network)}>
 				<SpaceBetween>
 					<label className={isDN(network) ? 'green' : 'disabled'}>
 						xDAI
