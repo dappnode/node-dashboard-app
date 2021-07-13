@@ -41,7 +41,7 @@ function PoolCard({
 	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
-		<PoolCardSection>
+		<PoolCardSection poolState={poolState}>
 			{poolState === 'default' && (
 				<Principal
 					name={name}
@@ -58,6 +58,7 @@ function PoolCard({
 			{poolState === 'manage' && (
 				<Manage
 					stakedLpTokens={stakedLpTokens}
+					notStakedLpTokens={notStakedLpTokens}
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
@@ -148,19 +149,25 @@ const Principal = ({
 						/>
 					</Button>
 				)}
-				{earned ? (
+				{earned.amount.eq(0) ? (
+					<Button onClick={deposit}>Stake LP tokens</Button>
+				) : (
 					<GreenButton className='long' onClick={harvest}>
 						Harvest
 					</GreenButton>
-				) : (
-					<Button onClick={deposit}>Stake LP tokens</Button>
 				)}
 			</div>
 		</>
 	)
 }
 
-const Manage = ({ deposit, withdraw, close, stakedLpTokens }) => (
+const Manage = ({
+	deposit,
+	withdraw,
+	close,
+	stakedLpTokens,
+	notStakedLpTokens,
+}) => (
 	<FullHeightCenter>
 		<ClosePool onClick={close}>
 			<img alt='close' src='/assets/closePool.svg' />

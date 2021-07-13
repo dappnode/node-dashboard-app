@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 
 interface Earned {
-	amount: BigNumber | number
+	amount: BigNumber
 	token: string
 }
 export interface StakeUserInfo {

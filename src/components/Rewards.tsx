@@ -349,7 +349,6 @@ const WarnSection = styled.section`
 const RewardsSection = styled.section`
 	min-height: 212px;
 	height: auto;
-	width: 100%;
 	padding: 16px;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
