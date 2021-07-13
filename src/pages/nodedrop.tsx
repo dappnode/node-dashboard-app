@@ -10,7 +10,7 @@ import { GreenButton, Inter400, Inter700 } from '../components/Styles'
 
 import AirdropRewards from '../components/AirdropRewards'
 
-function Airdrop() {
+function Nodedrop() {
 	const { connect, network, isReady } = useOnboard()
 
 	const [, setIsOpen] = useState(false)
@@ -188,6 +188,7 @@ const Main = styled.main`
 	${({ network }) => handleMainBackground(network)};
 	background-position: bottom right;
 	background-repeat: no-repeat;
+	min-height: 100vh;
 `
 
 const Rectangle = styled.div`
@@ -218,4 +219,4 @@ const QuizSection = styled.div`
 		0px 2px 16px rgba(8, 43, 41, 0.06);
 `
 
-export default Airdrop
+export default Nodedrop
