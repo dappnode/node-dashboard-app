@@ -186,7 +186,7 @@ function Rewards() {
 					</SpaceBetween>
 				</Row>
 			</RewardsSection>
-			<RewardsSection>
+			<RewardsSection disabled={!isDN(network)}>
 				<SpaceBetween>
 					<label className={isDN(network) ? 'green' : 'disabled'}>
 						XDAI
@@ -291,6 +291,7 @@ const RewardsSection = styled.section`
 	padding: 16px;
 	border-radius: 24px;
 	border: 1px solid #dde3e3;
+	background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
 	label {
 		background: #eefcfb;
 		border-radius: 16px;
