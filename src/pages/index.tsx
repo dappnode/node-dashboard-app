@@ -53,6 +53,7 @@ const Main = styled.main`
 	};
 	background-position: bottom right;
 	background-repeat: no-repeat;
+	min-height: 100vh;
 `
 
 const Rectangle = styled.div`

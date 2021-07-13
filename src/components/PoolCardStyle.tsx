@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 export const PoolCardSection = styled.section`
-	flex-basis: 25%;
 	display: flex;
-	position: relative;
-	justify-content: center;
+	flex-flow: column wrap;
+	justify-content: space-between;
+	min-width: 0;
+	max-width: 300px;
 	align-items: center;
 	background-color: white;
-	width: 100%;
-	height: 450px;
+	height: 380px;
 	padding: 16px;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 8px rgba(8, 43, 41, 0.06);
@@ -67,7 +67,7 @@ export const Button = styled.a`
 	text-align: center;
 	text-decoration: none;
 	padding: 8px 16px;
-	margin: 6px 0px;
+	margin: 3px 0px;
 	cursor: pointer;
 `
 

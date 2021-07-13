@@ -134,6 +134,7 @@ export const GreenButton = styled.button`
 	color: white;
 	cursor: pointer;
 	padding: 8px 16px;
+	margin: 3px 0px;
 	box-shadow: 0px 1px 1px rgba(8, 43, 41, 0.08),
 		0px 0px 8px rgba(8, 43, 41, 0.06);
 	&:hover {
