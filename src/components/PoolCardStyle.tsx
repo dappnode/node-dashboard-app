@@ -6,6 +6,7 @@ interface PoolCardSectionProps {
 
 export const PoolCardSection = styled.section<PoolCardSectionProps>`
 	display: flex;
+	position: relative;
 	flex-flow: column wrap;
 	justify-content: ${props =>
 		props.poolState === 'default' ? 'space-between' : 'center'};

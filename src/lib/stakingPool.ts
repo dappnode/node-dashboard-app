@@ -68,7 +68,7 @@ export const fetchStakePoolInfo = async (
 		stakedLpTokens: 0,
 		APR,
 		tokenPrice,
-		earned: { amount: 0, token: 'NODE' },
+		earned: { amount: new BigNumber(0), token: 'NODE' },
 	}
 }
 
@@ -85,7 +85,7 @@ export const fetchUserInfo = async (
 		validAddress = ethers.utils.getAddress(address)
 	} catch (_) {
 		return {
-			earned: { amount: 0, token: config.TOKEN_NAME },
+			earned: { amount: new BigNumber(0), token: config.TOKEN_NAME },
 			stakedLpTokens: 0,
 		}
 	}

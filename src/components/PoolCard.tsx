@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { ethers } from 'ethers'
 import APRDetails from './APRDetails'
 import {
+	FullHeightCenter,
 	GreenButton,
 	Input,
 	Inter400,
@@ -164,7 +165,7 @@ const Manage = ({
 	stakedLpTokens,
 	notStakedLpTokens,
 }) => (
-	<>
+	<FullHeightCenter>
 		<ClosePool onClick={close}>
 			<img alt='close' src='/assets/closePool.svg' />
 		</ClosePool>
@@ -177,7 +178,7 @@ const Manage = ({
 			<Button onClick={deposit}>Deposit LP tokens</Button>
 			<Button onClick={withdraw}>Withdraw LP tokens</Button>
 		</div>
-	</>
+	</FullHeightCenter>
 )
 
 interface DepositProps {
@@ -216,7 +217,7 @@ const Deposit = ({
 	}, [])
 
 	return (
-		<>
+		<FullHeightCenter>
 			<ClosePool onClick={close}>
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
@@ -267,7 +268,7 @@ const Deposit = ({
 					Deposit LP tokens
 				</GreenButton>
 			</div>
-		</>
+		</FullHeightCenter>
 	)
 }
 
@@ -280,7 +281,7 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 		setAmount(ethers.utils.parseUnits(value).toString())
 	}, [])
 	return (
-		<>
+		<FullHeightCenter>
 			<ClosePool onClick={close}>
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
@@ -306,7 +307,7 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 					Withdraw LP tokens
 				</GreenButton>
 			</div>
-		</>
+		</FullHeightCenter>
 	)
 }
 

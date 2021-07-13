@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import PoolCard from './PoolCard'
 import { NETWORKS_CONFIG } from '../configuration'
 import {
@@ -34,12 +35,12 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		tokensInPool: 0,
 		tokensInPoolUSD: 0,
 		APR: null,
-		earned: { amount: 0, token: 'NODE' },
+		earned: { amount: new BigNumber(0), token: 'NODE' },
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
 		stakedLpTokens: 0,
 		notStakedLpTokens: 0,
-		earned: { amount: 0, token: 'NODE' },
+		earned: { amount: new BigNumber(0), token: 'NODE' },
 	})
 	const { address, provider } = useOnboard()
 

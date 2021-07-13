@@ -112,6 +112,13 @@ export const SpaceBetween = styled.div`
 	justify-content: space-between;
 `
 
+export const FullHeightCenter = styled.div`
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+`
+
 export const FlexRow = styled.div`
 	gap: 24px;
 	display: flex;
