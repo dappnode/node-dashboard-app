@@ -6,13 +6,12 @@ interface Earned {
 }
 export interface StakeUserInfo {
 	stakedLpTokens?: BigNumber | number
-	notStakedLpTokens?: BigNumber | number
+	notStakedLpTokensWei?: BigNumber | number
 	earned?: Earned
 }
 export interface StakePoolInfo extends StakeUserInfo {
 	tokensInPool?: BigNumber | number
 	tokensInPoolUSD?: BigNumber | number
-	tokenPrice?: BigNumber
 	APR?: BigNumber | null
 }
 

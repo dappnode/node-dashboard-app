@@ -14,12 +14,11 @@ import { convertEthHelper } from '../lib/numbers'
 
 interface APRDetailsProps {
 	APR: BigNumber | null
-	tokenPrice: BigNumber | undefined
+	provideLiquidityLink: string
 }
 
 interface RoiValue {
 	roi: BigNumber
-	dn: BigNumber | undefined
 }
 interface RoiValues {
 	[key: string]: RoiValue
@@ -27,24 +26,26 @@ interface RoiValues {
 
 const steps = ['1', '7', '30', '365']
 
-const computeValues = (APR: BigNumber, tokenPrice: BigNumber): RoiValues => {
+const computeValues = (APR: BigNumber): RoiValues => {
 	// APR is in percent for 365 days
 	const dayInterest = APR.div(365 * 100)
 
 	const result: RoiValues = {}
 
 	steps.forEach(step => {
-		const roi = dayInterest.plus(1).pow(step).minus(1)
-		const dn = tokenPrice && roi.times(1000).div(tokenPrice)
-		result[step] = { roi: roi.times(100), dn }
+		const roi = dayInterest.times(step)
+		result[step] = { roi: roi.times(100) }
 	})
 
 	return result
 }
 
-const APRDetails: React.FC<APRDetailsProps> = ({ APR, tokenPrice }) => {
+const APRDetails: React.FC<APRDetailsProps> = ({
+	APR,
+	provideLiquidityLink = '',
+}) => {
 	if (!APR) return null
-	const values = computeValues(APR, tokenPrice)
+	const values = computeValues(APR)
 
 	return (
 		<StyledPopup trigger={<SimpleButton>See details</SimpleButton>} modal>
@@ -64,27 +65,22 @@ const APRDetails: React.FC<APRDetailsProps> = ({ APR, tokenPrice }) => {
 							<Text>1 Day</Text>
 							<Text>7 Days</Text>
 							<Text>30 Days</Text>
-							<Text>365 Days (APY)</Text>
+							<Text>365 Days</Text>
 						</div>
 						<div>
 							<Inter500>ROI</Inter500>
 							{steps.map(step => (
-								<Text>
+								<Text key={`apr_roi_${step}`}>
 									{convertEthHelper(values[step].roi, 2)}%
-								</Text>
-							))}
-						</div>
-						<div>
-							<Inter500>NODE per $1000</Inter500>
-							{steps.map(step => (
-								<Text>
-									{convertEthHelper(values[step].dn, 2)}
 								</Text>
 							))}
 						</div>
 					</div>
 					<div className='actions'>
-						<WhiteGreenButtonLink>
+						<WhiteGreenButtonLink
+							href={provideLiquidityLink}
+							target='_blank'
+						>
 							Get more NODE{' '}
 							<img
 								alt='link'
@@ -143,10 +139,7 @@ const isEqual = (
 	Boolean(
 		prevProps.APR &&
 			nextProps.APR &&
-			prevProps.APR.isEqualTo(nextProps.APR) &&
-			prevProps.tokenPrice &&
-			nextProps.tokenPrice &&
-			prevProps.tokenPrice.isEqualTo(nextProps.tokenPrice),
+			prevProps.APR.isEqualTo(nextProps.APR),
 	)
 
 export default React.memo(APRDetails, isEqual)

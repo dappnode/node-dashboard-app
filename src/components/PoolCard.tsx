@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 import APRDetails from './APRDetails'
 import {
 	FullHeightCenter,
@@ -37,7 +38,7 @@ function PoolCard({
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
-	const { stakedLpTokens, notStakedLpTokens } = stakePoolInfo
+	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
 		<PoolCardSection poolState={poolState}>
@@ -57,7 +58,7 @@ function PoolCard({
 			{poolState === 'manage' && (
 				<Manage
 					stakedLpTokens={stakedLpTokens}
-					notStakedLpTokens={notStakedLpTokens}
+					notStakedLpTokensWei={notStakedLpTokensWei}
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
@@ -66,7 +67,7 @@ function PoolCard({
 			{poolState === 'deposit' && (
 				<Deposit
 					stakedLpTokens={stakedLpTokens}
-					notStakedLpTokens={notStakedLpTokens}
+					notStakedLpTokensWei={notStakedLpTokensWei}
 					deposit={handleStake}
 					close={() => setPoolState('default')}
 				/>
@@ -93,11 +94,10 @@ const Principal = ({
 	hasLiquidityPool,
 	harvest,
 }) => {
-	const { APR, stakedLpTokens, earned, provideLiquidityLink, tokenPrice } =
-		stakePoolInfo
+	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
 		<>
-			<div>
+			<div style={{ width: '96%' }}>
 				<label>{platform}</label>
 				<h1>
 					<img alt='logo' src={logo} /> {name}
@@ -111,7 +111,10 @@ const Principal = ({
 							</div>
 						)}
 					</h2>
-					<APRDetails APR={APR} tokenPrice={tokenPrice} />
+					<APRDetails
+						APR={APR}
+						provideLiquidityLink={provideLiquidityLink}
+					/>
 				</SpaceBetween>
 				<SpaceBetween>
 					<h2>
@@ -163,7 +166,7 @@ const Manage = ({
 	withdraw,
 	close,
 	stakedLpTokens,
-	notStakedLpTokens,
+	notStakedLpTokensWei,
 }) => (
 	<FullHeightCenter>
 		<ClosePool onClick={close}>
@@ -185,34 +188,33 @@ interface DepositProps {
 	close: () => void
 	deposit: (amount: string) => void
 	stakedLpTokens: string
-	notStakedLpTokens: string
+	notStakedLpTokensWei: string
 }
 const Deposit = ({
 	close,
 	deposit,
 	stakedLpTokens,
-	// eslint-disable-next-line no-unused-vars
-	notStakedLpTokens,
+	notStakedLpTokensWei,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 
 	const setAmountPercentage = useCallback(
 		(percentage: number): void => {
-			const newAmount = ethers.BigNumber.from(notStakedLpTokens)
+			const newAmount = ethers.BigNumber.from(notStakedLpTokensWei)
 				.mul(percentage)
 				.div(100)
 				.toString()
 			setAmount(newAmount)
 			setDisplayAmount(
-				convertEthHelper(ethers.utils.formatEther(newAmount), 6),
+				convertEthHelper(ethers.utils.formatEther(newAmount), 6, false),
 			)
 		},
-		[notStakedLpTokens],
+		[notStakedLpTokensWei],
 	)
 
 	const onChange = useCallback(value => {
-		setDisplayAmount(convertEthHelper(value, 6))
+		setDisplayAmount(convertEthHelper(value, 6, false))
 		setAmount(ethers.utils.parseUnits(value).toString())
 	}, [])
 
@@ -233,7 +235,6 @@ const Deposit = ({
 						type='number'
 						placeholder='Amount'
 						value={displayAmount}
-						defaultValue={displayAmount}
 						onChange={e => onChange(e.target.value || '0')}
 					/>
 					<div>
@@ -276,8 +277,22 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 
+	const setAmountPercentage = useCallback(
+		(percentage: number): void => {
+			// eslint-disable-next-line no-underscore-dangle
+			const _stakedLpTokens: BigNumber =
+				stakedLpTokens instanceof BigNumber
+					? stakedLpTokens
+					: new BigNumber(stakedLpTokens)
+			const newAmount = _stakedLpTokens.times(percentage).div(100)
+			setAmount(newAmount.times(10 ** 18).toFixed(0))
+			setDisplayAmount(convertEthHelper(newAmount, 6, false))
+		},
+		[stakedLpTokens],
+	)
+
 	const onChange = useCallback(value => {
-		setDisplayAmount(convertEthHelper(value, 6))
+		setDisplayAmount(convertEthHelper(value, 6, false))
 		setAmount(ethers.utils.parseUnits(value).toString())
 	}, [])
 	return (
@@ -292,13 +307,37 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 					staked Liquidity Provider tokens. Enter the amount you’d
 					like to withdraw.
 				</Inter400>
-				<Input
-					type='number'
-					placeholder='Amount'
-					value={displayAmount}
-					defaultValue={displayAmount}
-					onChange={e => onChange(e.target.value || '0')}
-				/>
+				<div>
+					<Input
+						type='number'
+						placeholder='Amount'
+						value={displayAmount}
+						onChange={e => onChange(e.target.value || '0')}
+					/>
+					<div>
+						<Inter500Green
+							style={{ marginRight: '10px' }}
+							onClick={() => setAmountPercentage(25)}
+						>
+							25%
+						</Inter500Green>
+						<Inter500Green
+							style={{ marginRight: '10px' }}
+							onClick={() => setAmountPercentage(50)}
+						>
+							50%
+						</Inter500Green>
+						<Inter500Green
+							style={{ marginRight: '10px' }}
+							onClick={() => setAmountPercentage(75)}
+						>
+							75%
+						</Inter500Green>
+						<Inter500Green onClick={() => setAmountPercentage(100)}>
+							100%
+						</Inter500Green>
+					</div>
+				</div>
 				<GreenButton
 					onClick={() => withdraw(amount)}
 					className='long'
