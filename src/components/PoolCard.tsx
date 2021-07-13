@@ -58,7 +58,7 @@ function PoolCard({
 			{poolState === 'manage' && (
 				<Manage
 					stakedLpTokens={stakedLpTokens}
-					notStakedLpTokens={notStakedLpTokens}
+					notStakedLpTokensWei={notStakedLpTokensWei}
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
@@ -166,7 +166,7 @@ const Manage = ({
 	withdraw,
 	close,
 	stakedLpTokens,
-	notStakedLpTokens,
+	notStakedLpTokensWei,
 }) => (
 	<FullHeightCenter>
 		<ClosePool onClick={close}>
