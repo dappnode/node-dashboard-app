@@ -13,9 +13,9 @@ export const convertEthHelper = (amount: any, decimals: number) => {
 	if (!(amount instanceof BigNumber)) {
 		amt = new BigNumber(amount)
 	}
-	if (amt.eq(0)) return '0'
-	if (amt.gt(10 ** 8)) {
-		return amt.toPrecision(10)
+	if (amt.isZero()) return '0'
+	if (amt.gt(10 ** 10)) {
+		return amt.toExponential(10)
 	}
 	return amt.decimalPlaces(Number(decimals), BigNumber.ROUND_DOWN).toFormat({
 		groupSize: 3,
