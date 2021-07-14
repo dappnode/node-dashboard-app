@@ -60,10 +60,10 @@ export const PoolCardSection = styled.section<PoolCardSectionProps>`
 	}
 `
 
-export const Button = styled.a`
-	color: #2fbcb2;
+export const Button = styled.button`
+	color: ${props => (props.disabled ? '#DDE3E3' : '#2fbcb2')};
 	background: transparent;
-	border: solid 1px #2fbcb2;
+	border: ${props => (props.disabled ? '#DDE3E3' : '#2fbcb2')};
 	font-family: 'Interstate', sans-serif;
 	border-radius: 38px;
 	padding: 25px 100px;

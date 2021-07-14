@@ -23,6 +23,7 @@ import { convertEthHelper } from '../lib/numbers'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
+	disabled: boolean
 	[key: string]: any
 }
 function PoolCard({
@@ -35,6 +36,7 @@ function PoolCard({
 	handleStake,
 	handleHarvest,
 	handleWithdraw,
+	disabled,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
@@ -53,6 +55,7 @@ function PoolCard({
 					deposit={() => setPoolState('deposit')}
 					hasLiquidityPool={hasLiquidityPool}
 					harvest={handleHarvest}
+					disabled={disabled}
 				/>
 			)}
 			{poolState === 'manage' && (
@@ -62,10 +65,12 @@ function PoolCard({
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
+					disabled={disabled}
 				/>
 			)}
 			{poolState === 'deposit' && (
 				<Deposit
+					disabled={disabled}
 					stakedLpTokens={stakedLpTokens}
 					notStakedLpTokensWei={notStakedLpTokensWei}
 					deposit={handleStake}
@@ -77,6 +82,7 @@ function PoolCard({
 					stakedLpTokens={stakedLpTokens}
 					withdraw={handleWithdraw}
 					close={() => setPoolState('default')}
+					disabled={disabled}
 				/>
 			)}
 		</PoolCardSection>
@@ -93,6 +99,7 @@ const Principal = ({
 	logo,
 	hasLiquidityPool,
 	harvest,
+	disabled = false,
 }) => {
 	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
@@ -114,6 +121,7 @@ const Principal = ({
 					<APRDetails
 						APR={APR}
 						provideLiquidityLink={provideLiquidityLink}
+						disabled={disabled}
 					/>
 				</SpaceBetween>
 				<SpaceBetween>
@@ -125,7 +133,9 @@ const Principal = ({
 							</div>
 						)}
 					</h2>
-					<SimpleButton onClick={manage}>Manage</SimpleButton>
+					{!disabled && (
+						<SimpleButton onClick={manage}>Manage</SimpleButton>
+					)}
 				</SpaceBetween>
 				<h2>
 					<b>Earned:</b>{' '}
@@ -141,10 +151,23 @@ const Principal = ({
 			</div>
 			<div style={{ minWidth: '100%' }}>
 				{hasLiquidityPool && (
-					<Button href={provideLiquidityLink} target='_blank'>
+					<Button
+						disabled={disabled}
+						onClick={() => {
+							const win = window.open(
+								provideLiquidityLink,
+								'_blank',
+							)
+							if (win) win.focus()
+						}}
+					>
 						Provide liquidity{' '}
 						<img
-							src='/assets/external-link-green.svg'
+							src={
+								disabled
+									? '/assets/external-link-gray.svg'
+									: '/assets/external-link-green.svg'
+							}
 							alt='external'
 						/>
 					</Button>
@@ -152,7 +175,11 @@ const Principal = ({
 				{earned.amount.eq(0) ? (
 					<Button onClick={deposit}>Stake LP tokens</Button>
 				) : (
-					<GreenButton className='long' onClick={harvest}>
+					<GreenButton
+						disabled={disabled}
+						className='long'
+						onClick={harvest}
+					>
 						Harvest
 					</GreenButton>
 				)}
@@ -166,6 +193,7 @@ const Manage = ({
 	withdraw,
 	close,
 	stakedLpTokens,
+	disabled,
 	notStakedLpTokensWei,
 }) => (
 	<FullHeightCenter>
@@ -178,8 +206,12 @@ const Manage = ({
 				You currently have <b>{convertEthHelper(stakedLpTokens, 6)}</b>{' '}
 				staked Liquidity Provider tokens
 			</Inter400>
-			<Button onClick={deposit}>Deposit LP tokens</Button>
-			<Button onClick={withdraw}>Withdraw LP tokens</Button>
+			<Button disabled={disabled} onClick={deposit}>
+				Deposit LP tokens
+			</Button>
+			<Button disabled={disabled} onClick={withdraw}>
+				Withdraw LP tokens
+			</Button>
 		</div>
 	</FullHeightCenter>
 )
@@ -189,12 +221,14 @@ interface DepositProps {
 	deposit: (amount: string) => void
 	stakedLpTokens: string
 	notStakedLpTokensWei: string
+	disabled: boolean
 }
 const Deposit = ({
 	close,
 	deposit,
 	stakedLpTokens,
 	notStakedLpTokensWei,
+	disabled,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
@@ -235,33 +269,41 @@ const Deposit = ({
 						type='number'
 						placeholder='Amount'
 						value={displayAmount}
+						disabled={disabled}
 						onChange={e => onChange(e.target.value || '0')}
 					/>
 					<div>
 						<Inter500Green
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(25)}
+							disabled={disabled}
 						>
 							25%
 						</Inter500Green>
 						<Inter500Green
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(50)}
+							disabled={disabled}
 						>
 							50%
 						</Inter500Green>
 						<Inter500Green
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(75)}
+							disabled={disabled}
 						>
 							75%
 						</Inter500Green>
-						<Inter500Green onClick={() => setAmountPercentage(100)}>
+						<Inter500Green
+							onClick={() => setAmountPercentage(100)}
+							disabled={disabled}
+						>
 							100%
 						</Inter500Green>
 					</div>
 				</div>
 				<GreenButton
+					disabled={disabled}
 					onClick={() => deposit(amount)}
 					className='long'
 					style={{ marginTop: '16px' }}
@@ -273,7 +315,7 @@ const Deposit = ({
 	)
 }
 
-const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
+const Withdraw = ({ close, stakedLpTokens, withdraw, disabled }) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 
@@ -309,6 +351,7 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 				</Inter400>
 				<div>
 					<Input
+						disabled={disabled}
 						type='number'
 						placeholder='Amount'
 						value={displayAmount}
@@ -316,29 +359,36 @@ const Withdraw = ({ close, stakedLpTokens, withdraw }) => {
 					/>
 					<div>
 						<Inter500Green
+							disabled={disabled}
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(25)}
 						>
 							25%
 						</Inter500Green>
 						<Inter500Green
+							disabled={disabled}
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(50)}
 						>
 							50%
 						</Inter500Green>
 						<Inter500Green
+							disabled={disabled}
 							style={{ marginRight: '10px' }}
 							onClick={() => setAmountPercentage(75)}
 						>
 							75%
 						</Inter500Green>
-						<Inter500Green onClick={() => setAmountPercentage(100)}>
+						<Inter500Green
+							disabled={disabled}
+							onClick={() => setAmountPercentage(100)}
+						>
 							100%
 						</Inter500Green>
 					</div>
 				</div>
 				<GreenButton
+					disabled={disabled}
 					onClick={() => withdraw(amount)}
 					className='long'
 					style={{ marginTop: '16px' }}

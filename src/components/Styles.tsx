@@ -33,12 +33,14 @@ export const Inter500 = styled.p`
 	color: #222a29;
 `
 
-export const Inter500Green = styled.a`
+export const Inter500Green = styled.button`
+	color: ${props => (props.disabled ? '#DDE3E3' : '#23c8bc')};
+	border: none;
+	background: transparent;
 	font-family: 'Inter-Medium';
 	font-weight: 500;
 	font-size: 12px;
 	line-height: 17px;
-	color: #23c8bc;
 	cursor: pointer;
 `
 
@@ -198,10 +200,11 @@ export const Button = styled.a`
 	padding: 8px 16px;
 `
 
-export const WhiteGreenButtonLink = styled.a`
-	color: #2fbcb2;
+export const WhiteGreenButtonLink = styled.button`
+	color: ${props => (props.disabled ? '#DDE3E3' : '#2FBCB2')};
 	background: transparent;
-	border: solid 1px #2fbcb2;
+	border: ${props =>
+		props.disabled ? 'solid 1px #DDE3E3' : 'solid 1px #2FBCB2'};
 	font-family: 'Interstate', sans-serif;
 	border-radius: 38px;
 	padding: 25px 100px;
