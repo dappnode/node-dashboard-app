@@ -33,12 +33,14 @@ export const Inter500 = styled.p`
 	color: #222a29;
 `
 
-export const Inter500Green = styled.a`
+export const Inter500Green = styled.button`
+	color: ${props => (props.disabled ? '#DDE3E3' : '#23c8bc')};
+	border: none;
+	background: transparent;
 	font-family: 'Inter-Medium';
 	font-weight: 500;
 	font-size: 12px;
 	line-height: 17px;
-	color: #23c8bc;
 	cursor: pointer;
 `
 
