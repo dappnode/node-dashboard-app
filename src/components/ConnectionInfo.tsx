@@ -5,7 +5,7 @@ import { shortenAddress, getNetworkType } from '../lib/web3-utils'
 import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
-import { NETWORKS_CONFIG } from '../configuration'
+import { config, NETWORKS_CONFIG } from '../configuration'
 import { convertEthHelper } from '../lib/numbers'
 import { networkProviders } from '../lib/networkProvider'
 
@@ -50,12 +50,12 @@ const Connection: React.FC = () => {
 
 	return (
 		<>
-			{network === 4 && (
+			{network === config.MAINNET_NETWORK_NUMBER && (
 				<LightBlueButton>
 					Network: {getNetworkType(network)}{' '}
 				</LightBlueButton>
 			)}
-			{network === 5 && (
+			{network === config.XDAI_NETWORK_NUMBER && (
 				<LightGreenButton>
 					Network: {getNetworkType(network)}{' '}
 				</LightGreenButton>
@@ -63,7 +63,13 @@ const Connection: React.FC = () => {
 			{address && (
 				<>
 					<NavbarButton>
-						<p>{convertEthHelper(tokenBalance, 4)} Node</p>
+						<p>
+							{convertEthHelper(
+								tokenBalance,
+								config.MAINNET_NETWORK_NUMBER,
+							)}{' '}
+							Node
+						</p>
 					</NavbarButton>
 					<NavbarButton>
 						<p>{shortenAddress(address)}</p>

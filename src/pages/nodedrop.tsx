@@ -9,6 +9,7 @@ import { useOnboard } from '../hooks/useOnboard'
 import { GreenButton, Inter400, Inter700 } from '../components/Styles'
 
 import AirdropRewards from '../components/AirdropRewards'
+import { config } from '../configuration'
 
 function Nodedrop() {
 	const { connect, network, isReady } = useOnboard()
@@ -148,11 +149,11 @@ function Nodedrop() {
 
 const handleMainBackground = network => {
 	switch (network) {
-		case 4:
+		case config.MAINNET_NETWORK_NUMBER:
 			return `
         background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
       `
-		case 5:
+		case config.XDAI_NETWORK_NUMBER:
 			return `
         background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
       `

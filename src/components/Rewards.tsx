@@ -11,7 +11,7 @@ import { BigCurrency, GreenButton } from './Styles'
 import { useOnboard } from '../hooks/useOnboard'
 
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
-import { NETWORKS_CONFIG } from '../configuration'
+import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import { showPendingClaim, showConfirmedClaim } from '../lib/notifications'
 import AddTokenButton from './AddToken'
@@ -76,10 +76,10 @@ function Rewards() {
 		if (!address) return
 
 		const { claimable: _ethClaimable, locked: _ethLocked } =
-			await getTokenDistroAmounts(address, 4)
+			await getTokenDistroAmounts(address, config.MAINNET_NETWORK_NUMBER)
 
 		const { claimable: _xDaiClaimable, locked: _xDaiLocked } =
-			await getTokenDistroAmounts(address, 5)
+			await getTokenDistroAmounts(address, config.XDAI_NETWORK_NUMBER)
 
 		setEthLocked(_ethLocked || constants.Zero)
 		setEthClaimable(_ethClaimable || constants.Zero)
@@ -175,7 +175,9 @@ function Rewards() {
 							</div>
 						</Inline>
 						<BlueButton
-							onClick={() => handleClaim(4)}
+							onClick={() =>
+								handleClaim(config.MAINNET_NETWORK_NUMBER)
+							}
 							disabled={
 								!isMainnet(network) ||
 								!ethClaimable.gt(constants.Zero)
@@ -263,7 +265,9 @@ function Rewards() {
 						</Inline>
 
 						<GreenButton
-							onClick={() => handleClaim(5)}
+							onClick={() =>
+								handleClaim(config.XDAI_NETWORK_NUMBER)
+							}
 							disabled={
 								!isDN(network) ||
 								!xDaiClaimable.gt(constants.Zero)
