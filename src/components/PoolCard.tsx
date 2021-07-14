@@ -23,6 +23,7 @@ import { convertEthHelper } from '../lib/numbers'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
+	disabled: boolean
 	[key: string]: any
 }
 function PoolCard({
@@ -35,6 +36,7 @@ function PoolCard({
 	handleStake,
 	handleHarvest,
 	handleWithdraw,
+	disabled,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
@@ -53,6 +55,7 @@ function PoolCard({
 					deposit={() => setPoolState('deposit')}
 					hasLiquidityPool={hasLiquidityPool}
 					harvest={handleHarvest}
+					disabled={disabled}
 				/>
 			)}
 			{poolState === 'manage' && (
@@ -93,6 +96,7 @@ const Principal = ({
 	logo,
 	hasLiquidityPool,
 	harvest,
+	disabled = false,
 }) => {
 	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
@@ -114,6 +118,7 @@ const Principal = ({
 					<APRDetails
 						APR={APR}
 						provideLiquidityLink={provideLiquidityLink}
+						disabled={disabled}
 					/>
 				</SpaceBetween>
 				<SpaceBetween>
@@ -125,7 +130,9 @@ const Principal = ({
 							</div>
 						)}
 					</h2>
-					<SimpleButton onClick={manage}>Manage</SimpleButton>
+					{!disabled && (
+						<SimpleButton onClick={manage}>Manage</SimpleButton>
+					)}
 				</SpaceBetween>
 				<h2>
 					<b>Earned:</b>{' '}
@@ -141,10 +148,23 @@ const Principal = ({
 			</div>
 			<div style={{ minWidth: '100%' }}>
 				{hasLiquidityPool && (
-					<Button href={provideLiquidityLink} target='_blank'>
+					<Button
+						disabled={disabled}
+						onClick={() => {
+							const win = window.open(
+								provideLiquidityLink,
+								'_blank',
+							)
+							if (win) win.focus()
+						}}
+					>
 						Provide liquidity{' '}
 						<img
-							src='/assets/external-link-green.svg'
+							src={
+								disabled
+									? '/assets/external-link-gray.svg'
+									: '/assets/external-link-green.svg'
+							}
 							alt='external'
 						/>
 					</Button>
@@ -152,7 +172,11 @@ const Principal = ({
 				{earned.amount.eq(0) ? (
 					<Button onClick={deposit}>Stake LP tokens</Button>
 				) : (
-					<GreenButton className='long' onClick={harvest}>
+					<GreenButton
+						disabled={disabled}
+						className='long'
+						onClick={harvest}
+					>
 						Harvest
 					</GreenButton>
 				)}

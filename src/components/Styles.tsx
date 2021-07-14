@@ -198,10 +198,11 @@ export const Button = styled.a`
 	padding: 8px 16px;
 `
 
-export const WhiteGreenButtonLink = styled.a`
-	color: #2fbcb2;
+export const WhiteGreenButtonLink = styled.button`
+	color: ${props => (props.disabled ? '#DDE3E3' : '#2FBCB2')};
 	background: transparent;
-	border: solid 1px #2fbcb2;
+	border: ${props =>
+		props.disabled ? 'solid 1px #DDE3E3' : 'solid 1px #2FBCB2'};
 	font-family: 'Interstate', sans-serif;
 	border-radius: 38px;
 	padding: 25px 100px;

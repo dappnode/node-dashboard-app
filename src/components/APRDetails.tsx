@@ -15,6 +15,7 @@ import { convertEthHelper } from '../lib/numbers'
 interface APRDetailsProps {
 	APR: BigNumber | null
 	provideLiquidityLink: string
+	disabled: boolean
 }
 
 interface RoiValue {
@@ -43,6 +44,7 @@ const computeValues = (APR: BigNumber): RoiValues => {
 const APRDetails: React.FC<APRDetailsProps> = ({
 	APR,
 	provideLiquidityLink = '',
+	disabled = false,
 }) => {
 	if (!APR) return null
 	const values = computeValues(APR)
@@ -78,13 +80,23 @@ const APRDetails: React.FC<APRDetailsProps> = ({
 					</div>
 					<div className='actions'>
 						<WhiteGreenButtonLink
-							href={provideLiquidityLink}
-							target='_blank'
+							onClick={() => {
+								const win = window.open(
+									provideLiquidityLink,
+									'_blank',
+								)
+								if (win) win.focus()
+							}}
+							disabled={disabled}
 						>
 							Get more NODE{' '}
 							<img
 								alt='link'
-								src='/assets/external-link-green.svg'
+								src={
+									disabled
+										? '/assets/external-link-gray.svg'
+										: '/assets/external-link-green.svg'
+								}
 							/>
 						</WhiteGreenButtonLink>
 					</div>
@@ -139,7 +151,8 @@ const isEqual = (
 	Boolean(
 		prevProps.APR &&
 			nextProps.APR &&
-			prevProps.APR.isEqualTo(nextProps.APR),
+			prevProps.APR.isEqualTo(nextProps.APR) &&
+			prevProps.disabled === nextProps.disabled,
 	)
 
 export default React.memo(APRDetails, isEqual)
