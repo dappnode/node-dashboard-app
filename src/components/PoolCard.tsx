@@ -173,7 +173,9 @@ const Principal = ({
 					</Button>
 				)}
 				{earned.amount.eq(0) ? (
-					<Button onClick={deposit}>Stake LP tokens</Button>
+					<Button disabled={disabled} onClick={deposit}>
+						Stake LP tokens
+					</Button>
 				) : (
 					<GreenButton
 						disabled={disabled}
