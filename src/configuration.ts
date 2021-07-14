@@ -3,6 +3,7 @@ export const config = {
 	ETH_USDT_ORACLE: 'eth-usd.data.eth',
 
 	MAINNET_NETWORK_NUMBER: 4,
+	XDAI_NETWORK_NUMBER: 5,
 }
 
 export const MAINNET_CONFIG = {
