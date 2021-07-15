@@ -119,8 +119,8 @@ const Principal = ({
 		<>
 			<div style={{ width: '96%' }}>
 				<SpaceBetween>
-					<label>{platform}</label>
 					<NetworkLabel network={network} />
+					<label>{platform}</label>
 				</SpaceBetween>
 				<h1>
 					<img alt='logo' src={logo} /> {name}
