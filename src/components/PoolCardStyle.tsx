@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 interface PoolCardSectionProps {
-	poolState: string,
-	disabled: boolean,
+	poolState: string
+	disabled: boolean
 	border: string
 }
 
@@ -13,10 +13,8 @@ export const PoolCardSection = styled.section<PoolCardSectionProps>`
 	justify-content: ${props =>
 		props.poolState === 'default' ? 'space-between' : 'center'};
 	align-items: center;
-	border: ${props => 
-		props.disabled ? '1px solid #dde3e3' : props.border};
-	background: ${props => 
-		props.disabled ? '#F4F6F6' : 'white'};
+	border: ${props => (props.disabled ? '1px solid #dde3e3' : props.border)};
+	background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
 	min-width: calc(100% - 24px);
 	height: 380px;
 	padding: 16px;

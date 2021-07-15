@@ -44,9 +44,9 @@ function PoolCard({
 	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
-		<PoolCardSection 
-			poolState={poolState} 
-			disabled={disabled} 
+		<PoolCardSection
+			poolState={poolState}
+			disabled={disabled}
 			border={isMainnet ? '2px solid #86bde4' : '2px solid #86e4dd'}
 		>
 			{poolState === 'default' && (
