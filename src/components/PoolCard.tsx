@@ -37,13 +37,18 @@ function PoolCard({
 	handleHarvest,
 	handleWithdraw,
 	disabled,
+	isMainnet,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
 	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
-		<PoolCardSection poolState={poolState}>
+		<PoolCardSection 
+			poolState={poolState} 
+			disabled={disabled} 
+			border={isMainnet ? '2px solid #86bde4' : '2px solid #86e4dd'}
+		>
 			{poolState === 'default' && (
 				<Principal
 					name={name}
