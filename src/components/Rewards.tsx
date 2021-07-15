@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { constants, Contract, BigNumber, utils } from 'ethers'
+
 import styled from 'styled-components'
 import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
+import { switchNetwork } from '../lib/metamask'
 import Seed from '../assets/seed'
 import Time from '../assets/time'
 import { BigCurrency, GreenButton } from './Styles'
@@ -11,6 +13,7 @@ import { useOnboard } from '../hooks/useOnboard'
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
 import { NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
+import AddTokenButton from './AddToken'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -124,10 +127,18 @@ function Rewards() {
 					<label className={isMainnet(network) ? 'blue' : 'disabled'}>
 						ETH
 					</label>
-					{!isMainnet(network) && (
+					{!isMainnet(network) ? (
 						<p>
-							<b>Connect to this network</b> to claim your tokens.{' '}
+							<b
+								aria-hidden='true'
+								onClick={() => switchNetwork(4)}
+							>
+								Connect to this network
+							</b>{' '}
+							to claim your tokens.{' '}
 						</p>
+					) : (
+						<AddTokenButton network={network} />
 					)}
 				</SpaceBetween>
 				<br />
@@ -203,10 +214,18 @@ function Rewards() {
 					<label className={isDN(network) ? 'green' : 'disabled'}>
 						xDAI
 					</label>
-					{!isDN(network) && (
+					{!isDN(network) ? (
 						<p>
-							<b>Connect to this network</b> to claim your tokens.{' '}
+							<b
+								aria-hidden='true'
+								onClick={() => switchNetwork(5)}
+							>
+								Connect to this network
+							</b>{' '}
+							to claim your tokens.{' '}
 						</p>
+					) : (
+						<AddTokenButton network={network} />
 					)}
 				</SpaceBetween>
 				<br />

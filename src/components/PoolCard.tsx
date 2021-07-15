@@ -19,7 +19,7 @@ import {
 	SpaceBetween,
 	Token,
 } from './PoolCardStyle'
-import { convertEthHelper } from '../lib/numbers'
+import { bn, convertEthHelper } from '../lib/numbers'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
@@ -305,10 +305,14 @@ const Deposit = ({
 					</div>
 				</div>
 				<GreenButton
-					disabled={disabled}
 					onClick={() => deposit(amount)}
 					className='long'
 					style={{ marginTop: '16px' }}
+					disabled={
+						disabled ||
+						bn(amount).isZero() ||
+						bn(amount).gt(bn(notStakedLpTokensWei))
+					}
 				>
 					Deposit LP tokens
 				</GreenButton>
@@ -390,10 +394,16 @@ const Withdraw = ({ close, stakedLpTokens, withdraw, disabled }) => {
 					</div>
 				</div>
 				<GreenButton
-					disabled={disabled}
 					onClick={() => withdraw(amount)}
 					className='long'
 					style={{ marginTop: '16px' }}
+					disabled={
+						disabled ||
+						bn(amount).isZero() ||
+						bn(amount).gt(
+							bn(stakedLpTokens.times(10 ** 18).toFixed(0)),
+						)
+					}
 				>
 					Withdraw LP tokens
 				</GreenButton>
