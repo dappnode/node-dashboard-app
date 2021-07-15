@@ -1,61 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Contract, ethers } from 'ethers'
-import { shortenAddress, getNetworkType } from '../lib/web3-utils'
-import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
+import { ethers } from 'ethers'
+import { getNetworkType, shortenAddress } from '../lib/web3-utils'
+import { LightBlueButton, LightGreenButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
-import { NETWORKS_CONFIG } from '../configuration'
+import { config } from '../configuration'
 import { convertEthHelper } from '../lib/numbers'
-import { networkProviders } from '../lib/networkProvider'
+import { useTokenBalance } from '../hooks/useTokenBalance'
 
 const Connection: React.FC = () => {
 	const { address, network } = useOnboard()
-
-	const [tokenBalance, setTokenBalance] = useState<number | string>(0)
-
-	useEffect(() => {
-		if (network === 0 || !address) {
-			setTokenBalance(0)
-			return
-		}
-
-		const networkConfig = NETWORKS_CONFIG[network]
-
-		if (networkConfig) {
-			const tokenAddress = networkConfig.TOKEN_ADDRESS
-			const provider = networkProviders[network]
-
-			const ERC20ABI = [
-				// read balanceOf
-				{
-					constant: true,
-					inputs: [{ name: '_owner', type: 'address' }],
-					name: 'balanceOf',
-					outputs: [{ name: 'balance', type: 'uint256' }],
-					type: 'function',
-				},
-			]
-			const tokenContract = new Contract(tokenAddress, ERC20ABI, provider)
-			tokenContract
-				.balanceOf(address)
-				.then(balance => {
-					setTokenBalance(ethers.utils.formatEther(balance))
-				})
-				.catch(e => console.error('Error on fetching user balance:', e))
-		} else {
-			setTokenBalance(0)
-		}
-	}, [address, network])
+	const { tokenBalance } = useTokenBalance()
 
 	return (
 		<>
-			{network === 4 && (
+			{network === config.MAINNET_NETWORK_NUMBER && (
 				<LightBlueButton>
 					Network: {getNetworkType(network)}{' '}
 				</LightBlueButton>
 			)}
-			{network === 5 && (
+			{network === config.XDAI_NETWORK_NUMBER && (
 				<LightGreenButton>
 					Network: {getNetworkType(network)}{' '}
 				</LightGreenButton>
@@ -63,7 +28,13 @@ const Connection: React.FC = () => {
 			{address && (
 				<>
 					<NavbarButton>
-						<p>{convertEthHelper(tokenBalance, 4)} Node</p>
+						<p>
+							{convertEthHelper(
+								ethers.utils.formatEther(tokenBalance),
+								4,
+							)}{' '}
+							Node
+						</p>
 					</NavbarButton>
 					<NavbarButton>
 						<p>{shortenAddress(address)}</p>

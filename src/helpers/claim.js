@@ -30,8 +30,13 @@ export async function fetchDnClaimData(address) {
 }
 
 export async function fetchEthClaimData(address) {
-	const { claims } = await fetchEthMerkleResults()
-	const formatted = isAddress(address)
+	try {
+		const { claims } = await fetchEthMerkleResults()
+		const formatted = isAddress(address)
 
-	return claims[formatted]
+		return claims[formatted]
+	} catch (e) {
+		console.error(e)
+		return null
+	}
 }

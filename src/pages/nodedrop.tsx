@@ -6,9 +6,16 @@ import Navbar from '../components/Navbar'
 
 import { useOnboard } from '../hooks/useOnboard'
 
-import { GreenButton, Inter400, Inter700 } from '../components/Styles'
+import {
+	GRADIENT_TEXT,
+	GreenButton,
+	Inter400,
+	Inter700,
+} from '../components/Styles'
 
 import AirdropRewards from '../components/AirdropRewards'
+import { config } from '../configuration'
+import NodeDropHint from '../components/NodeDropHint'
 
 function Nodedrop() {
 	const { connect, network, isReady } = useOnboard()
@@ -87,6 +94,7 @@ function Nodedrop() {
 
 					<div style={{ margin: '50px auto' }} />
 
+					<NodeDropHint />
 					<QuizSection>
 						{!isReady && (
 							<WarnSection>
@@ -116,8 +124,8 @@ function Nodedrop() {
 						{isReady && networkAllowed(network) && (
 							<>
 								<Inter700 className='large'>
-									Congrats! You’re ready to claim your
-									NODEdrop.
+									Congrats! You’re ready to claim your{' '}
+									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
 								</Inter700>
 								<Inter400Subtitle>
 									Claim your rewards in the xDai and ETH
@@ -148,11 +156,11 @@ function Nodedrop() {
 
 const handleMainBackground = network => {
 	switch (network) {
-		case 4:
+		case config.MAINNET_NETWORK_NUMBER:
 			return `
         background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
       `
-		case 5:
+		case config.XDAI_NETWORK_NUMBER:
 			return `
         background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
       `
