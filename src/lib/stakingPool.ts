@@ -7,6 +7,8 @@ import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, MAINNET_CONFIG } from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
+import { showPendingStake, showConfirmedStake } from './notifications'
+import { convertEthHelper } from './numbers'
 
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
@@ -230,7 +232,7 @@ export async function stakeTokens(
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 
 	const rawPermitCall =
-		provider.network.chainId === 4
+		provider.network.chainId === config.MAINNET_NETWORK_NUMBER
 			? await permitTokensMainnet(
 					provider,
 					poolAddress,
@@ -246,10 +248,13 @@ export async function stakeTokens(
 			rawPermitCall.data,
 		)
 
-	// eslint-disable-next-line no-console
-	console.log('stakeWithPermit txResponse', txResponse)
+	showPendingStake(ethers.utils.formatEther(amount))
 
-	return txResponse
+	const stake = await txResponse.wait()
+
+	if (!stake) return
+
+	showConfirmedStake()
 }
 
 export const harvestTokens = async (lmAddress: string, signer) => {

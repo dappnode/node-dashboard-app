@@ -20,10 +20,13 @@ import {
 	Token,
 } from './PoolCardStyle'
 import { bn, convertEthHelper } from '../lib/numbers'
+import NetworkLabel from './NetworkLabel'
+import { isMainnet } from '../lib/web3-utils'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
 	disabled: boolean
+	network: number
 	[key: string]: any
 }
 function PoolCard({
@@ -37,7 +40,7 @@ function PoolCard({
 	handleHarvest,
 	handleWithdraw,
 	disabled,
-	isMainnet,
+	network,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
@@ -47,7 +50,7 @@ function PoolCard({
 		<PoolCardSection
 			poolState={poolState}
 			disabled={disabled}
-			border={isMainnet ? '2px solid #86bde4' : '2px solid #86e4dd'}
+			border={isMainnet(network) ? '2px solid #86bde4' : '2px solid #86e4dd'}
 		>
 			{poolState === 'default' && (
 				<Principal
@@ -61,6 +64,7 @@ function PoolCard({
 					hasLiquidityPool={hasLiquidityPool}
 					harvest={handleHarvest}
 					disabled={disabled}
+					network={network}
 				/>
 			)}
 			{poolState === 'manage' && (
@@ -70,6 +74,7 @@ function PoolCard({
 					deposit={() => setPoolState('deposit')}
 					withdraw={() => setPoolState('withdraw')}
 					close={() => setPoolState('default')}
+					hasLiquidityPool={hasLiquidityPool}
 					disabled={disabled}
 				/>
 			)}
@@ -78,6 +83,7 @@ function PoolCard({
 					disabled={disabled}
 					stakedLpTokens={stakedLpTokens}
 					notStakedLpTokensWei={notStakedLpTokensWei}
+					hasLiquidityPool={hasLiquidityPool}
 					deposit={handleStake}
 					close={() => setPoolState('default')}
 				/>
@@ -87,6 +93,7 @@ function PoolCard({
 					stakedLpTokens={stakedLpTokens}
 					withdraw={handleWithdraw}
 					close={() => setPoolState('default')}
+					hasLiquidityPool={hasLiquidityPool}
 					disabled={disabled}
 				/>
 			)}
@@ -105,12 +112,16 @@ const Principal = ({
 	hasLiquidityPool,
 	harvest,
 	disabled = false,
+	network,
 }) => {
 	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
 		<>
 			<div style={{ width: '96%' }}>
-				<label>{platform}</label>
+				<SpaceBetween>
+					<label>{platform}</label>
+					<NetworkLabel network={network} />
+				</SpaceBetween>
 				<h1>
 					<img alt='logo' src={logo} /> {name}
 				</h1>
@@ -131,7 +142,7 @@ const Principal = ({
 				</SpaceBetween>
 				<SpaceBetween>
 					<h2>
-						<b>LP token:</b>{' '}
+						<b>{`${hasLiquidityPool ? 'LP' : 'NODE'} token:`}</b>{' '}
 						{stakedLpTokens && (
 							<div className='pool-info-text'>
 								{convertEthHelper(stakedLpTokens, 6)}
@@ -177,11 +188,14 @@ const Principal = ({
 						/>
 					</Button>
 				)}
-				{earned.amount.eq(0) ? (
+				{(earned.amount.eq(0) || !hasLiquidityPool) && (
 					<Button disabled={disabled} onClick={deposit}>
-						Stake LP tokens
+						{hasLiquidityPool
+							? 'Stake LP tokens'
+							: 'Stake NODE tokens'}
 					</Button>
-				) : (
+				)}
+				{earned.amount.gt(0) && (
 					<GreenButton
 						disabled={disabled}
 						className='long'
@@ -201,6 +215,7 @@ const Manage = ({
 	close,
 	stakedLpTokens,
 	disabled,
+	hasLiquidityPool,
 	notStakedLpTokensWei,
 }) => (
 	<FullHeightCenter>
@@ -208,16 +223,18 @@ const Manage = ({
 			<img alt='close' src='/assets/closePool.svg' />
 		</ClosePool>
 		<div>
-			<Inter600>Manage your LP tokens</Inter600>
+			<Inter600>
+				Manage your {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+			</Inter600>
 			<Inter400>
 				You currently have <b>{convertEthHelper(stakedLpTokens, 6)}</b>{' '}
-				staked Liquidity Provider tokens
+				staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 			</Inter400>
 			<Button disabled={disabled} onClick={deposit}>
-				Deposit LP tokens
+				Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 			</Button>
 			<Button disabled={disabled} onClick={withdraw}>
-				Withdraw LP tokens
+				Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 			</Button>
 		</div>
 	</FullHeightCenter>
@@ -227,6 +244,7 @@ interface DepositProps {
 	close: () => void
 	deposit: (amount: string) => void
 	stakedLpTokens: string
+	hasLiquidityPool: boolean
 	notStakedLpTokensWei: string
 	disabled: boolean
 }
@@ -235,6 +253,7 @@ const Deposit = ({
 	deposit,
 	stakedLpTokens,
 	notStakedLpTokensWei,
+	hasLiquidityPool,
 	disabled,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
@@ -265,11 +284,14 @@ const Deposit = ({
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
 			<div>
-				<Inter600>Deposit LP tokens</Inter600>
+				<Inter600>
+					Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				</Inter600>
 				<Inter400>
 					You currently have{' '}
-					<b>{convertEthHelper(stakedLpTokens, 6)}</b> staked
-					Liquidity Provider tokens. Deposit more to accrue more.
+					<b>{convertEthHelper(stakedLpTokens, 6)}</b> staked{' '}
+					{`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens. Deposit more
+					to accrue more rewards.
 				</Inter400>
 				<div>
 					<Input
@@ -319,14 +341,20 @@ const Deposit = ({
 						bn(amount).gt(bn(notStakedLpTokensWei))
 					}
 				>
-					Deposit LP tokens
+					Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 				</GreenButton>
 			</div>
 		</FullHeightCenter>
 	)
 }
 
-const Withdraw = ({ close, stakedLpTokens, withdraw, disabled }) => {
+const Withdraw = ({
+	close,
+	stakedLpTokens,
+	hasLiquidityPool,
+	withdraw,
+	disabled,
+}) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 
@@ -354,11 +382,13 @@ const Withdraw = ({ close, stakedLpTokens, withdraw, disabled }) => {
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
 			<div>
-				<Inter600>Withdraw LP tokens</Inter600>
+				<Inter600>
+					Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				</Inter600>
 				<Inter400>
 					You currently have {convertEthHelper(stakedLpTokens, 6)}{' '}
-					staked Liquidity Provider tokens. Enter the amount you’d
-					like to withdraw.
+					staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens. Enter
+					the amount you’d like to withdraw.
 				</Inter400>
 				<div>
 					<Input
@@ -410,7 +440,7 @@ const Withdraw = ({ close, stakedLpTokens, withdraw, disabled }) => {
 						)
 					}
 				>
-					Withdraw LP tokens
+					Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 				</GreenButton>
 			</div>
 		</FullHeightCenter>

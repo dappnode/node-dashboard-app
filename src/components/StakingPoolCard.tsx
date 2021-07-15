@@ -11,7 +11,6 @@ import {
 } from '../lib/stakingPool'
 import { useOnboard } from '../hooks/useOnboard'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
-import { isMainnet } from '../lib/web3-utils'
 
 interface StakingPoolCardProps {
 	composition: string
@@ -54,7 +53,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
 				name !== 'NODE',
-			).then(setStakePoolInfo)
+			)
+				.then(setStakePoolInfo)
+				.catch(console.error)
 		cb()
 
 		stakePoolPoll.current = setInterval(cb, 15000)
@@ -75,7 +76,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				NETWORKS_CONFIG[network][option].POOL_ADDRESS,
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
-			).then(setStakeUserInfo)
+			)
+				.then(setStakeUserInfo)
+				.catch(console.error)
 
 		cb()
 
@@ -117,6 +120,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			disabled={network !== walletNetwork || !isReady}
 			name={name}
 			platform={platform}
+			network={network}
 			composition={composition}
 			stakePoolInfo={{
 				provideLiquidityLink,
@@ -127,7 +131,6 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			handleHarvest={handleHarvest}
 			handleWithdraw={handleWithdraw}
 			hasLiquidityPool={name !== 'NODE'}
-			isMainnet={isMainnet(network)}
 		/>
 	)
 }

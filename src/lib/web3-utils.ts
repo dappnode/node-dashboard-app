@@ -1,3 +1,5 @@
+import { config } from '../configuration'
+
 export const DEFAULT_LOCAL_CHAIN = 'private'
 
 export const addressPattern = '(0x)?[0-9a-fA-F]{40}'
@@ -32,17 +34,20 @@ export function getNetworkType(chainId) {
 
 // TODO: Add DN network id
 export function networkAllowed(chainId: number | string): boolean {
-	const chainIdString = String(chainId)
-	return chainIdString === '4' || chainIdString === '5'
+	const chainIdNumber = Number(chainId)
+	return (
+		chainIdNumber === config.MAINNET_NETWORK_NUMBER ||
+		chainIdNumber === config.XDAI_NETWORK_NUMBER
+	)
 }
 
 export function isMainnet(chainId) {
-	const chainIdString = String(chainId)
-	return chainIdString === '4'
+	const chainIdNumber = Number(chainId)
+	return chainIdNumber === config.MAINNET_NETWORK_NUMBER
 }
 
 // TODO: Change networtk
 export function isDN(chainId) {
-	const chainIdString = String(chainId)
-	return chainIdString === '5'
+	const chainIdNumber = Number(chainId)
+	return chainIdNumber === config.XDAI_NETWORK_NUMBER
 }

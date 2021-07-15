@@ -4,7 +4,7 @@ import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
 import StakingPoolCard from './StakingPoolCard'
-import { MAINNET_CONFIG } from '../configuration'
+import { config, MAINNET_CONFIG } from '../configuration'
 
 function Dashboard() {
 	return (
@@ -35,7 +35,7 @@ function Dashboard() {
 					option='UNISWAP'
 					composition='50% NODE, 50% ETH'
 					logo='/assets/dn-eth-logos.svg'
-					network={4}
+					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink={`https://app.uniswap.org/#/add/v2/ETH/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
 				/>
 				<StakingPoolCard
@@ -44,7 +44,7 @@ function Dashboard() {
 					option='SUSHISWAP'
 					composition='50% NODE, 50% ETH'
 					logo='/assets/dn-eth-logos.svg'
-					network={4}
+					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink={`https://app.sushi.com/add/${MAINNET_CONFIG.WETH_TOKEN_ADDRESS}/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
 				/>
 				<StakingPoolCard
@@ -53,7 +53,7 @@ function Dashboard() {
 					option='NODE'
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'
-					network={4}
+					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink=''
 				/>
 				<StakingPoolCard
@@ -62,7 +62,7 @@ function Dashboard() {
 					option='NODE'
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'
-					network={5}
+					network={config.XDAI_NETWORK_NUMBER}
 					provideLiquidityLink=''
 				/>
 			</PoolsContainer>
