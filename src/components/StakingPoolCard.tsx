@@ -53,7 +53,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
 				name !== 'NODE',
-			).then(setStakePoolInfo)
+			)
+				.then(setStakePoolInfo)
+				.catch(console.error)
 		cb()
 
 		stakePoolPoll.current = setInterval(cb, 15000)
@@ -74,7 +76,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				NETWORKS_CONFIG[network][option].POOL_ADDRESS,
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
-			).then(setStakeUserInfo)
+			)
+				.then(setStakeUserInfo)
+				.catch(console.error)
 
 		cb()
 

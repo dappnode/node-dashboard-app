@@ -16,8 +16,8 @@ import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
 import { switchNetwork } from '../lib/metamask'
 
 function Rewards() {
-	const [dnClaimable, setDnClaimable] = useState(ZERO)
-	const [ethClaimable, setEthClaimable] = useState(ZERO)
+	const [dnClaimable, setDnClaimable] = useState<ethers.BigNumber>(ZERO)
+	const [ethClaimable, setEthClaimable] = useState<ethers.BigNumber>(ZERO)
 
 	const { address, network, provider } = useOnboard()
 
@@ -25,21 +25,30 @@ function Rewards() {
 		if (!address) return
 
 		const claimData = await fetchEthClaimData(address)
-		const merkleContract = new Contract(
-			MAINNET_CONFIG.MERKLE_ADDRESS,
-			MERKLE_ABI,
-			mainnetProvider,
-		)
-		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
-		const canClaim = Boolean(claimData && isClaimedResult === false)
-		// eslint-disable-next-line no-console
-		console.log(canClaim)
+		if (claimData) {
+			const merkleContract = new Contract(
+				MAINNET_CONFIG.MERKLE_ADDRESS,
+				MERKLE_ABI,
+				mainnetProvider,
+			)
+			try {
+				const isClaimedResult = await merkleContract.isClaimed(
+					claimData.index,
+				)
+				const canClaim = Boolean(claimData && isClaimedResult === false)
+				// eslint-disable-next-line no-console
+				console.log(canClaim)
 
-		if (!canClaim) return ZERO
+				if (!canClaim) return ZERO
 
-		const ethAmountBN = bn(claimData.amount)
+				const ethAmountBN = bn(claimData.amount)
 
-		return ethAmountBN
+				return ethAmountBN
+			} catch (e) {
+				console.error(e)
+			}
+		}
+		return ZERO
 	}
 
 	async function getXDaiClaimableAmount(): Promise<any> {
@@ -71,10 +80,10 @@ function Rewards() {
 	}
 
 	useEffect(() => {
-		updateClaimableAmount()
+		updateClaimableAmount().catch(console.error)
 
 		const interval = setInterval(() => {
-			updateClaimableAmount()
+			updateClaimableAmount().catch(console.error)
 		}, 15000)
 
 		return () => clearInterval(interval)
@@ -82,30 +91,34 @@ function Rewards() {
 
 	async function handleDnClaim() {
 		if (!provider) return
-		const signer = await provider.getSigner()
-		const claimData = await fetchDnClaimData(address)
-		const merkleContract = new Contract(
-			XDAI_CONFIG.MERKLE_ADDRESS,
-			MERKLE_ABI,
-			provider,
-		)
+		try {
+			const signer = await provider.getSigner()
+			const claimData = await fetchDnClaimData(address)
+			const merkleContract = new Contract(
+				XDAI_CONFIG.MERKLE_ADDRESS,
+				MERKLE_ABI,
+				provider,
+			)
 
-		const isClaimedResult = await merkleContract
-			.connect(signer)
-			.isClaimed(claimData.index)
-		const canClaim = Boolean(claimData && isClaimedResult === false)
+			const isClaimedResult = await merkleContract
+				.connect(signer)
+				.isClaimed(claimData.index)
+			const canClaim = Boolean(claimData && isClaimedResult === false)
 
-		if (!canClaim) return
+			if (!canClaim) return
 
-		const args = [
-			claimData.index,
-			address,
-			claimData.amount,
-			claimData.proof,
-		]
-		const result = await merkleContract.connect(signer).claim(...args)
-		// eslint-disable-next-line no-console
-		console.log(result)
+			const args = [
+				claimData.index,
+				address,
+				claimData.amount,
+				claimData.proof,
+			]
+			const result = await merkleContract.connect(signer).claim(...args)
+			// eslint-disable-next-line no-console
+			console.log(result)
+		} catch (e) {
+			console.error('Error in claiming:', e)
+		}
 	}
 
 	async function handleEthClaim() {
