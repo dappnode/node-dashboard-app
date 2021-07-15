@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 	position: relative;
 	border-radius: 26px;
 	background: #ffffff;
-	transition: width .4s;
+	transition: width 400ms;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;

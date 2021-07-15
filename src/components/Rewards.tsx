@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { constants, Contract, BigNumber, utils } from 'ethers'
-import toast from 'react-hot-toast'
 
 import styled from 'styled-components'
 import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
