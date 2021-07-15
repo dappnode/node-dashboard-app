@@ -120,6 +120,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			disabled={network !== walletNetwork}
 			name={name}
 			platform={platform}
+			network={network}
 			composition={composition}
 			stakePoolInfo={{
 				provideLiquidityLink,

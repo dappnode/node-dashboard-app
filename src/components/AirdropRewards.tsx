@@ -11,7 +11,7 @@ import { bn, ZERO } from '../lib/numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import { MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
 import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
 import { switchNetwork } from '../lib/metamask'
 
@@ -224,7 +224,9 @@ function Rewards() {
 						<p>
 							<b
 								aria-hidden='true'
-								onClick={() => switchNetwork(5)}
+								onClick={() =>
+									switchNetwork(config.XDAI_NETWORK_NUMBER)
+								}
 							>
 								Connect to this network
 							</b>{' '}
