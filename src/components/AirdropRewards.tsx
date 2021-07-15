@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Contract, ethers } from 'ethers'
 import { isDN, isMainnet } from '../lib/web3-utils'
 import Seed from '../assets/seed'
+import AddTokenButton from './AddToken'
 import { BigCurrency, FlexRow, GreenButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
@@ -12,6 +13,7 @@ import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
 import { MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
 import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
+import { switchNetwork } from '../lib/metamask'
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState(ZERO)
@@ -145,10 +147,18 @@ function Rewards() {
 					<label className={isMainnet(network) ? 'blue' : 'disabled'}>
 						ETH
 					</label>
-					{!isMainnet(network) && (
+					{!isMainnet(network) ? (
 						<p>
-							<b>Connect to this network</b> to claim your tokens.{' '}
+							<b
+								aria-hidden='true'
+								onClick={() => switchNetwork(4)}
+							>
+								Connect to this network
+							</b>{' '}
+							to claim your tokens.{' '}
 						</p>
+					) : (
+						<AddTokenButton network={network} />
 					)}
 				</SpaceBetween>
 				<Row>
@@ -197,10 +207,18 @@ function Rewards() {
 					<label className={isDN(network) ? 'green' : 'disabled'}>
 						XDAI
 					</label>
-					{!isDN(network) && (
+					{!isDN(network) ? (
 						<p>
-							<b>Connect to this network</b> to claim your tokens.{' '}
+							<b
+								aria-hidden='true'
+								onClick={() => switchNetwork(5)}
+							>
+								Connect to this network
+							</b>{' '}
+							to claim your tokens.{' '}
 						</p>
+					) : (
+						<AddTokenButton network={network} />
 					)}
 				</SpaceBetween>
 
