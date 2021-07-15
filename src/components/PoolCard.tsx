@@ -50,7 +50,9 @@ function PoolCard({
 		<PoolCardSection
 			poolState={poolState}
 			disabled={disabled}
-			border={isMainnet(network) ? '2px solid #86bde4' : '2px solid #86e4dd'}
+			border={
+				isMainnet(network) ? '2px solid #86bde4' : '2px solid #86e4dd'
+			}
 		>
 			{poolState === 'default' && (
 				<Principal
