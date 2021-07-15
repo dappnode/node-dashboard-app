@@ -13,6 +13,7 @@ import { useOnboard } from '../hooks/useOnboard'
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
 import { NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
+import { showPendingClaim, showConfirmedClaim } from '../lib/notifications'
 import AddTokenButton from './AddToken'
 
 interface ITokenDistro {
@@ -32,7 +33,7 @@ function Rewards() {
 
 	// eslint-disable-next-line no-shadow
 	async function handleClaim(network: number) {
-		const signer = provider.getSigner()
+		const signer = provider.getSigner().connectUnchecked()
 
 		const tokenDistro = new Contract(
 			NETWORKS_CONFIG[network].TOKEN_DISTRO_ADDRESS,
@@ -40,9 +41,15 @@ function Rewards() {
 			signer,
 		)
 
-		const claim = await tokenDistro.claim()
+		const tx = await tokenDistro.claim()
 
-		return claim
+		showPendingClaim(network, tx.hash)
+
+		const claim = await tx.wait()
+
+		if (!claim) return
+
+		showConfirmedClaim()
 	}
 
 	async function getTokenDistroAmounts(

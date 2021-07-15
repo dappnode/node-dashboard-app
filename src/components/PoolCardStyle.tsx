@@ -63,7 +63,8 @@ export const PoolCardSection = styled.section<PoolCardSectionProps>`
 export const Button = styled.button`
 	color: ${props => (props.disabled ? '#DDE3E3' : '#2fbcb2')};
 	background: transparent;
-	border: ${props => (props.disabled ? '#DDE3E3' : '#2fbcb2')};
+	border: 1px solid;
+	border-color: ${props => (props.disabled ? '#DDE3E3' : '#2fbcb2')};
 	font-family: 'Interstate', sans-serif;
 	border-radius: 38px;
 	padding: 25px 100px;
@@ -71,7 +72,7 @@ export const Button = styled.button`
 	width: -webkit-fill-available;
 	font-size: 12px;
 	letter-spacing: 0.27px;
-	line-height: 19px;
+	line-height: 16px;
 	text-align: center;
 	text-decoration: none;
 	padding: 8px 16px;
