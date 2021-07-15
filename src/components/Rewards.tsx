@@ -15,6 +15,7 @@ import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import { showPendingClaim, showConfirmedClaim } from '../lib/notifications'
 import AddTokenButton from './AddToken'
+import NetworkLabel from './NetworkLabel'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -131,9 +132,7 @@ function Rewards() {
 				border='2px solid #86bde4'
 			>
 				<SpaceBetween>
-					<label className={isMainnet(network) ? 'blue' : 'disabled'}>
-						ETH
-					</label>
+					<NetworkLabel network={config.MAINNET_NETWORK_NUMBER} />
 					{!isMainnet(network) ? (
 						<p>
 							<b
@@ -220,9 +219,7 @@ function Rewards() {
 				border='2px solid #86e4dd'
 			>
 				<SpaceBetween>
-					<label className={isDN(network) ? 'green' : 'disabled'}>
-						xDAI
-					</label>
+					<NetworkLabel network={config.XDAI_NETWORK_NUMBER} />
 					{!isDN(network) ? (
 						<p>
 							<b

@@ -20,10 +20,12 @@ import {
 	Token,
 } from './PoolCardStyle'
 import { bn, convertEthHelper } from '../lib/numbers'
+import NetworkLabel from './NetworkLabel'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
 	disabled: boolean
+	network: number
 	[key: string]: any
 }
 function PoolCard({
@@ -37,6 +39,7 @@ function PoolCard({
 	handleHarvest,
 	handleWithdraw,
 	disabled,
+	network,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
@@ -56,6 +59,7 @@ function PoolCard({
 					hasLiquidityPool={hasLiquidityPool}
 					harvest={handleHarvest}
 					disabled={disabled}
+					network={network}
 				/>
 			)}
 			{poolState === 'manage' && (
@@ -103,12 +107,16 @@ const Principal = ({
 	hasLiquidityPool,
 	harvest,
 	disabled = false,
+	network,
 }) => {
 	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
 		<>
 			<div style={{ width: '96%' }}>
-				<label>{platform}</label>
+				<SpaceBetween>
+					<label>{platform}</label>
+					<NetworkLabel network={network} />
+				</SpaceBetween>
 				<h1>
 					<img alt='logo' src={logo} /> {name}
 				</h1>
