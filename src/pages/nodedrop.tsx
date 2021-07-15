@@ -6,10 +6,16 @@ import Navbar from '../components/Navbar'
 
 import { useOnboard } from '../hooks/useOnboard'
 
-import { GreenButton, Inter400, Inter700 } from '../components/Styles'
+import {
+	GRADIENT_TEXT,
+	GreenButton,
+	Inter400,
+	Inter700,
+} from '../components/Styles'
 
 import AirdropRewards from '../components/AirdropRewards'
 import { config } from '../configuration'
+import NodeDropHint from '../components/NodeDropHint'
 
 function Nodedrop() {
 	const { connect, network, isReady } = useOnboard()
@@ -88,6 +94,7 @@ function Nodedrop() {
 
 					<div style={{ margin: '50px auto' }} />
 
+					<NodeDropHint />
 					<QuizSection>
 						{!isReady && (
 							<WarnSection>
@@ -117,8 +124,8 @@ function Nodedrop() {
 						{isReady && networkAllowed(network) && (
 							<>
 								<Inter700 className='large'>
-									Congrats! You’re ready to claim your
-									NODEdrop.
+									Congrats! You’re ready to claim your{' '}
+									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
 								</Inter700>
 								<Inter400Subtitle>
 									Claim your rewards in the xDai and ETH
