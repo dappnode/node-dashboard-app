@@ -24,6 +24,7 @@ function Home() {
 				<Main id='page-wrap' network={network}>
 					<Navbar
 						title='DAppNode Dashboard'
+						nodedrop={false}
 						openSidebar={() => setIsOpen(true)}
 					/>
 					<Dashboard />

@@ -5,22 +5,62 @@ import { networkAllowed } from '../lib/web3-utils'
 import Navbar from '../components/Navbar'
 
 import { useOnboard } from '../hooks/useOnboard'
-
+import { getEthClaimableAmount, getXDaiClaimableAmount } from '../lib/claim'
 import {
 	GRADIENT_TEXT,
+	Button,
 	GreenButton,
+	Input,
 	Inter400,
 	Inter700,
 } from '../components/Styles'
-
 import AirdropRewards from '../components/AirdropRewards'
 import { config } from '../configuration'
 import NodeDropHint from '../components/NodeDropHint'
+import Stepper from '../components/Stepper'
+import Story from '../components/Story'
+import Quiz from '../components/Quiz'
+
+type componentStateType = 'welcome' | 'rewards' | 'about' | 'quiz' | 'claim'
 
 function Nodedrop() {
-	const { connect, network, isReady } = useOnboard()
+	const { address, connect, network, isReady } = useOnboard()
 
 	const [, setIsOpen] = useState(false)
+	const [addressInput, setAddressInput] = useState<string>('')
+	const [pendingRewards, setPendingRewards] = useState<boolean>(true)
+	const [componentState, setComponentState] =
+		useState<componentStateType>('welcome')
+
+	// eslint-disable-next-line no-shadow
+	async function hasPendingRewards(address: string) {
+		const [ethAmount, dnAmount] = await Promise.all([
+			getEthClaimableAmount(address),
+			getXDaiClaimableAmount(address),
+		])
+
+		if (addressInput === '0xNODE') return true
+
+		return ethAmount.add(dnAmount).gt(0)
+	}
+
+	async function handleConnect() {
+		if (!isReady) await connect()
+
+		if (!address) return
+
+		const pending = await hasPendingRewards(address)
+
+		setPendingRewards(pending)
+		setComponentState('rewards')
+	}
+
+	async function handleCheck() {
+		const pending = await hasPendingRewards(addressInput)
+
+		setPendingRewards(pending)
+		setComponentState('rewards')
+	}
 
 	return (
 		<>
@@ -32,71 +72,169 @@ function Nodedrop() {
 				<Main id='page-wrap' network={network}>
 					<Navbar
 						title='NODEdrop'
+						nodedrop
 						openSidebar={() => setIsOpen(true)}
 					/>
-
-					{/* <QuizSection>
-            <Inter700 className="large"><TextGradient>1000 NODE</TextGradient> &nbsp; tokens are waiting for you!</Inter700>
-            <Inter400Subtitle>
-              Now take some minutes to learn a little bit about what we do. Complete the following steps to claim your airdrop.
-            </Inter400Subtitle>
-            <img alt="coins" src="/assets/coins.svg" style={{ display: 'block', margin: '0 auto' }}/>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', columnGap: '16px' }}>
-              <Button>Try another address</Button>
-              <GreenButton>Let&apos;s go!</GreenButton>
-            </div>
-          </QuizSection>
-
-          <div style={{ margin: '50px auto' }} />
-
-          <QuizSection>
-            <Inter700 className="large">You don’t have an airdrop assigned to your address.</Inter700>
-            <Inter400Subtitle>
-              Sorry! It looks like you didn’t receive an airdrop to this address. Try another address, or continue learning about how you can participate in the DappNode ecosystem.
-            </Inter400Subtitle>
-            <img alt="error" src="/assets/error.svg" style={{ display: 'block', margin: '50px auto' }}/>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button>Try another address</Button>
-            </div>
-          </QuizSection>
-
-          <div style={{ margin: '50px auto' }} />
-
-          <QuizSection>
-            <Inter700 className="large">First, a little bit about &nbsp;<TextGradient>DAppNode</TextGradient></Inter700>
-            <Inter700>What is DappNode?</Inter700>
-            <Inter400Subtitle>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.            </Inter400Subtitle>
-            <Inter400Subtitle>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.            </Inter400Subtitle>
-            <SpaceBetween style={{ margin: '16px auto' }}>
-              <QuizNumber>2/3</QuizNumber>
-              <div>
-                <Button style={{ marginRight: '16px' }}>Back</Button>
-                <GreenButton>Next</GreenButton>
-              </div>
-            </SpaceBetween>
-          </QuizSection>
-
-          <div style={{ margin: '50px auto' }} />
-
-          <QuizSection>
-            <Inter700 className="large">Let’s check what you’ve learned so far.</Inter700>
-            <Inter700>What is DappNode?</Inter700>
-            <QuizQuestion>Infrastructure for the decentralized world</QuizQuestion>
-            <QuizQuestion>Infrastructure for the decentralized world</QuizQuestion>
-            <QuizQuestion>Infrastructure for the decentralized world</QuizQuestion>
-            <SpaceBetween style={{ margin: '16px auto' }}>
-              <QuizNumber>1/3</QuizNumber>
-              <GreenButton>Submit</GreenButton>
-            </SpaceBetween>
-          </QuizSection> */}
-
+					{/* <Stepper /> TO BE UPDATED */}
 					<div style={{ margin: '50px auto' }} />
-
-					<NodeDropHint />
-					<QuizSection>
-						{!isReady && (
+					{componentState === 'welcome' && (
+						<Section>
+							<Inter700 className='large'>
+								Welcome to the NODEdrop!
+							</Inter700>
+							<Inter400>
+								First,{' '}
+								<b>
+									connect your wallet or check an Ethereum
+									address
+								</b>{' '}
+								to check for rewards.
+							</Inter400>
+							<Row>
+								<Column
+									style={{
+										paddingRight: '32px',
+										alignItems: 'center',
+										justifyContent: 'center',
+										borderRight:
+											'1px solid rgba(0, 0, 0, 0.08)',
+									}}
+								>
+									<div
+										onClick={handleConnect}
+										aria-hidden='true'
+										style={{
+											width: '100%',
+											height: '100%',
+											display: 'flex',
+											cursor: 'pointer',
+											alignItems: 'center',
+											justifyContent: 'center',
+											borderRadius: '8px',
+											border: '2px solid #86E4DD',
+										}}
+									>
+										<div
+											style={{
+												display: 'flex',
+												alignItems: 'center',
+												gap: '10px',
+											}}
+										>
+											<img
+												alt='link'
+												src='/assets/link.svg'
+											/>{' '}
+											Connect your wallet
+										</div>
+									</div>
+								</Column>
+								<Column style={{ paddingLeft: '32px' }}>
+									<Input
+										type='text'
+										placeholder='Address'
+										onChange={e =>
+											setAddressInput(e.target.value)
+										}
+									/>
+									<GreenButton
+										disabled={!addressInput}
+										onClick={handleCheck}
+										style={{ marginTop: '10px' }}
+									>
+										Check your NODEdrop!
+									</GreenButton>
+								</Column>
+							</Row>
+						</Section>
+					)}
+					{componentState === 'rewards' && pendingRewards && (
+						<FixedSection>
+							<Inter700 className='large'>
+								You have NODE tokens waiting for you!
+							</Inter700>
+							<Inter400Subtitle>
+								Now take some minutes to learn a little bit
+								about what we do. Complete the following steps
+								to claim your airdrop.
+							</Inter400Subtitle>
+							<img
+								alt='coins'
+								src='/assets/coins.svg'
+								style={{
+									display: 'block',
+									margin: '0 auto',
+								}}
+							/>
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+									columnGap: '16px',
+								}}
+							>
+								<Button
+									onClick={() => setComponentState('welcome')}
+								>
+									Try another address
+								</Button>
+								<GreenButton
+									onClick={() => setComponentState('about')}
+								>
+									Let&apos;s go!
+								</GreenButton>
+							</div>
+						</FixedSection>
+					)}
+					{componentState === 'rewards' && !pendingRewards && (
+						<FixedSection>
+							<Inter700 className='large'>
+								You don’t have an airdrop assigned to your
+								address.
+							</Inter700>
+							<Inter400Subtitle>
+								Sorry! It looks like you didn’t receive an
+								airdrop to this address. Try another address, or
+								continue learning about how you can participate
+								in the DappNode ecosystem.
+							</Inter400Subtitle>
+							<img
+								alt='error'
+								src='/assets/error.svg'
+								style={{
+									display: 'block',
+									margin: '50px auto',
+								}}
+							/>
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Button
+									onClick={() => setComponentState('welcome')}
+								>
+									Try another address
+								</Button>
+							</div>
+						</FixedSection>
+					)}
+					{componentState === 'about' && (
+						<FixedSection>
+							<Story
+								setQuiz={() => setComponentState('quiz')}
+								setRewards={() => setComponentState('rewards')}
+							/>
+						</FixedSection>
+					)}
+					{componentState === 'quiz' && (
+						<FixedSection>
+							<Quiz setClaim={() => setComponentState('claim')} />
+						</FixedSection>
+					)}
+					{componentState === 'claim' && !isReady && (
+						<Section>
 							<WarnSection>
 								<div>
 									<WarnMessage className='margin-bottom'>
@@ -112,43 +250,38 @@ function Nodedrop() {
 									</GreenButton>
 								</div>
 							</WarnSection>
+						</Section>
+					)}
+					{componentState === 'claim' &&
+						isReady &&
+						!networkAllowed(network) && (
+							<Section>
+								<WarnSection>
+									<WarnMessage>
+										Please connect to the right network
+									</WarnMessage>
+								</WarnSection>
+							</Section>
 						)}
-
-						{isReady && !networkAllowed(network) && (
-							<WarnSection>
-								<WarnMessage>
-									Please connect to the right network
-								</WarnMessage>
-							</WarnSection>
-						)}
-						{isReady && networkAllowed(network) && (
+					{componentState === 'claim' &&
+						networkAllowed(network) &&
+						isReady && (
 							<>
-								<Inter700 className='large'>
-									Congrats! You’re ready to claim your{' '}
-									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
-								</Inter700>
-								<Inter400Subtitle>
-									Claim your rewards in the xDai and ETH
-									Mainnet.
-								</Inter400Subtitle>
-								<AirdropRewards />
+								<NodeDropHint />
+								<Section>
+									<Inter700 className='large'>
+										Congrats! You’re ready to claim your{' '}
+										<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
+									</Inter700>
+									<Inter400Subtitle>
+										Claim your rewards in the xDai and ETH
+										Mainnet.
+									</Inter400Subtitle>
+									<AirdropRewards />
+								</Section>
 							</>
 						)}
-					</QuizSection>
-
-					{/* <div style={{ margin: '20px auto' }} />
-
-          <QuizSection>
-            <Flex>
-              <Inter700>Hey, there’s a <TextGradient>&nbsp;54.32% APR&nbsp;</TextGradient> waiting for you in your dashboard.</Inter700>
-              <GreenButton>Go to dashboard</GreenButton>
-            </Flex>
-          </QuizSection> */}
 				</Main>
-				{/* <Sidebar
-          isOpen={isOpen}
-          closeSidebar= {() => setIsOpen(false)}
-        /> */}
 			</div>
 		</>
 	)
@@ -168,6 +301,20 @@ const handleMainBackground = network => {
 			return 'linear-gradient(116.82deg, #DDE3E3 0%, #FFFFFF 100%)'
 	}
 }
+
+const Row = styled.div`
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+`
+
+const Column = styled.div`
+	display: flex;
+	flex-direction: column;
+	flex-basis: 100%;
+	flex: 1;
+`
 
 const WarnMessage = styled.div`
 	font-family: 'Inter';
@@ -211,13 +358,10 @@ export const Flex = styled.div`
 	align-items: center;
 `
 
-const Inter400Subtitle = styled(Inter400)`
-	color: #5c706f;
-	font-size: 20px;
-	line-height: 28px;
-`
-
-const QuizSection = styled.div`
+const Section = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	margin: 110px auto;
 	max-width: 800px;
 	padding: 18px 32px;
@@ -225,6 +369,16 @@ const QuizSection = styled.div`
 	background: #ffffff;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
 		0px 2px 16px rgba(8, 43, 41, 0.06);
+`
+
+const FixedSection = styled(Section)`
+	min-height: 450px;
+`
+
+const Inter400Subtitle = styled(Inter400)`
+	color: #5c706f;
+	font-size: 20px;
+	line-height: 28px;
 `
 
 export default Nodedrop
