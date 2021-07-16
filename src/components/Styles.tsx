@@ -5,7 +5,6 @@ export const Inter700 = styled.h1`
 	font-weight: bold;
 	font-size: 16px;
 	line-height: 24px;
-	display: flex;
 	align-items: center;
 	color: #35403f, 100%;
 	margin-right: 10px;
@@ -288,4 +287,13 @@ export const LightGreenButton = styled(NavbarButton)`
 export const LightBlueButton = styled(NavbarButton)`
 	background: #42a7f0;
 	color: #fff;
+`
+export const GRADIENT_TEXT = styled.span`
+	background-color: #1effef;
+	background-image: linear-gradient(45deg, #1effef, #2f78bc);
+	background-size: 100%;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-moz-text-fill-color: transparent;
 `
