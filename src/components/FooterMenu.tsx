@@ -11,11 +11,6 @@ const FooterMenu = () => (
 					icon='/assets/external-link.svg'
 					link='https://dappnode.io'
 				/>
-				<FooterMenuItem
-					title='dao.dappnode.io'
-					icon='/assets/external-link.svg'
-					link='https://dao.dappnode.io'
-				/>
 			</div>
 			<div>
 				<FooterMenuItem
@@ -61,6 +56,9 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	flex-direction: row;
+	div {
+		margin-right: 1px;
+	}
 `
 
 export default FooterMenu
