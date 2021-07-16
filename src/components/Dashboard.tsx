@@ -11,7 +11,7 @@ function Dashboard() {
 		<DashboardSection>
 			<Inter700>
 				<img alt='tokens' src='/assets/Tokens.svg' />
-				<span style={{ marginLeft: '10px' }}>My tokens</span>
+				<span style={{ marginLeft: '10px' }}>NODEstream</span>
 			</Inter700>
 			<RewardsContainer>
 				<Rewards />
@@ -20,7 +20,7 @@ function Dashboard() {
 			<SpaceBetween>
 				<Inter700>
 					<img alt='pools' src='/assets/Pools.svg' />
-					<span style={{ marginLeft: '10px' }}>Staking Pools</span>
+					<span style={{ marginLeft: '10px' }}>NODEstaking</span>
 				</Inter700>
 				<div />
 				<WhiteGreenLink>
