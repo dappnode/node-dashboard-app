@@ -6,8 +6,21 @@ const etherscanLinks = {
 	5: 'https://goerli.etherscan.io/tx/',
 }
 
+export function showCorrectAnswer(): void {
+	toast.success('Correct!', { duration: 2000 })
+}
 export function showConfirmedClaim(): void {
 	toast.success('Your last transaction just confirmed!')
+}
+
+export function showConfirmedHarvest(): void {
+	toast.success(
+		'Complete! Part of your tokens will go to your wallet and part to your NODEstream.',
+	)
+}
+
+export function showConfirmedWithdraw(): void {
+	toast.success('Withdrawal complete! Your LP tokens are in your wallet.')
 }
 
 export function showConfirmedStake(): void {

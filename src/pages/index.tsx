@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar'
 import Dashboard from '../components/Dashboard'
 import { useOnboard } from '../hooks/useOnboard'
 import { config } from '../configuration'
+import Footer from '../components/Footer'
 
 function Home() {
 	const { network } = useOnboard()
@@ -23,9 +24,11 @@ function Home() {
 				<Main id='page-wrap' network={network}>
 					<Navbar
 						title='DAppNode Dashboard'
+						nodedrop={false}
 						openSidebar={() => setIsOpen(true)}
 					/>
 					<Dashboard />
+					<Footer />
 				</Main>
 			</div>
 		</>

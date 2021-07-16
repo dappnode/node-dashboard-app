@@ -7,7 +7,12 @@ import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, MAINNET_CONFIG } from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
-import { showPendingStake, showConfirmedStake } from './notifications'
+import {
+	showPendingStake,
+	showConfirmedStake,
+	showConfirmedHarvest,
+	showConfirmedWithdraw,
+} from './notifications'
 import { convertEthHelper } from './numbers'
 
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
@@ -262,8 +267,9 @@ export const harvestTokens = async (lmAddress: string, signer) => {
 
 	const harvest = await lmContract.getReward()
 
-	// eslint-disable-next-line no-console
-	console.log(harvest)
+	if (!harvest) return
+
+	showConfirmedHarvest()
 }
 
 export const withdrawTokens = async (
@@ -275,6 +281,7 @@ export const withdrawTokens = async (
 
 	const withdraw = await lmContract.withdraw(ethers.BigNumber.from(amount))
 
-	// eslint-disable-next-line no-console
-	console.log(withdraw)
+	if (!withdraw) return
+
+	showConfirmedWithdraw()
 }
