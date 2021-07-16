@@ -5,7 +5,18 @@ import FooterMenuItem from './FooterMenuItem'
 const FooterMenu = () => (
 	<FooterMenuSection>
 		<Container>
-			<div />
+			<div>
+				<FooterMenuItem
+					title='dappnode.io'
+					icon='/assets/external-link.svg'
+					link='https://dappnode.io'
+				/>
+				<FooterMenuItem
+					title='dao.dappnode.io'
+					icon='/assets/external-link.svg'
+					link='https://dao.dappnode.io'
+				/>
+			</div>
 			<div>
 				<FooterMenuItem
 					title='Forum'

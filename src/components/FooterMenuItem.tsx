@@ -24,7 +24,11 @@ const Item = styled.a`
 	text-align: center;
 	letter-spacing: 0.2px;
 	color: #222a29;
-	padding: 13px;
+	display: inline-block;
+	padding: 14px;
+	@media only screen and (max-width: 768px) {
+		padding: 9px;
+	}
 	img {
 		margin-left: 4px;
 	}
