@@ -40,10 +40,8 @@ function Nodedrop() {
 			<div id='outer-container' style={{ height: '100%' }}>
 				<Rectangle />
 				<Main id='page-wrap' network={network}>
-					<Navbar
-						title='NODEdrop'
-						openSidebar={() => setIsOpen(true)}
-					/>
+					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+					<Navbar title='NODEdrop' openSidebar={() => {}} />
 
 					<Stepper />
 
@@ -243,16 +241,20 @@ function Nodedrop() {
 						)}
 
 					{componentState === 'claim' && networkAllowed(network) && (
-						<Section>
-							<Inter700 className='large'>
-								Congrats! You’re ready to claim your {' '}
+						<>
+							<NodeDropHint />
+							<Section>
+								<Inter700 className='large'>
+									Congrats! You’re ready to claim your{' '}
 									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
-							</Inter700>
-							<Inter400Subtitle>
-								Claim your rewards in the xDai and ETH Mainnet.
-							</Inter400Subtitle>
-							<AirdropRewards />
-						</Section>
+								</Inter700>
+								<Inter400Subtitle>
+									Claim your rewards in the xDai and ETH
+									Mainnet.
+								</Inter400Subtitle>
+								<AirdropRewards />
+							</Section>
+						</>
 					)}
 				</Main>
 			</div>
