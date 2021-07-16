@@ -1,95 +1,63 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
-const Input = styled.input`
-	height: 0;
-	width: 0;
-	opacity: 0;
-	z-index: -1;
-`
-
-const popIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.5);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-`
-
-const Label = styled.label`
-	position: relative;
-	display: inline-block;
-	cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-	font-size: 24px;
-`
-
-const Indicator = styled.div`
-	border: 1px solid;
-	border-radius: 1em;
-	width: 24px;
-	height: 24px;
-	position: absolute;
-	top: 0;
-	left: -1.5em;
-
-	${Label}:hover & {
-		background: #ccc;
-	}
-
-	&::after {
-		content: '';
-		position: absolute;
-		display: none;
-	}
-
-	${Input}:checked + &::after {
-		display: block;
-		border: solid #23c8bc;
-		border-radius: 50%;
-		background-color: #23c8bc;
-		width: 12px;
-		height: 12px;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		animation-name: ${popIn};
-		animation-duration: 0.3s;
-		animation-fill-mode: forwards;
-	}
-
-	${Input}:disabled + & {
-		pointer-events: none;
-		opacity: 0.6;
-		background: #23c8bc;
-	}
-`
-
-export default function RadioButton({
-	value,
-	onChange,
-	name,
-	id,
-	label,
-	disabled,
-	checked,
-}) {
+function RadioButton({ children, checked }): JSX.Element {
 	return (
-		<Label htmlFor={id} disabled={disabled}>
-			{label}
-			<Input
-				id={id}
-				type='radio'
-				role='radio'
-				name={name}
-				value={value}
-				disabled={disabled}
-				onChange={onChange}
-				checked={checked}
-			/>
-			<Indicator />
-		</Label>
+		<>
+			<RadioButtonInput type='radio' name='radio' checked={checked} />
+			<RadioButtonLabel />
+			<div>{children}</div>
+		</>
 	)
 }
+
+const RadioButtonLabel = styled.label`
+	position: absolute;
+	left: 20px;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: white;
+	border: 1px solid #becac9;
+`
+const RadioButtonInput = styled.input`
+	opacity: 0;
+	z-index: 1;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	margin-right: 12px;
+	&:hover ~ ${RadioButtonLabel} {
+		background: transparent;
+		&::after {
+			content: '';
+			display: block;
+			border-radius: 50%;
+			width: 12px;
+			height: 12px;
+			margin: 6px;
+			background: #23c8bc;
+		}
+	}
+	${props =>
+		props.checked &&
+		` 
+    &:checked + ${RadioButtonLabel} {
+      background: ##23C8BC;
+      border: 1px solid #23C8BC;
+      &::after {
+        content: "";
+        display: block;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        margin: 6px;
+        box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.1);
+        background: #23C8BC;
+      }
+    }
+  `}
+`
+
+export default RadioButton

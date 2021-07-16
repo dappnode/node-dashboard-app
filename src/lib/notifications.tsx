@@ -6,6 +6,9 @@ const etherscanLinks = {
 	5: 'https://goerli.etherscan.io/tx/',
 }
 
+export function showCorrectAnswer(): void {
+	toast.success('Correct!', { duration: 2000 })
+}
 export function showConfirmedClaim(): void {
 	toast.success('Your last transaction just confirmed!')
 }

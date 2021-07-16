@@ -187,6 +187,7 @@ export const BlueButton = styled.button`
 
 export const Button = styled.a`
 	color: #2fbcb2;
+	cursor: pointer;
 	background: transparent;
 	border: solid 1px #2fbcb2;
 	font-family: 'Interstate', sans-serif;
