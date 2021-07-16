@@ -21,6 +21,7 @@ import {
 } from './PoolCardStyle'
 import { bn, convertEthHelper } from '../lib/numbers'
 import NetworkLabel from './NetworkLabel'
+import { isMainnet } from '../lib/web3-utils'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
@@ -46,7 +47,13 @@ function PoolCard({
 	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
-		<PoolCardSection poolState={poolState}>
+		<PoolCardSection
+			poolState={poolState}
+			disabled={disabled}
+			border={
+				isMainnet(network) ? '2px solid #86bde4' : '2px solid #86e4dd'
+			}
+		>
 			{poolState === 'default' && (
 				<Principal
 					name={name}

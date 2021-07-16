@@ -42,7 +42,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		notStakedLpTokensWei: 0,
 		earned: { amount: new BigNumber(0), token: 'NODE' },
 	})
-	const { address, provider, network: walletNetwork } = useOnboard()
+	const { address, provider, network: walletNetwork, isReady } = useOnboard()
 
 	const stakePoolPoll = useRef(null)
 	useEffect(() => {
@@ -117,7 +117,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	return (
 		<PoolCard
 			logo={logo}
-			disabled={network !== walletNetwork}
+			disabled={network !== walletNetwork || !isReady}
 			name={name}
 			platform={platform}
 			network={network}
