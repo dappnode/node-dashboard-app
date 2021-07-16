@@ -232,7 +232,7 @@ export async function stakeTokens(
 	const lmContract = new Contract(lmAddress, LM_ABI, signer)
 
 	const rawPermitCall =
-		provider.network.chainId === 4
+		provider.network.chainId === config.MAINNET_NETWORK_NUMBER
 			? await permitTokensMainnet(
 					provider,
 					poolAddress,

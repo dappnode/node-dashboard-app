@@ -23,19 +23,25 @@ export async function fetchEthMerkleResults() {
 }
 
 export async function fetchDnClaimData(address) {
-	const { claims } = await fetchDnMerkleResults()
-	const formatted = isAddress(address)
+	try {
+		const { claims } = await fetchDnMerkleResults()
+		const formatted = isAddress(address)
 
-	if (!formatted) return
-
-	return claims[formatted]
+		return claims[formatted]
+	} catch (e) {
+		console.error(e)
+		return null
+	}
 }
 
 export async function fetchEthClaimData(address) {
-	const { claims } = await fetchEthMerkleResults()
-	const formatted = isAddress(address)
+	try {
+		const { claims } = await fetchEthMerkleResults()
+		const formatted = isAddress(address)
 
-	if (!formatted) return
-
-	return claims[formatted]
+		return claims[formatted]
+	} catch (e) {
+		console.error(e)
+		return null
+	}
 }

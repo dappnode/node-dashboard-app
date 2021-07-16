@@ -20,10 +20,13 @@ import {
 	Token,
 } from './PoolCardStyle'
 import { bn, convertEthHelper } from '../lib/numbers'
+import NetworkLabel from './NetworkLabel'
+import { isMainnet } from '../lib/web3-utils'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
 	disabled: boolean
+	network: number
 	[key: string]: any
 }
 function PoolCard({
@@ -37,13 +40,20 @@ function PoolCard({
 	handleHarvest,
 	handleWithdraw,
 	disabled,
+	network,
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
 	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
 
 	return (
-		<PoolCardSection poolState={poolState}>
+		<PoolCardSection
+			poolState={poolState}
+			disabled={disabled}
+			border={
+				isMainnet(network) ? '2px solid #86bde4' : '2px solid #86e4dd'
+			}
+		>
 			{poolState === 'default' && (
 				<Principal
 					name={name}
@@ -56,6 +66,7 @@ function PoolCard({
 					hasLiquidityPool={hasLiquidityPool}
 					harvest={handleHarvest}
 					disabled={disabled}
+					network={network}
 				/>
 			)}
 			{poolState === 'manage' && (
@@ -103,12 +114,16 @@ const Principal = ({
 	hasLiquidityPool,
 	harvest,
 	disabled = false,
+	network,
 }) => {
 	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
 	return (
 		<>
 			<div style={{ width: '96%' }}>
-				<label>{platform}</label>
+				<SpaceBetween>
+					<NetworkLabel network={network} />
+					<label>{platform}</label>
+				</SpaceBetween>
 				<h1>
 					<img alt='logo' src={logo} /> {name}
 				</h1>

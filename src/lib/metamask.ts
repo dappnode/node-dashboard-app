@@ -1,18 +1,21 @@
+import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+
 declare let window: any
 
 const tokenSymbol = 'NODE'
 const tokenDecimals = 18
 const tokenImage = 'https://docs.dappnode.io/img/dappnode-logo.png'
 
+const { MAINNET_NETWORK_NUMBER, XDAI_NETWORK_NUMBER } = config
 const tokenOptions = {
-	4: {
-		address: '0x3CCF83cF290c186840ECaD76897cfa246f5d6819',
+	[MAINNET_NETWORK_NUMBER]: {
+		address: MAINNET_CONFIG.TOKEN_ADDRESS,
 		symbol: tokenSymbol,
 		decimals: tokenDecimals,
 		image: tokenImage,
 	},
-	5: {
-		address: '0x35bbB49985B2C1494Bec7FD1a48626781AA5ef8c',
+	[XDAI_NETWORK_NUMBER]: {
+		address: XDAI_CONFIG.TOKEN_ADDRESS,
 		symbol: tokenSymbol,
 		decimals: tokenDecimals,
 		image: tokenImage,
@@ -20,8 +23,12 @@ const tokenOptions = {
 }
 
 const chainParams = {
-	4: { chainId: '0x4' },
-	5: { chainId: '0x5' },
+	[MAINNET_NETWORK_NUMBER]: {
+		chainId: `0x${Number(MAINNET_NETWORK_NUMBER).toString(16)}`,
+	},
+	[XDAI_NETWORK_NUMBER]: {
+		chainId: `0x${Number(XDAI_NETWORK_NUMBER).toString(16)}`,
+	},
 }
 
 export async function addNodeToken(network: number): Promise<void> {

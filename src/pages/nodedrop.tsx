@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar'
 import { useOnboard } from '../hooks/useOnboard'
 import { getEthClaimableAmount, getXDaiClaimableAmount } from '../lib/claim'
 import {
+	GRADIENT_TEXT,
 	Button,
 	GreenButton,
 	Input,
@@ -14,6 +15,8 @@ import {
 	Inter700,
 } from '../components/Styles'
 import AirdropRewards from '../components/AirdropRewards'
+import { config } from '../configuration'
+import NodeDropHint from '../components/NodeDropHint'
 import Stepper from '../components/Stepper'
 import Story from '../components/Story'
 import Quiz from '../components/Quiz'
@@ -23,10 +26,11 @@ type componentStateType = 'welcome' | 'rewards' | 'about' | 'quiz' | 'claim'
 function Nodedrop() {
 	const { address, connect, network, isReady } = useOnboard()
 
+	const [, setIsOpen] = useState(false)
 	const [addressInput, setAddressInput] = useState<string>('')
 	const [pendingRewards, setPendingRewards] = useState<boolean>(true)
 	const [componentState, setComponentState] =
-		useState<componentStateType>('rewards')
+		useState<componentStateType>('welcome')
 
 	// eslint-disable-next-line no-shadow
 	async function hasPendingRewards(address: string) {
@@ -69,11 +73,8 @@ function Nodedrop() {
 						nodedrop
 						openSidebar={() => setIsOpen(true)}
 					/>
-
 					{/* <Stepper /> TO BE UPDATED */}
-
 					<div style={{ margin: '50px auto' }} />
-
 					{componentState === 'welcome' && (
 						<Section>
 							<Inter700 className='large'>
@@ -145,7 +146,6 @@ function Nodedrop() {
 							</Row>
 						</Section>
 					)}
-
 					{componentState === 'rewards' && pendingRewards && (
 						<FixedSection>
 							<Inter700 className='large'>
@@ -184,7 +184,6 @@ function Nodedrop() {
 							</div>
 						</FixedSection>
 					)}
-
 					{componentState === 'rewards' && !pendingRewards && (
 						<FixedSection>
 							<Inter700 className='large'>
@@ -219,7 +218,6 @@ function Nodedrop() {
 							</div>
 						</FixedSection>
 					)}
-
 					{componentState === 'about' && (
 						<FixedSection>
 							<Story
@@ -228,13 +226,11 @@ function Nodedrop() {
 							/>
 						</FixedSection>
 					)}
-
 					{componentState === 'quiz' && (
 						<FixedSection>
 							<Quiz setClaim={() => setComponentState('claim')} />
 						</FixedSection>
 					)}
-
 					{componentState === 'claim' && !isReady && (
 						<Section>
 							<WarnSection>
@@ -254,7 +250,6 @@ function Nodedrop() {
 							</WarnSection>
 						</Section>
 					)}
-
 					{componentState === 'claim' &&
 						isReady &&
 						!networkAllowed(network) && (
@@ -266,17 +261,21 @@ function Nodedrop() {
 								</WarnSection>
 							</Section>
 						)}
-
 					{componentState === 'claim' && networkAllowed(network) && (
-						<Section>
-							<Inter700 className='large'>
-								Congrats! You’re ready to claim your NODEdrop.
-							</Inter700>
-							<Inter400Subtitle>
-								Claim your rewards in the xDai and ETH Mainnet.
-							</Inter400Subtitle>
-							<AirdropRewards />
-						</Section>
+						<>
+							<NodeDropHint />
+							<Section>
+								<Inter700 className='large'>
+									Congrats! You’re ready to claim your{' '}
+									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
+								</Inter700>
+								<Inter400Subtitle>
+									Claim your rewards in the xDai and ETH
+									Mainnet.
+								</Inter400Subtitle>
+								<AirdropRewards />
+							</Section>
+						</>
 					)}
 				</Main>
 			</div>
@@ -286,11 +285,11 @@ function Nodedrop() {
 
 const handleMainBackground = network => {
 	switch (network) {
-		case 4:
+		case config.MAINNET_NETWORK_NUMBER:
 			return `
         background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
       `
-		case 5:
+		case config.XDAI_NETWORK_NUMBER:
 			return `
         background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
       `
