@@ -263,22 +263,24 @@ function Nodedrop() {
 								</WarnSection>
 							</Section>
 						)}
-					{componentState === 'claim' && networkAllowed(network) && (
-						<>
-							<NodeDropHint />
-							<Section>
-								<Inter700 className='large'>
-									Congrats! You’re ready to claim your{' '}
-									<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
-								</Inter700>
-								<Inter400Subtitle>
-									Claim your rewards in the xDai and ETH
-									Mainnet.
-								</Inter400Subtitle>
-								<AirdropRewards />
-							</Section>
-						</>
-					)}
+					{componentState === 'claim' &&
+						networkAllowed(network) &&
+						isReady && (
+							<>
+								<NodeDropHint />
+								<Section>
+									<Inter700 className='large'>
+										Congrats! You’re ready to claim your{' '}
+										<GRADIENT_TEXT>NODEdrop.</GRADIENT_TEXT>
+									</Inter700>
+									<Inter400Subtitle>
+										Claim your rewards in the xDai and ETH
+										Mainnet.
+									</Inter400Subtitle>
+									<AirdropRewards />
+								</Section>
+							</>
+						)}
 				</Main>
 			</div>
 		</>
