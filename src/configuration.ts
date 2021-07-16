@@ -2,8 +2,10 @@ export const config = {
 	TOKEN_NAME: 'NODE',
 	ETH_USDT_ORACLE: 'eth-usd.data.eth',
 
-	MAINNET_NETWORK_NUMBER: 4,
-	XDAI_NETWORK_NUMBER: 5,
+	MAINNET_NETWORK_NUMBER: Number(
+		process.env.NEXT_PUBLIC_MAINNET_NETWORK_NUMBER,
+	),
+	XDAI_NETWORK_NUMBER: Number(process.env.NEXT_PUBLIC_XDAI_NETWORK_NUMBER),
 }
 
 export const MAINNET_CONFIG = {
