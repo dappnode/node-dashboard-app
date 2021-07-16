@@ -4,7 +4,7 @@ import ConnectionInfo from './ConnectionInfo'
 
 import { Inter700 } from './Styles'
 
-function Navbar({ openSidebar, title }) {
+function Navbar({ openSidebar, nodedrop, title }) {
 	return (
 		<NavbarSection>
 			<Container>
@@ -13,7 +13,7 @@ function Navbar({ openSidebar, title }) {
 					<Inter700>{title}</Inter700>
 				</div>
 				<div>
-					<ConnectionInfo />
+					<ConnectionInfo nodedrop={nodedrop} />
 				</div>
 			</Container>
 		</NavbarSection>

@@ -26,12 +26,16 @@ export async function fetchDnClaimData(address) {
 	const { claims } = await fetchDnMerkleResults()
 	const formatted = isAddress(address)
 
+	if (!formatted) return
+
 	return claims[formatted]
 }
 
 export async function fetchEthClaimData(address) {
 	const { claims } = await fetchEthMerkleResults()
 	const formatted = isAddress(address)
+
+	if (!formatted) return
 
 	return claims[formatted]
 }

@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 import styled from 'styled-components'
 import { Contract, ethers } from 'ethers'
 import { shortenAddress, getNetworkType } from '../lib/web3-utils'
-import { LightGreenButton, LightBlueButton, NavbarButton } from './Styles'
+import {
+	LightGreenButton,
+	LightBlueButton,
+	NavbarButton,
+	GreenButton,
+} from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
 import { NETWORKS_CONFIG } from '../configuration'
 import { convertEthHelper } from '../lib/numbers'
 import { networkProviders } from '../lib/networkProvider'
 
-const Connection: React.FC = () => {
+const Connection = ({ nodedrop }) => {
 	const { address, network } = useOnboard()
 
 	const [tokenBalance, setTokenBalance] = useState<number | string>(0)
@@ -50,6 +56,15 @@ const Connection: React.FC = () => {
 
 	return (
 		<>
+			{nodedrop ? (
+				<Link href='/'>
+					<GreenButton>Go to dashboard!</GreenButton>
+				</Link>
+			) : (
+				<Link href='/nodedrop'>
+					<GreenButton>Claim your airdrop!</GreenButton>
+				</Link>
+			)}
 			{network === 4 && (
 				<LightBlueButton>
 					Network: {getNetworkType(network)}{' '}

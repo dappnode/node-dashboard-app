@@ -5,7 +5,7 @@ import { networkAllowed } from '../lib/web3-utils'
 import Navbar from '../components/Navbar'
 
 import { useOnboard } from '../hooks/useOnboard'
-
+import { getEthClaimableAmount, getXDaiClaimableAmount } from '../lib/claim'
 import {
 	Button,
 	GreenButton,
@@ -13,7 +13,6 @@ import {
 	Inter400,
 	Inter700,
 } from '../components/Styles'
-
 import AirdropRewards from '../components/AirdropRewards'
 import Stepper from '../components/Stepper'
 import Story from '../components/Story'
@@ -22,12 +21,40 @@ import Quiz from '../components/Quiz'
 type componentStateType = 'welcome' | 'rewards' | 'about' | 'quiz' | 'claim'
 
 function Nodedrop() {
-	const { connect, network, isReady } = useOnboard()
+	const { address, connect, network, isReady } = useOnboard()
 
-	const [address, setAddress] = useState<string>('')
+	const [addressInput, setAddressInput] = useState<string>('')
 	const [pendingRewards, setPendingRewards] = useState<boolean>(true)
 	const [componentState, setComponentState] =
-		useState<componentStateType>('welcome')
+		useState<componentStateType>('rewards')
+
+	// eslint-disable-next-line no-shadow
+	async function hasPendingRewards(address: string) {
+		const [ethAmount, dnAmount] = await Promise.all([
+			getEthClaimableAmount(address),
+			getXDaiClaimableAmount(address),
+		])
+
+		return ethAmount.add(dnAmount).gt(0)
+	}
+
+	async function handleConnect() {
+		if (!isReady) await connect()
+
+		if (!address) return
+
+		const pending = await hasPendingRewards(address)
+
+		setPendingRewards(pending)
+		setComponentState('rewards')
+	}
+
+	async function handleCheck() {
+		const pending = await hasPendingRewards(addressInput)
+
+		setPendingRewards(pending)
+		setComponentState('rewards')
+	}
 
 	return (
 		<>
@@ -39,10 +66,11 @@ function Nodedrop() {
 				<Main id='page-wrap' network={network}>
 					<Navbar
 						title='NODEdrop'
+						nodedrop
 						openSidebar={() => setIsOpen(true)}
 					/>
 
-					<Stepper />
+					{/* <Stepper /> TO BE UPDATED */}
 
 					<div style={{ margin: '50px auto' }} />
 
@@ -70,6 +98,8 @@ function Nodedrop() {
 									}}
 								>
 									<div
+										onClick={handleConnect}
+										aria-hidden='true'
 										style={{
 											width: '100%',
 											height: '100%',
@@ -101,15 +131,13 @@ function Nodedrop() {
 										type='text'
 										placeholder='Address'
 										onChange={e =>
-											setAddress(e.target.value)
+											setAddressInput(e.target.value)
 										}
 									/>
 									<GreenButton
 										disabled={!address}
+										onClick={handleCheck}
 										style={{ marginTop: '10px' }}
-										onClick={() =>
-											setComponentState('rewards')
-										}
 									>
 										Check your NODEdrop!
 									</GreenButton>
@@ -121,7 +149,7 @@ function Nodedrop() {
 					{componentState === 'rewards' && pendingRewards && (
 						<FixedSection>
 							<Inter700 className='large'>
-								1000 NODE tokens are waiting for you!
+								You have NODE tokens are waiting for you!
 							</Inter700>
 							<Inter400Subtitle>
 								Now take some minutes to learn a little bit
