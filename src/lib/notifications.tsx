@@ -13,6 +13,14 @@ export function showConfirmedClaim(): void {
 	toast.success('Your last transaction just confirmed!')
 }
 
+export function showConfirmedHarvest(): void {
+	toast.success('Complete! Part of your tokens will go to your wallet and part to your NODEstream.')
+}
+
+export function showConfirmedWithdraw(): void {
+	toast.success('Withdrawal complete! Your LP tokens are in your wallet.')
+}
+
 export function showConfirmedStake(): void {
 	toast.success('You are now generating rewards!')
 }
