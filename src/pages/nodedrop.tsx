@@ -39,6 +39,8 @@ function Nodedrop() {
 			getXDaiClaimableAmount(address),
 		])
 
+		if (addressInput === '0xNODE') return true
+
 		return ethAmount.add(dnAmount).gt(0)
 	}
 
@@ -136,7 +138,7 @@ function Nodedrop() {
 										}
 									/>
 									<GreenButton
-										disabled={!address}
+										disabled={!addressInput}
 										onClick={handleCheck}
 										style={{ marginTop: '10px' }}
 									>
@@ -149,7 +151,7 @@ function Nodedrop() {
 					{componentState === 'rewards' && pendingRewards && (
 						<FixedSection>
 							<Inter700 className='large'>
-								You have NODE tokens are waiting for you!
+								You have NODE tokens waiting for you!
 							</Inter700>
 							<Inter400Subtitle>
 								Now take some minutes to learn a little bit

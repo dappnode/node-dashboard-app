@@ -14,7 +14,9 @@ export function showConfirmedClaim(): void {
 }
 
 export function showConfirmedHarvest(): void {
-	toast.success('Complete! Part of your tokens will go to your wallet and part to your NODEstream.')
+	toast.success(
+		'Complete! Part of your tokens will go to your wallet and part to your NODEstream.',
+	)
 }
 
 export function showConfirmedWithdraw(): void {
