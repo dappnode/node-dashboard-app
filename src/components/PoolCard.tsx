@@ -229,8 +229,15 @@ const Manage = ({
 				Manage your {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
 			</Inter600>
 			<Inter400>
-				You currently have <b>{convertEthHelper(stakedLpTokens, 6)}</b>{' '}
-				staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				You currently have <b>{convertEthHelper(stakedLpTokens, 4)}</b>{' '}
+				staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens and{' '}
+				<b>
+					{convertEthHelper(
+						ethers.utils.formatEther(notStakedLpTokensWei),
+						2,
+					)}
+				</b>{' '}
+				in your wallet.
 			</Inter400>
 			<Button disabled={disabled} onClick={deposit}>
 				Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
@@ -296,6 +303,12 @@ const Deposit = ({
 					to accrue more rewards.
 				</Inter400>
 				<div>
+					<label>
+						{`Balance: ${convertEthHelper(
+							ethers.utils.formatEther(notStakedLpTokensWei),
+							4,
+						)} ${hasLiquidityPool ? 'LP tokens' : 'NODE'}`}
+					</label>
 					<Input
 						type='number'
 						placeholder='Amount'
