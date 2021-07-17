@@ -45,3 +45,10 @@ export const NETWORKS_CONFIG = {
 	[config.MAINNET_NETWORK_NUMBER]: MAINNET_CONFIG,
 	[config.XDAI_NETWORK_NUMBER]: XDAI_CONFIG,
 }
+
+export const ETHERSCAN = {
+	1: 'https://etherscan.io/tx/',
+	4: 'https://rinkeby.etherscan.io/tx/',
+	5: 'https://goerli.etherscan.io/tx/',
+	100: 'https://blockscout.com/xdai/mainnet/tx/',
+}

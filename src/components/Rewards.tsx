@@ -13,7 +13,11 @@ import { useOnboard } from '../hooks/useOnboard'
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
 import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
-import { showPendingClaim, showConfirmedClaim } from '../lib/notifications'
+import {
+	showFailedClaim,
+	showPendingClaim,
+	showConfirmedClaim,
+} from '../lib/notifications/claim'
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
 
@@ -46,11 +50,13 @@ function Rewards() {
 
 		showPendingClaim(network, tx.hash)
 
-		const claim = await tx.wait()
+		const { status } = await tx.wait()
 
-		if (!claim) return
-
-		showConfirmedClaim()
+		if (status) {
+			showConfirmedClaim(network, tx.hash)
+		} else {
+			showFailedClaim(network, tx.hash)
+		}
 	}
 
 	async function getTokenDistroAmounts(

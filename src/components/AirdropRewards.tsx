@@ -113,6 +113,7 @@ function Rewards() {
 				claimData.amount,
 				claimData.proof,
 			]
+
 			const result = await merkleContract.connect(signer).claim(...args)
 			// eslint-disable-next-line no-console
 			console.log(result)
