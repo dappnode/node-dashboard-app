@@ -164,7 +164,9 @@ function Rewards() {
 						<p>
 							<b
 								aria-hidden='true'
-								onClick={() => switchNetwork(4)}
+								onClick={() =>
+									switchNetwork(config.MAINNET_NETWORK_NUMBER)
+								}
 							>
 								Connect to this network
 							</b>{' '}
