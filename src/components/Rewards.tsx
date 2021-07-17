@@ -137,7 +137,9 @@ function Rewards() {
 						<p>
 							<b
 								aria-hidden='true'
-								onClick={() => switchNetwork(4)}
+								onClick={() =>
+									switchNetwork(config.MAINNET_NETWORK_NUMBER)
+								}
 							>
 								Connect to this network
 							</b>{' '}
@@ -224,7 +226,9 @@ function Rewards() {
 						<p>
 							<b
 								aria-hidden='true'
-								onClick={() => switchNetwork(5)}
+								onClick={() =>
+									switchNetwork(config.XDAI_NETWORK_NUMBER)
+								}
 							>
 								Connect to this network
 							</b>{' '}
