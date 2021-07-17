@@ -13,17 +13,16 @@ const FirstCard = () => (
 		</Inter400Subtitle>
 		<Inter400Subtitle>
 			<b>At a micro level</b>: We give users sovereignty over their access
-			to the web3 world - no 3rd parties or gatekeepers
-			involved!
+			to the web3 world - no 3rd parties or gatekeepers involved!
 			<br />
 			<b>At a macro level</b>: We help decentralized infrastructure like
-			Ethereum reduce centralization risks by increasing the number
-			of residential nodes.
+			Ethereum reduce centralization risks by increasing the number of
+			residential nodes.
 		</Inter400Subtitle>
 		<Inter400Subtitle>
-			We do this through free, open-source software that anyone can install
-			on almost any type of dedicated hardware, and through partners
-			providing plug-and-play pre-installed devices.
+			We do this through free, open-source software that anyone can
+			install on almost any type of dedicated hardware, and through
+			partners providing plug-and-play pre-installed devices.
 		</Inter400Subtitle>
 	</>
 )
@@ -33,14 +32,15 @@ const SecondCard = () => (
 		<Inter700 className='large'>The DAppNode DAO</Inter700>
 		<Inter400Subtitle>
 			Over the years, we have built a community around our principles,
-			asserting that access to uncensorable, resilient and distributed infrastructure 
-			is better than than leaning on gatekeepers, big players and middlemen.
+			asserting that access to uncensorable, resilient and distributed
+			infrastructure is better than than leaning on gatekeepers, big
+			players and middlemen.
 		</Inter400Subtitle>
 		<Inter400Subtitle>
 			This community can now self-organize, level up, evolve and steward
 			these principles. We are going from community to ecosystem,
-			leveraging and coordinating Node Runners to uphold the values of decentralization
-			from the infrastructure up.
+			leveraging and coordinating Node Runners to uphold the values of
+			decentralization from the infrastructure up.
 		</Inter400Subtitle>
 	</>
 )
@@ -52,10 +52,10 @@ const ThirdCard = () => (
 			To govern this ecosystem, we&apos;ve created the NODE token.
 		</Inter400Subtitle>
 		<Inter400Subtitle>
-			For you who have supported DAppNode over the past
-			years, there&apos;s a NODEdrop waiting for you at the end of this
-			quiz! To ensure long-term alignment, 90% of these NODE will also be
-			given to you via a NODEstream over for the next 3 years.
+			For you who have supported DAppNode over the past years,
+			there&apos;s a NODEdrop waiting for you at the end of this quiz! To
+			ensure long-term alignment, 90% of these NODE will also be given to
+			you via a NODEstream over for the next 3 years.
 		</Inter400Subtitle>
 		<Inter400Subtitle>
 			To contribute further to the ecosystem, NODE holders can participate
