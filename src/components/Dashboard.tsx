@@ -45,7 +45,7 @@ function Dashboard() {
 					composition='50% NODE, 50% ETH'
 					logo='/assets/dn-eth-logos.svg'
 					network={config.MAINNET_NETWORK_NUMBER}
-					provideLiquidityLink={`https://app.sushi.com/add/${MAINNET_CONFIG.WETH_TOKEN_ADDRESS}/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
+					provideLiquidityLink={`https://app.sushi.com/add/ETH/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
 				/>
 				<StakingPoolCard
 					name='NODE'
