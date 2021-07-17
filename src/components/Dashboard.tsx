@@ -23,7 +23,10 @@ function Dashboard() {
 					<span style={{ marginLeft: '10px' }}>NODEstaking</span>
 				</Inter700>
 				<div />
-				<WhiteGreenLink>
+				<WhiteGreenLink
+					target='_blank'
+					href='https://medium.com/dappnode/a-node-for-the-future-an-ode-to-the-community-a-road-to-decentralized-sovereignty-1c8fa524e308'
+				>
 					How does this work?{' '}
 					<img alt='link' src='/assets/external-link-green.svg' />
 				</WhiteGreenLink>
