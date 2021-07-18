@@ -35,7 +35,7 @@ const NodeDropHint: FC = () => {
 	return (
 		<HintSection>
 			<Inter>
-				Hey, you can check your NODE tokens in yout dashboard. There’s a{' '}
+				Hey, you can check your NODE tokens in your dashboard. There’s a{' '}
 				<GRADIENT_TEXT>{convertEthHelper(APR, 2)}% APR</GRADIENT_TEXT>{' '}
 				waiting for you there!
 			</Inter>
