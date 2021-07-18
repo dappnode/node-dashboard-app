@@ -1,20 +1,21 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { config, ETHERSCAN } from '../../configuration'
+import { config } from '../../configuration'
+import { networksParams } from '../../constants'
 
 export function showCorrectAnswer(): void {
 	toast.success('Correct!', { duration: 2000 })
 }
 
 export function showPendingRequest(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.success(
 		<span>
 			Your NODEdrop is on the way! Check the status{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -26,14 +27,14 @@ export function showPendingRequest(network: number, txHash: string): void {
 }
 
 export function showFailedRequest(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.error(
 		<span>
 			Your{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -45,7 +46,7 @@ export function showFailedRequest(network: number, txHash: string): void {
 }
 
 export function showConfirmedRequest(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	if (network === config.MAINNET_NETWORK_NUMBER) {
 		toast.success(
@@ -53,7 +54,7 @@ export function showConfirmedRequest(network: number, txHash: string): void {
 				NODEdrop{' '}
 				<a
 					target='_blank'
-					href={etherscan}
+					href={transactionExplorer}
 					rel='noreferrer'
 					style={{ color: 'white' }}
 				>
@@ -68,7 +69,7 @@ export function showConfirmedRequest(network: number, txHash: string): void {
 				NODEdrop{' '}
 				<a
 					target='_blank'
-					href={etherscan}
+					href={transactionExplorer}
 					rel='noreferrer'
 					style={{ color: 'white' }}
 				>

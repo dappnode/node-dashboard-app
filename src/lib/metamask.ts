@@ -1,4 +1,5 @@
 import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+import { networksParams } from '../constants'
 
 declare let window: any
 
@@ -22,15 +23,6 @@ const tokenOptions = {
 	},
 }
 
-const chainParams = {
-	[MAINNET_NETWORK_NUMBER]: {
-		chainId: `0x${Number(MAINNET_NETWORK_NUMBER).toString(16)}`,
-	},
-	[XDAI_NETWORK_NUMBER]: {
-		chainId: `0x${Number(XDAI_NETWORK_NUMBER).toString(16)}`,
-	},
-}
-
 export async function addNodeToken(network: number): Promise<void> {
 	const { ethereum } = window
 
@@ -48,13 +40,13 @@ export async function addNetwork(network: number): Promise<void> {
 
 	await ethereum.request({
 		method: 'wallet_addEthereumChain',
-		params: [{ ...chainParams[network] }],
+		params: [{ ...networksParams[network] }],
 	})
 }
 
 export async function switchNetwork(network: number): Promise<void> {
 	const { ethereum } = window
-	const { chainId } = chainParams[network]
+	const { chainId } = networksParams[network]
 
 	try {
 		await ethereum.request({
