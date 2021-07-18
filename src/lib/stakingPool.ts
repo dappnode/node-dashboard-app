@@ -32,7 +32,13 @@ export const fetchStakePoolInfo = async (
 
 	if (hasLiquidityPool) {
 		const poolContract = new Contract(poolAddress, UNI_ABI, provider)
-		const [reserves, _token0, _pooltotalSupply, _totalSupply, _rewardRate]: [
+		const [
+			reserves,
+			_token0,
+			_pooltotalSupply,
+			_totalSupply,
+			_rewardRate,
+		]: [
 			Array<ethers.BigNumber>,
 			string,
 			ethers.BigNumber,
@@ -53,11 +59,18 @@ export const fetchStakePoolInfo = async (
 			_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()
 				? toBigNumber(_reserve0)
 				: toBigNumber(_reserve1)
-		const lp = toBigNumber(_pooltotalSupply).times(10 ** 18).div(2).div(reserve)
+		const lp = toBigNumber(_pooltotalSupply)
+			.times(10 ** 18)
+			.div(2)
+			.div(reserve)
 		APR = _totalSupply.isZero()
 			? null
-			: toBigNumber(_rewardRate).times('31536000').times('100').div(toBigNumber(_totalSupply)).times(lp).div(10 ** 18)
-
+			: toBigNumber(_rewardRate)
+					.times('31536000')
+					.times('100')
+					.div(toBigNumber(_totalSupply))
+					.times(lp)
+					.div(10 ** 18)
 	} else {
 		const [_totalSupply, _rewardRate]: [
 			ethers.BigNumber,
@@ -71,9 +84,9 @@ export const fetchStakePoolInfo = async (
 		APR = _totalSupply.isZero()
 			? null
 			: toBigNumber(_rewardRate)
-				.times('31536000')
-				.times('100')
-				.div(_totalSupply.toString())
+					.times('31536000')
+					.times('100')
+					.div(_totalSupply.toString())
 	}
 
 	return {
@@ -238,11 +251,11 @@ export async function stakeTokens(
 	const rawPermitCall =
 		provider.network.chainId === config.MAINNET_NETWORK_NUMBER
 			? await permitTokensMainnet(
-				provider,
-				poolAddress,
-				lmAddress,
-				amount,
-			)
+					provider,
+					poolAddress,
+					lmAddress,
+					amount,
+			  )
 			: await permitTokensXDai(provider, poolAddress, lmAddress)
 
 	const txResponse: TransactionResponse = await lmContract
@@ -253,7 +266,6 @@ export async function stakeTokens(
 		)
 
 	showPendingStake(ethers.utils.formatEther(amount))
-
 	const stake = await txResponse.wait()
 
 	if (!stake) return
