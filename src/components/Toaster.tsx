@@ -15,7 +15,7 @@ function Toaster(): JSX.Element {
 						borderLeft: '3px solid #54D4CB',
 					},
 					success: {
-						duration: 4000,
+						duration: 5000,
 						iconTheme: {
 							primary: '#54D4CB',
 							secondary: 'white',

@@ -14,6 +14,7 @@ import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
 import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
 import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
 import { switchNetwork } from '../lib/metamask'
+import * as dropToast from '../lib/notifications/drop'
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState<ethers.BigNumber>(ZERO)
@@ -113,9 +114,20 @@ function Rewards() {
 				claimData.amount,
 				claimData.proof,
 			]
-			const result = await merkleContract.connect(signer).claim(...args)
-			// eslint-disable-next-line no-console
-			console.log(result)
+
+			const tx = await merkleContract
+				.connect(signer.connectUnchecked())
+				.claim(...args)
+
+			dropToast.showPendingRequest(network, tx.hash)
+
+			const { status } = await tx.wait()
+
+			if (status) {
+				dropToast.showConfirmedRequest(network, tx.hash)
+			} else {
+				dropToast.showFailedRequest(network, tx.hash)
+			}
 		} catch (e) {
 			console.error('Error in claiming:', e)
 		}
@@ -144,9 +156,19 @@ function Rewards() {
 			claimData.amount,
 			claimData.proof,
 		]
-		const result = await merkleContract.connect(signer).claim(...args)
-		// eslint-disable-next-line no-console
-		console.log(result)
+		const tx = await merkleContract
+			.connect(signer.connectUnchecked())
+			.claim(...args)
+
+		dropToast.showPendingRequest(network, tx.hash)
+
+		const { status } = await tx.wait()
+
+		if (status) {
+			dropToast.showConfirmedRequest(network, tx.hash)
+		} else {
+			dropToast.showFailedRequest(network, tx.hash)
+		}
 	}
 
 	return (
