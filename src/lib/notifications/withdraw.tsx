@@ -1,16 +1,16 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { ETHERSCAN } from '../../configuration'
+import { networksParams } from '../../constants'
 
 export function showPendingWithdraw(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.success(
 		<span>
 			Withdrawal submitted! Check the status{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -22,14 +22,14 @@ export function showPendingWithdraw(network: number, txHash: string): void {
 }
 
 export function showFailedWithdraw(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.error(
 		<span>
 			Withdrawal failed! Check your transaction{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -41,14 +41,14 @@ export function showFailedWithdraw(network: number, txHash: string): void {
 }
 
 export function showConfirmedWithdraw(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.success(
 		<span>
 			Withdrawal{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>

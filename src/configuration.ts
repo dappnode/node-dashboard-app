@@ -4,6 +4,10 @@ export const config = {
 
 	MAINNET_NETWORK_NUMBER: 4,
 	XDAI_NETWORK_NUMBER: 5,
+
+	// Used for adding netnworks to user wallet, useless since just xDAI is not
+	// included in metamask by default and its rpc endpoint is not infura
+	INFURA_API_KEY: process.env.NEXT_PUBLIC_INFURA_API_KEY,
 }
 
 export const MAINNET_CONFIG = {
@@ -44,11 +48,4 @@ export const XDAI_CONFIG = {
 export const NETWORKS_CONFIG = {
 	[config.MAINNET_NETWORK_NUMBER]: MAINNET_CONFIG,
 	[config.XDAI_NETWORK_NUMBER]: XDAI_CONFIG,
-}
-
-export const ETHERSCAN = {
-	1: 'https://etherscan.io/tx/',
-	4: 'https://rinkeby.etherscan.io/tx/',
-	5: 'https://goerli.etherscan.io/tx/',
-	100: 'https://blockscout.com/xdai/mainnet/tx/',
 }

@@ -1,13 +1,13 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { ETHERSCAN } from '../../configuration'
+import { networksParams } from '../../constants'
 
 export function showPendingStake(
 	amount: string,
 	network: number,
 	txHash: string,
 ): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.success(
 		<span>
@@ -15,7 +15,7 @@ export function showPendingStake(
 			transaction{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -27,14 +27,14 @@ export function showPendingStake(
 }
 
 export function showFailedStake(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.error(
 		<span>
 			Your staking failed! Check your transaction{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
@@ -46,14 +46,14 @@ export function showFailedStake(network: number, txHash: string): void {
 }
 
 export function showConfirmedStake(network: number, txHash: string): void {
-	const etherscan = ETHERSCAN[network] + txHash
+	const transactionExplorer = `${networksParams[network].blockExplorerUrls[0]}/tx/${txHash}`
 
 	toast.success(
 		<span>
 			Staking{' '}
 			<a
 				target='_blank'
-				href={etherscan}
+				href={transactionExplorer}
 				rel='noreferrer'
 				style={{ color: 'white' }}
 			>
