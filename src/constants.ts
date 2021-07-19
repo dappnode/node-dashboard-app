@@ -17,8 +17,7 @@ export const networksParams = {
 		chainName: 'xDAI Chain',
 		rpcUrls: ['https://rpc.xdaichain.com/'],
 		iconUrls: [
-			'https://xdaichain.com/fake/example/url/xdai.svg',
-			'https://xdaichain.com/fake/example/url/xdai.png',
+			'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/xdai/info/logo.png',
 		],
 		nativeCurrency: {
 			name: 'xDAI',
