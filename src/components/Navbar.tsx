@@ -65,11 +65,6 @@ const Container = styled.div`
 			margin: 0 15px;
 		}
 	}
-	@media only screen and (max-width: 444px) {
-		img {
-			width: 190px;
-		}
-	}
 `
 
 export default Navbar
