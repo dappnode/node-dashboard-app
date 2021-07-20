@@ -9,14 +9,14 @@ export function isAddress(address) {
 }
 
 export async function fetchDnMerkleResults() {
-	const response = await fetch(`/merkle_distributor_result_xdai_second.json`)
+	const response = await fetch(`/merkle_distributor_result_xdai.json`)
 	const results = await response.json()
 
 	return results
 }
 
 export async function fetchEthMerkleResults() {
-	const response = await fetch(`/merkle_distributor_result_mainnet_second.json`)
+	const response = await fetch(`/merkle_distributor_result_mainnet.json`)
 	const results = await response.json()
 
 	return results
