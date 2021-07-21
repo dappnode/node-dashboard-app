@@ -5,7 +5,7 @@ import { networkAllowed } from '../lib/web3-utils'
 import Navbar from '../components/Navbar'
 
 import { useOnboard } from '../hooks/useOnboard'
-import { getEthClaimableAmount, getXDaiClaimableAmount } from '../lib/claim'
+import { getEthTotalClaimable, getXDaiTotalClaimable } from '../lib/claim'
 import {
 	GRADIENT_TEXT,
 	Button,
@@ -35,9 +35,11 @@ function Nodedrop() {
 	// eslint-disable-next-line no-shadow
 	async function hasPendingRewards(address: string) {
 		const [ethAmount, dnAmount] = await Promise.all([
-			getEthClaimableAmount(address),
-			getXDaiClaimableAmount(address),
+			getEthTotalClaimable(address),
+			getXDaiTotalClaimable(address),
 		])
+
+		console.log(ethAmount, dnAmount)
 
 		if (addressInput === '0xNODE') return true
 
