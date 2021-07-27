@@ -6,9 +6,10 @@ import Seed from '../assets/seed'
 import AddTokenButton from './AddToken'
 import { BigCurrency, FlexRow, GreenButton } from './Styles'
 
+import { fetchEthClaimData, fetchDnClaimData } from '../helpers/claim'
 import { useOnboard } from '../hooks/useOnboard'
 import { bn, ZERO } from '../lib/numbers'
-import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
+import { getEthTotalClaimable, getXDaiTotalClaimable } from '../lib/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
 import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
@@ -22,60 +23,11 @@ function Rewards() {
 
 	const { address, network, provider } = useOnboard()
 
-	async function getEthClaimableAmount(): Promise<any> {
-		if (!address) return
-
-		const claimData = await fetchEthClaimData(address)
-		if (claimData) {
-			const merkleContract = new Contract(
-				MAINNET_CONFIG.MERKLE_ADDRESS,
-				MERKLE_ABI,
-				mainnetProvider,
-			)
-			try {
-				const isClaimedResult = await merkleContract.isClaimed(
-					claimData.index,
-				)
-				const canClaim = Boolean(claimData && isClaimedResult === false)
-				// eslint-disable-next-line no-console
-				console.log(canClaim)
-
-				if (!canClaim) return ZERO
-
-				const ethAmountBN = bn(claimData.amount)
-
-				return ethAmountBN
-			} catch (e) {
-				console.error(e)
-			}
-		}
-		return ZERO
-	}
-
-	async function getXDaiClaimableAmount(): Promise<any> {
-		if (!address) return
-
-		const claimData = await fetchDnClaimData(address)
-		const merkleContract = new Contract(
-			XDAI_CONFIG.MERKLE_ADDRESS,
-			MERKLE_ABI,
-			xdaiProvider,
-		)
-		const isClaimedResult = await merkleContract.isClaimed(claimData.index)
-		const canClaim = Boolean(claimData && isClaimedResult === false)
-		// eslint-disable-next-line no-console
-		console.log(canClaim)
-
-		if (!canClaim) return ZERO
-
-		const ethAmountBN = bn(claimData.amount)
-
-		return ethAmountBN
-	}
-
 	async function updateClaimableAmount() {
-		const dnmount = await getXDaiClaimableAmount()
-		const ethAmount = await getEthClaimableAmount()
+		if (!address) return
+
+		const dnmount = await getXDaiTotalClaimable(address)
+		const ethAmount = await getEthTotalClaimable(address)
 		setDnClaimable(dnmount)
 		setEthClaimable(ethAmount)
 	}
@@ -94,9 +46,18 @@ function Rewards() {
 		if (!provider) return
 		try {
 			const signer = await provider.getSigner()
-			const claimData = await fetchDnClaimData(address)
+			const [claimData1, claimData2] = await Promise.all([
+				fetchDnClaimData(address, 1),
+				fetchDnClaimData(address, 2),
+			])
+
+			const claimData = claimData1 || claimData2
+			const merkleAddress = claimData1
+				? XDAI_CONFIG.MERKLE_ADDRESS
+				: XDAI_CONFIG.MERKLE_ADDRESS_2
+
 			const merkleContract = new Contract(
-				XDAI_CONFIG.MERKLE_ADDRESS,
+				merkleAddress,
 				MERKLE_ABI,
 				provider,
 			)
@@ -136,12 +97,18 @@ function Rewards() {
 	async function handleEthClaim() {
 		if (!provider) return
 		const signer = await provider.getSigner()
-		const claimData = await fetchEthClaimData(address)
-		const merkleContract = new Contract(
-			MAINNET_CONFIG.MERKLE_ADDRESS,
-			MERKLE_ABI,
-			signer,
-		)
+
+		const [claimData1, claimData2] = await Promise.all([
+			fetchEthClaimData(address, 1),
+			fetchEthClaimData(address, 2),
+		])
+
+		const claimData = claimData1 || claimData2
+		const merkleAddress = claimData1
+			? MAINNET_CONFIG.MERKLE_ADDRESS
+			: MAINNET_CONFIG.MERKLE_ADDRESS_2
+
+		const merkleContract = new Contract(merkleAddress, MERKLE_ABI, signer)
 
 		const isClaimedResult = await merkleContract
 			.connect(signer)

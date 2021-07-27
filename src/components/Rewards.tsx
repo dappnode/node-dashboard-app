@@ -20,6 +20,7 @@ import {
 } from '../lib/notifications/claim'
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
+import { ZERO } from '../lib/numbers'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -37,18 +38,18 @@ function Rewards() {
 	)
 
 	// eslint-disable-next-line no-shadow
-	async function handleClaim(network: number) {
+	async function handleEthClaim() {
 		const signer = provider.getSigner().connectUnchecked()
 
 		const tokenDistro = new Contract(
-			NETWORKS_CONFIG[network].TOKEN_DISTRO_ADDRESS,
+			NETWORKS_CONFIG[config.MAINNET_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS,
 			TOKEN_DISTRO_ABI,
 			signer,
 		)
 
 		const tx = await tokenDistro.claim()
 
-		showPendingClaim(network, tx.hash)
+		showPendingClaim(config.MAINNET_NETWORK_NUMBER, tx.hash)
 
 		const { status } = await tx.wait()
 
@@ -59,14 +60,62 @@ function Rewards() {
 		}
 	}
 
+	// eslint-disable-next-line no-shadow
+	async function handleXDaiClaim() {
+		const signer = provider.getSigner().connectUnchecked()
+
+		const tokenDistro1 = new Contract(
+			NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS,
+			TOKEN_DISTRO_ABI,
+			signer,
+		)
+
+		const tokenDistro2 = new Contract(
+			NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS_2,
+			TOKEN_DISTRO_ABI,
+			signer,
+		)
+
+		const [claimable1, claimable2] = await Promise.all([
+			tokenDistro1.claimableNow(address),
+			tokenDistro2.claimableNow(address),
+		])
+
+		if (claimable1.gt(ZERO) && claimable2.gt(ZERO)) {
+			const tx1 = await tokenDistro1.claim()
+			const tx2 = await tokenDistro1.claim({ nonce: tx1.nonce + 1 })
+
+			const claim = await Promise.all([tx1.wait(), tx2.wait()])
+
+			if (!claim) return
+
+			showConfirmedClaim()
+		} else {
+			const tokenDistro = claimable1.gt(ZERO)
+				? tokenDistro1
+				: tokenDistro2
+
+			const tx = await tokenDistro.claim()
+
+			showPendingClaim(config.XDAI_NETWORK_NUMBER, tx.hash)
+
+			const claim = await tx.wait()
+
+			if (!claim) return
+
+			showConfirmedClaim()
+		}
+	}
+
 	async function getTokenDistroAmounts(
 		// eslint-disable-next-line no-shadow
 		address: string,
+		tokenDistroAddress: string,
 		// eslint-disable-next-line no-shadow
 		network: number,
 	): Promise<ITokenDistro> {
 		const tokenDistro = new Contract(
-			NETWORKS_CONFIG[network].TOKEN_DISTRO_ADDRESS,
+			tokenDistroAddress,
 			TOKEN_DISTRO_ABI,
 			networkProviders[network],
 		)
@@ -83,10 +132,33 @@ function Rewards() {
 		if (!address) return
 
 		const { claimable: _ethClaimable, locked: _ethLocked } =
-			await getTokenDistroAmounts(address, config.MAINNET_NETWORK_NUMBER)
+			await getTokenDistroAmounts(
+				address,
+				NETWORKS_CONFIG[config.MAINNET_NETWORK_NUMBER]
+					.TOKEN_DISTRO_ADDRESS,
+				config.MAINNET_NETWORK_NUMBER,
+			)
 
-		const { claimable: _xDaiClaimable, locked: _xDaiLocked } =
-			await getTokenDistroAmounts(address, config.XDAI_NETWORK_NUMBER)
+		const { claimable: _xDaiClaimable1, locked: _xDaiLocked1 } =
+			await getTokenDistroAmounts(
+				address,
+				NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER]
+					.TOKEN_DISTRO_ADDRESS,
+				config.XDAI_NETWORK_NUMBER,
+			)
+
+		const { claimable: _xDaiClaimable2, locked: _xDaiLocked2 } =
+			await getTokenDistroAmounts(
+				address,
+				NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER]
+					.TOKEN_DISTRO_ADDRESS_2,
+				config.XDAI_NETWORK_NUMBER,
+			)
+
+		// eslint-disable-next-line no-underscore-dangle
+		const _xDaiLocked = _xDaiLocked1.add(_xDaiLocked2)
+		// eslint-disable-next-line no-underscore-dangle
+		const _xDaiClaimable = _xDaiClaimable1.add(_xDaiClaimable2)
 
 		setEthLocked(_ethLocked || constants.Zero)
 		setEthClaimable(_ethClaimable || constants.Zero)
@@ -182,9 +254,7 @@ function Rewards() {
 							</div>
 						</Inline>
 						<BlueButton
-							onClick={() =>
-								handleClaim(config.MAINNET_NETWORK_NUMBER)
-							}
+							onClick={handleEthClaim}
 							disabled={
 								!isMainnet(network) ||
 								!ethClaimable.gt(constants.Zero)
@@ -272,9 +342,7 @@ function Rewards() {
 						</Inline>
 
 						<GreenButton
-							onClick={() =>
-								handleClaim(config.XDAI_NETWORK_NUMBER)
-							}
+							onClick={handleXDaiClaim}
 							disabled={
 								!isDN(network) ||
 								!xDaiClaimable.gt(constants.Zero)
