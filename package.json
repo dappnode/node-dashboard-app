@@ -9,6 +9,7 @@
     "export": "next export",
     "lint": "next lint"
   },
+  "license" : "GPLv3",
   "dependencies": {
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/providers": "^5.4.1",
