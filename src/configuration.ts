@@ -2,8 +2,8 @@ export const config = {
 	TOKEN_NAME: 'NODE',
 	ETH_USDT_ORACLE: 'eth-usd.data.eth',
 
-	MAINNET_NETWORK_NUMBER: 4,
-	XDAI_NETWORK_NUMBER: 5,
+	MAINNET_NETWORK_NUMBER: 1,
+	XDAI_NETWORK_NUMBER: 100,
 
 	// Used for adding netnworks to user wallet, useless since just xDAI is not
 	// included in metamask by default and its rpc endpoint is not infura
