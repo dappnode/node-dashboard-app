@@ -7,13 +7,9 @@ import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
 import { config, MAINNET_CONFIG } from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
-import {
-	showPendingStake,
-	showConfirmedStake,
-	showConfirmedHarvest,
-	showConfirmedWithdraw,
-} from './notifications'
-import { convertEthHelper } from './numbers'
+import * as stakeToast from './notifications/stake'
+import * as harvestToast from './notifications/harvest'
+import * as withdrawToast from './notifications/withdraw'
 
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
@@ -259,40 +255,72 @@ export async function stakeTokens(
 			: await permitTokensXDai(provider, poolAddress, lmAddress)
 
 	const txResponse: TransactionResponse = await lmContract
-		.connect(signer)
+		.connect(signer.connectUnchecked())
 		.stakeWithPermit(
 			ethers.BigNumber.from(amount.toString()),
 			rawPermitCall.data,
 		)
 
-	showPendingStake(ethers.utils.formatEther(amount))
-	const stake = await txResponse.wait()
+	stakeToast.showPendingStake(
+		ethers.utils.formatEther(amount),
+		provider.network.chainId,
+		txResponse.hash,
+	)
 
-	if (!stake) return
+	const { status } = await txResponse.wait()
 
-	showConfirmedStake()
+	if (status) {
+		stakeToast.showConfirmedStake(provider.network.chainId, txResponse.hash)
+	} else {
+		stakeToast.showFailedStake(provider.network.chainId, txResponse.hash)
+	}
 }
 
-export const harvestTokens = async (lmAddress: string, signer) => {
-	const lmContract = new Contract(lmAddress, LM_ABI, signer)
+export const harvestTokens = async (
+	lmAddress: string,
+	network: number,
+	signer,
+) => {
+	const lmContract = new Contract(
+		lmAddress,
+		LM_ABI,
+		signer.connectUnchecked(),
+	)
 
-	const harvest = await lmContract.getReward()
+	const tx = await lmContract.getReward()
 
-	if (!harvest) return
+	harvestToast.showPendingHarvest(network, tx.hash)
 
-	showConfirmedHarvest()
+	const { status } = await tx.wait()
+
+	if (status) {
+		harvestToast.showConfirmedHarvest(network, tx.hash)
+	} else {
+		harvestToast.showFailedHarvest(network, tx.hash)
+	}
 }
 
 export const withdrawTokens = async (
 	amount: number,
 	lmAddress: string,
+	network: number,
 	signer,
 ) => {
-	const lmContract = new Contract(lmAddress, LM_ABI, signer)
+	const lmContract = new Contract(
+		lmAddress,
+		LM_ABI,
+		signer.connectUnchecked(),
+	)
 
-	const withdraw = await lmContract.withdraw(ethers.BigNumber.from(amount))
+	const tx = await lmContract.withdraw(ethers.BigNumber.from(amount))
 
-	if (!withdraw) return
+	withdrawToast.showPendingWithdraw(network, tx.hash)
 
-	showConfirmedWithdraw()
+	const { status } = await tx.wait()
+
+	if (status) {
+		withdrawToast.showConfirmedWithdraw(network, tx.hash)
+	} else {
+		withdrawToast.showFailedWithdraw(network, tx.hash)
+	}
 }

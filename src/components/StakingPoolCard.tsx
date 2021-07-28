@@ -102,7 +102,11 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 
 	async function handleHarvest() {
 		const signer = provider.getSigner()
-		await harvestTokens(NETWORKS_CONFIG[network][option].LM_ADDRESS, signer)
+		await harvestTokens(
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			network,
+			signer,
+		)
 	}
 
 	async function handleWithdraw(amount) {
@@ -110,6 +114,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		await withdrawTokens(
 			amount,
 			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			network,
 			signer,
 		)
 	}

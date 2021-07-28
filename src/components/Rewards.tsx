@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { constants, Contract, BigNumber, utils } from 'ethers'
+import { BigNumber, constants, Contract, utils } from 'ethers'
+import { isAddress } from 'ethers/lib/utils'
 
 import styled from 'styled-components'
-import { networkAllowed, isMainnet, isDN } from '../lib/web3-utils'
+import { isDN, isMainnet, networkAllowed } from '../lib/web3-utils'
 import { switchNetwork } from '../lib/metamask'
 import Seed from '../assets/seed'
 import Time from '../assets/time'
@@ -13,10 +14,13 @@ import { useOnboard } from '../hooks/useOnboard'
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
 import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
-import { showPendingClaim, showConfirmedClaim } from '../lib/notifications'
+import {
+	showConfirmedClaim,
+	showFailedClaim,
+	showPendingClaim,
+} from '../lib/notifications/claim'
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
-import { ZERO } from '../lib/numbers'
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -29,76 +33,70 @@ function Rewards() {
 	const [ethLocked, setEthLocked] = useState<BigNumber>(constants.Zero)
 	const [xDaiLocked, setXDaiLocked] = useState<BigNumber>(constants.Zero)
 	const [ethClaimable, setEthClaimable] = useState<BigNumber>(constants.Zero)
+	const [xDaiClaimable1, setXDaiClaimable1] = useState<BigNumber>(
+		constants.Zero,
+	)
+	const [xDaiClaimable2, setXDaiClaimable2] = useState<BigNumber>(
+		constants.Zero,
+	)
 	const [xDaiClaimable, setXDaiClaimable] = useState<BigNumber>(
 		constants.Zero,
 	)
 
-	// eslint-disable-next-line no-shadow
-	async function handleEthClaim() {
+	async function handleClaim(tokenDistroAddress: string): Promise<void> {
+		if (!isAddress(tokenDistroAddress)) return
+
 		const signer = provider.getSigner().connectUnchecked()
 
 		const tokenDistro = new Contract(
-			NETWORKS_CONFIG[config.MAINNET_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS,
+			tokenDistroAddress,
 			TOKEN_DISTRO_ABI,
 			signer,
 		)
 
 		const tx = await tokenDistro.claim()
 
-		showPendingClaim(config.MAINNET_NETWORK_NUMBER, tx.hash)
+		showPendingClaim(network, tx.hash)
 
-		const claim = await tx.wait()
+		const { status } = await tx.wait()
 
-		if (!claim) return
-
-		showConfirmedClaim()
+		if (status) {
+			showConfirmedClaim(network, tx.hash)
+		} else {
+			showFailedClaim(network, tx.hash)
+		}
 	}
 
 	// eslint-disable-next-line no-shadow
-	async function handleXDaiClaim() {
-		const signer = provider.getSigner().connectUnchecked()
-
-		const tokenDistro1 = new Contract(
-			NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS,
-			TOKEN_DISTRO_ABI,
-			signer,
+	async function handleEthClaim() {
+		await handleClaim(
+			NETWORKS_CONFIG[config.MAINNET_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS,
 		)
+	}
 
-		const tokenDistro2 = new Contract(
-			NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER].TOKEN_DISTRO_ADDRESS_2,
-			TOKEN_DISTRO_ABI,
-			signer,
-		)
+	// eslint-disable-next-line no-shadow
+	function handleXDaiClaim() {
+		const { TOKEN_DISTRO_ADDRESS, TOKEN_DISTRO_ADDRESS_2 } =
+			NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER]
 
-		const [claimable1, claimable2] = await Promise.all([
-			tokenDistro1.claimableNow(address),
-			tokenDistro2.claimableNow(address),
-		])
+		const promises: Array<Promise<void>> = []
 
-		if (claimable1.gt(ZERO) && claimable2.gt(ZERO)) {
-			const tx1 = await tokenDistro1.claim()
-			const tx2 = await tokenDistro1.claim({ nonce: tx1.nonce + 1 })
+		if (!xDaiClaimable1.isZero()) {
+			const promise = handleClaim(TOKEN_DISTRO_ADDRESS).catch(e => {
+				console.error('Error in claiming xDai token distro:', e)
+			})
 
-			const claim = await Promise.all([tx1.wait(), tx2.wait()])
-
-			if (!claim) return
-
-			showConfirmedClaim()
-		} else {
-			const tokenDistro = claimable1.gt(ZERO)
-				? tokenDistro1
-				: tokenDistro2
-
-			const tx = await tokenDistro.claim()
-
-			showPendingClaim(config.XDAI_NETWORK_NUMBER, tx.hash)
-
-			const claim = await tx.wait()
-
-			if (!claim) return
-
-			showConfirmedClaim()
+			promises.push(promise)
 		}
+
+		if (!xDaiClaimable2.isZero()) {
+			const promise = handleClaim(TOKEN_DISTRO_ADDRESS_2).catch(e => {
+				console.error('Error in claiming xDai token distro 2:', e)
+			})
+			promises.push(promise)
+		}
+
+		return Promise.all(promises)
 	}
 
 	async function getTokenDistroAmounts(
@@ -106,12 +104,19 @@ function Rewards() {
 		address: string,
 		tokenDistroAddress: string,
 		// eslint-disable-next-line no-shadow
-		network: number,
+		networkNumber: number,
 	): Promise<ITokenDistro> {
+		if (!isAddress(tokenDistroAddress)) {
+			return {
+				claimable: constants.Zero,
+				locked: constants.Zero,
+			}
+		}
+
 		const tokenDistro = new Contract(
 			tokenDistroAddress,
 			TOKEN_DISTRO_ABI,
-			networkProviders[network],
+			networkProviders[networkNumber],
 		)
 
 		const balances = await tokenDistro.balances(address)
@@ -123,7 +128,7 @@ function Rewards() {
 	}
 
 	async function updateTokenDistroAmounts() {
-		if (!address) return
+		if (!isAddress(address)) return
 
 		const { claimable: _ethClaimable, locked: _ethLocked } =
 			await getTokenDistroAmounts(
@@ -148,6 +153,9 @@ function Rewards() {
 					.TOKEN_DISTRO_ADDRESS_2,
 				config.XDAI_NETWORK_NUMBER,
 			)
+
+		setXDaiClaimable1(_xDaiClaimable1)
+		setXDaiClaimable2(_xDaiClaimable2)
 
 		// eslint-disable-next-line no-underscore-dangle
 		const _xDaiLocked = _xDaiLocked1.add(_xDaiLocked2)
@@ -250,8 +258,7 @@ function Rewards() {
 						<BlueButton
 							onClick={handleEthClaim}
 							disabled={
-								!isMainnet(network) ||
-								!ethClaimable.gt(constants.Zero)
+								!isMainnet(network) || ethClaimable.isZero()
 							}
 						>
 							Claim
@@ -337,10 +344,7 @@ function Rewards() {
 
 						<GreenButton
 							onClick={handleXDaiClaim}
-							disabled={
-								!isDN(network) ||
-								!xDaiClaimable.gt(constants.Zero)
-							}
+							disabled={!isDN(network) || xDaiClaimable.isZero()}
 						>
 							Claim
 						</GreenButton>
@@ -514,4 +518,4 @@ const SpaceBetween = styled.div`
 	flex-wrap: wrap;
 `
 
-export default Rewards
+export default React.memo(Rewards)

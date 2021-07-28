@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { questions } from '../helpers/questions'
-import { showCorrectAnswer } from '../lib/notifications'
+import { showCorrectAnswer } from '../lib/notifications/drop'
 
 import RadioButton from './RadioButton'
 import { Button, GreenButton, Inter400, Inter700 } from './Styles'
