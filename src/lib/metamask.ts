@@ -1,6 +1,7 @@
-import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+import config from '../configuration'
 import { networksParams } from '../constants'
 
+const { MAINNET_CONFIG, XDAI_CONFIG } = config
 declare let window: any
 
 const tokenSymbol = 'NODE'

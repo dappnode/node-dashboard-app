@@ -4,13 +4,14 @@ import { TransactionResponse, Web3Provider } from '@ethersproject/providers'
 import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
-import { config, MAINNET_CONFIG } from '../configuration'
+import config from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
 import * as stakeToast from './notifications/stake'
 import * as harvestToast from './notifications/harvest'
 import * as withdrawToast from './notifications/withdraw'
 
+const { MAINNET_CONFIG } = config
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
 

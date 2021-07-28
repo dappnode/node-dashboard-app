@@ -1,6 +1,6 @@
 import { Contract, ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
-import { config } from '../configuration'
+import config from '../configuration'
 import { abi as ETH_PRICE_ORACLE_ABI } from '../artifacts/EACAggregatorProxy.json'
 import { mainnetProvider } from './networkProvider'
 

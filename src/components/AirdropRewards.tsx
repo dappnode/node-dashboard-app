@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Contract, ethers } from 'ethers'
+import { isAddress } from 'ethers/lib/utils'
 import { isDN, isMainnet } from '../lib/web3-utils'
 import Seed from '../assets/seed'
 import AddTokenButton from './AddToken'
 import { BigCurrency, FlexRow, GreenButton } from './Styles'
 
-import { fetchEthClaimData, fetchDnClaimData } from '../helpers/claim'
+import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 import { useOnboard } from '../hooks/useOnboard'
-import { bn, ZERO } from '../lib/numbers'
+import { ZERO } from '../lib/numbers'
 import { getEthTotalClaimable, getXDaiTotalClaimable } from '../lib/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
-import { mainnetProvider, xdaiProvider } from '../lib/networkProvider'
+import config from '../configuration'
 import { switchNetwork } from '../lib/metamask'
 import * as dropToast from '../lib/notifications/drop'
+
+const { XDAI_CONFIG, MAINNET_CONFIG } = config
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState<ethers.BigNumber>(ZERO)
@@ -42,19 +44,25 @@ function Rewards() {
 		return () => clearInterval(interval)
 	}, [])
 
-	async function handleDnClaim() {
+	async function handleClaim(networkConfig, fetchClaimData) {
 		if (!provider) return
 		try {
+			const { MERKLE_ADDRESS_2, MERKLE_ADDRESS } = networkConfig
+
 			const signer = await provider.getSigner()
 			const [claimData1, claimData2] = await Promise.all([
-				fetchDnClaimData(address, 1),
-				fetchDnClaimData(address, 2),
+				isAddress(MERKLE_ADDRESS)
+					? fetchClaimData(address, 1)
+					: Promise.resolve(undefined),
+				isAddress(MERKLE_ADDRESS_2)
+					? fetchClaimData(address, 2)
+					: Promise.resolve(undefined),
 			])
 
 			const claimData = claimData1 || claimData2
-			const merkleAddress = claimData1
-				? XDAI_CONFIG.MERKLE_ADDRESS
-				: XDAI_CONFIG.MERKLE_ADDRESS_2
+			if (!claimData) return
+
+			const merkleAddress = claimData1 ? MERKLE_ADDRESS : MERKLE_ADDRESS_2
 
 			const merkleContract = new Contract(
 				merkleAddress,
@@ -94,48 +102,12 @@ function Rewards() {
 		}
 	}
 
-	async function handleEthClaim() {
-		if (!provider) return
-		const signer = await provider.getSigner()
+	function handleDnClaim() {
+		return handleClaim(XDAI_CONFIG, fetchDnClaimData)
+	}
 
-		const [claimData1, claimData2] = await Promise.all([
-			fetchEthClaimData(address, 1),
-			fetchEthClaimData(address, 2),
-		])
-
-		const claimData = claimData1 || claimData2
-		const merkleAddress = claimData1
-			? MAINNET_CONFIG.MERKLE_ADDRESS
-			: MAINNET_CONFIG.MERKLE_ADDRESS_2
-
-		const merkleContract = new Contract(merkleAddress, MERKLE_ABI, signer)
-
-		const isClaimedResult = await merkleContract
-			.connect(signer)
-			.isClaimed(claimData.index)
-		const canClaim = Boolean(claimData && isClaimedResult === false)
-
-		if (!canClaim) return
-
-		const args = [
-			claimData.index,
-			address,
-			claimData.amount,
-			claimData.proof,
-		]
-		const tx = await merkleContract
-			.connect(signer.connectUnchecked())
-			.claim(...args)
-
-		dropToast.showPendingRequest(network, tx.hash)
-
-		const { status } = await tx.wait()
-
-		if (status) {
-			dropToast.showConfirmedRequest(network, tx.hash)
-		} else {
-			dropToast.showFailedRequest(network, tx.hash)
-		}
+	function handleEthClaim() {
+		return handleClaim(MAINNET_CONFIG, fetchEthClaimData)
 	}
 
 	return (

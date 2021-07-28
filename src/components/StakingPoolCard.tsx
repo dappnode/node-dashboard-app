@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import PoolCard from './PoolCard'
-import { NETWORKS_CONFIG } from '../configuration'
+import config from '../configuration'
 import {
 	fetchStakePoolInfo,
 	fetchUserInfo,
@@ -11,6 +11,8 @@ import {
 } from '../lib/stakingPool'
 import { useOnboard } from '../hooks/useOnboard'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
+
+const { NETWORKS_CONFIG } = config
 
 interface StakingPoolCardProps {
 	composition: string

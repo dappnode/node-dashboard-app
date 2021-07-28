@@ -15,7 +15,7 @@ import {
 	Inter700,
 } from '../components/Styles'
 import AirdropRewards from '../components/AirdropRewards'
-import { config } from '../configuration'
+import config from '../configuration'
 import NodeDropHint from '../components/NodeDropHint'
 import Stepper from '../components/Stepper'
 import Story from '../components/Story'

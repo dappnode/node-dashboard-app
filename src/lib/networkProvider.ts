@@ -1,5 +1,7 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { MAINNET_CONFIG, NETWORKS_CONFIG, XDAI_CONFIG } from '../configuration'
+import config from '../configuration'
+
+const { MAINNET_CONFIG, NETWORKS_CONFIG, XDAI_CONFIG } = config
 
 export const mainnetProvider = new JsonRpcProvider(MAINNET_CONFIG.nodeUrl)
 export const xdaiProvider = new JsonRpcProvider(XDAI_CONFIG.nodeUrl)

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import Dashboard from '../components/Dashboard'
 import { useOnboard } from '../hooks/useOnboard'
-import { config } from '../configuration'
+import config from '../configuration'
 import Footer from '../components/Footer'
 
 function Home() {

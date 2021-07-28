@@ -1,6 +1,6 @@
 import Notify from 'bnc-notify'
 import Onboard from 'bnc-onboard'
-import { config } from '../configuration'
+import config from '../configuration'
 
 // TODO: change data here. API keys. rpcUrl, dappId key from blocknative
 const networkId = config.MAINNET_NETWORK_NUMBER

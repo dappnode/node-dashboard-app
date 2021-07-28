@@ -1,6 +1,6 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { config } from '../../configuration'
+import config from '../../configuration'
 import { networksParams } from '../../constants'
 
 export function showCorrectAnswer(): void {
