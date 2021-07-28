@@ -7,8 +7,8 @@ import React, {
 	useState,
 } from 'react'
 import { Contract, ethers } from 'ethers'
+import { isAddress } from 'ethers/lib/utils'
 import { useOnboard } from './useOnboard'
-import { isAddress } from '../helpers/claim'
 import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import { ZERO } from '../lib/numbers'

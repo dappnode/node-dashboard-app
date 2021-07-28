@@ -1,12 +1,13 @@
 import { getAddress } from '@ethersproject/address'
+import { constants } from 'ethers'
 
 type TypeWave = 1 | 2
 
-export function isAddress(address: string): string | false {
+export function formatAddress(address: string): string {
 	try {
 		return getAddress(address)
 	} catch {
-		return false
+		return constants.AddressZero
 	}
 }
 
@@ -40,7 +41,7 @@ export async function fetchDnClaimData(
 ): Promise<any> {
 	try {
 		const { claims } = await fetchDnMerkleResults(wave)
-		const formatted = isAddress(address)
+		const formatted = formatAddress(address)
 
 		return claims[formatted]
 	} catch (e) {
@@ -56,7 +57,7 @@ export async function fetchEthClaimData(
 ): Promise<any> {
 	try {
 		const { claims } = await fetchEthMerkleResults(wave)
-		const formatted = isAddress(address)
+		const formatted = formatAddress(address)
 
 		return claims[formatted]
 	} catch (e) {
