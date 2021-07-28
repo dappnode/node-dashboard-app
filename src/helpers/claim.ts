@@ -15,7 +15,7 @@ export async function fetchDnMerkleResults(wave: TypeWave): Promise<any> {
 	const file =
 		wave === 1
 			? `/merkle_distributor_result_xdai.json`
-			: `merkle_distributor_result_xdai_second.json`
+			: `/merkle_distributor_result_xdai_second.json`
 
 	const response = await fetch(file)
 	const results = await response.json()
@@ -27,7 +27,7 @@ export async function fetchEthMerkleResults(wave: TypeWave): Promise<any> {
 	const file =
 		wave === 1
 			? `/merkle_distributor_result_mainnet.json`
-			: `merkle_distributor_result_mainnet_second.json`
+			: `/merkle_distributor_result_mainnet_second.json`
 
 	const response = await fetch(file)
 	const results = await response.json()
