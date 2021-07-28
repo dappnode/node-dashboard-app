@@ -4,10 +4,12 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTokenBalance } from '../hooks/useTokenBalance'
 import { useOnboard } from '../hooks/useOnboard'
-import { config, XDAI_CONFIG } from '../configuration'
 import { fetchStakePoolInfo } from '../lib/stakingPool'
 import { convertEthHelper } from '../lib/numbers'
 import { GRADIENT_TEXT } from './Styles'
+import config from '../configuration'
+
+const { XDAI_CONFIG } = config
 
 const NodeDropHint: FC = () => {
 	const { network } = useOnboard()

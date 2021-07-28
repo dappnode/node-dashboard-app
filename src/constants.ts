@@ -1,4 +1,4 @@
-import { config } from './configuration'
+import config from './configuration'
 
 export const networksParams = {
 	1: {

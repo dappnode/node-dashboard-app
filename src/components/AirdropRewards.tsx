@@ -13,9 +13,11 @@ import { ZERO } from '../lib/numbers'
 import { getEthTotalClaimable, getXDaiTotalClaimable } from '../lib/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import { config, MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
+import config from '../configuration'
 import { switchNetwork } from '../lib/metamask'
 import * as dropToast from '../lib/notifications/drop'
+
+const { XDAI_CONFIG, MAINNET_CONFIG } = config
 
 function Rewards() {
 	const [dnClaimable, setDnClaimable] = useState<ethers.BigNumber>(ZERO)

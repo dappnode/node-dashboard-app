@@ -3,8 +3,10 @@ import { bn, ZERO } from './numbers'
 import { fetchDnClaimData, fetchEthClaimData } from '../helpers/claim'
 
 import { abi as MERKLE_ABI } from '../artifacts/MerkleDrop.json'
-import { MAINNET_CONFIG, XDAI_CONFIG } from '../configuration'
 import { mainnetProvider, xdaiProvider } from './networkProvider'
+import config from '../configuration'
+
+const { MAINNET_CONFIG, XDAI_CONFIG } = config
 
 type TypeWave = 1 | 2
 

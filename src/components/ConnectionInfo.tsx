@@ -11,7 +11,7 @@ import {
 } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
-import { config } from '../configuration'
+import config from '../configuration'
 import { convertEthHelper } from '../lib/numbers'
 import { useTokenBalance } from '../hooks/useTokenBalance'
 

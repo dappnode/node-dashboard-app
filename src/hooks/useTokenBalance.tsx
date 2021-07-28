@@ -9,9 +9,11 @@ import React, {
 import { Contract, ethers } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import { useOnboard } from './useOnboard'
-import { config, NETWORKS_CONFIG } from '../configuration'
+import config from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import { ZERO } from '../lib/numbers'
+
+const { NETWORKS_CONFIG } = config
 
 type TokenBalanceData = {
 	tokenBalance: ethers.BigNumber

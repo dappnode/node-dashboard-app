@@ -4,7 +4,9 @@ import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
 import StakingPoolCard from './StakingPoolCard'
-import { config, MAINNET_CONFIG } from '../configuration'
+import config from '../configuration'
+
+const { MAINNET_CONFIG } = config
 
 function Dashboard() {
 	return (

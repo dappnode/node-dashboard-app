@@ -12,7 +12,6 @@ import { BigCurrency, GreenButton } from './Styles'
 import { useOnboard } from '../hooks/useOnboard'
 
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
-import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import {
 	showConfirmedClaim,
@@ -21,6 +20,9 @@ import {
 } from '../lib/notifications/claim'
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
+import config from '../configuration'
+
+const { NETWORKS_CONFIG } = config
 
 interface ITokenDistro {
 	claimable: BigNumber
