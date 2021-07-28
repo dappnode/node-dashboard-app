@@ -25,6 +25,7 @@ const config: EnvConfig = {
 			LM_ADDRESS: '0x19992b52338B7B49De9679ae018A7027803dB1Aa',
 		},
 	},
+
 	XDAI_CONFIG: {
 		TOKEN_ADDRESS: '0xc60e38C6352875c051B481Cbe79Dd0383AdB7817',
 		MERKLE_ADDRESS: '0x91A8ddEe545E479dc2c73d9C0Ac6A017612Ee4cC',
@@ -38,4 +39,5 @@ const config: EnvConfig = {
 		},
 	},
 }
+
 export default config
