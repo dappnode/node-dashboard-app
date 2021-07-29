@@ -260,6 +260,9 @@ export async function stakeTokens(
 		.stakeWithPermit(
 			ethers.BigNumber.from(amount.toString()),
 			rawPermitCall.data,
+			{
+				gasLimit: 200_000,
+			},
 		)
 
 	stakeToast.showPendingStake(
