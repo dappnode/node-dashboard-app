@@ -1,6 +1,6 @@
 {
   "name": "dappnode-liquidity-mining",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,7 @@
     "export": "next export",
     "lint": "next lint"
   },
-  "license" : "GPLv3",
+  "license": "GPLv3",
   "dependencies": {
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/providers": "^5.4.1",
