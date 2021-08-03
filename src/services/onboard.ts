@@ -14,7 +14,11 @@ export function initOnboard(subscriptions) {
 		apiUrl,
 		subscriptions,
 		walletSelect: {
-			wallets: [{ walletName: 'metamask' }],
+			wallets: [{ walletName: 'metamask' },
+			{
+			  walletName: "walletConnect",
+			  infuraKey: config.INFURA_API_KEY
+			}],
 		},
 		walletCheck: [
 			{ checkName: 'derivationPath' },
