@@ -26,11 +26,13 @@ export const fetchStakePoolInfo = async (
 
 	let APR
 	let totalSupply
+	let reserves
+	let poolTotalSupply
 
 	if (hasLiquidityPool) {
 		const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 		const [
-			reserves,
+			_reserves,
 			_token0,
 			_pooltotalSupply,
 			_totalSupply,
@@ -50,8 +52,10 @@ export const fetchStakePoolInfo = async (
 		])
 
 		totalSupply = _totalSupply
+		reserves = _reserves
+		poolTotalSupply = _pooltotalSupply
 
-		const [_reserve0, _reserve1] = reserves
+		const [_reserve0, _reserve1] = _reserves
 		const reserve =
 			_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()
 				? toBigNumber(_reserve0)
@@ -91,6 +95,8 @@ export const fetchStakePoolInfo = async (
 		stakedLpTokens: 0,
 		APR,
 		earned: { amount: new BigNumber(0), token: 'NODE' },
+		reserves,
+		poolTotalSupply,
 	}
 }
 

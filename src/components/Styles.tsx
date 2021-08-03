@@ -118,6 +118,15 @@ export const FullHeightCenter = styled.div`
 	justify-content: center;
 	flex-direction: column;
 	height: 100%;
+	.pool-tokens-text label {
+		font-family: Inter;
+		font-style: normal;
+		font-size: 12px;
+		line-height: 12px;
+		letter-spacing: 0em;
+		color: gray;
+		text-transform: uppercase;
+	}
 `
 
 export const FlexRow = styled.div`

@@ -97,6 +97,7 @@ function PoolCard({
 					close={() => setPoolState('default')}
 					hasLiquidityPool={hasLiquidityPool}
 					disabled={disabled}
+					stakePoolInfo={stakePoolInfo}
 				/>
 			)}
 		</PoolCardSection>
@@ -116,7 +117,32 @@ const Principal = ({
 	disabled = false,
 	network,
 }) => {
-	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
+	const {
+		APR,
+		stakedLpTokens,
+		earned,
+		provideLiquidityLink,
+		reserves,
+		poolTotalSupply,
+	} = stakePoolInfo
+	let amountToken0
+	let amountToken1
+	if (reserves && stakedLpTokens && stakedLpTokens > 0) {
+		const [_reserve0, _reserve1] = reserves
+		const stakedLpTokensBigNumber = ethers.utils.parseEther(
+			stakedLpTokens.toString(),
+		)
+		amountToken0 = ethers.utils.formatEther(
+			stakedLpTokensBigNumber
+				.mul(ethers.BigNumber.from(_reserve0))
+				.div(ethers.BigNumber.from(poolTotalSupply)),
+		)
+		amountToken1 = ethers.utils.formatEther(
+			stakedLpTokensBigNumber
+				.mul(ethers.BigNumber.from(_reserve1))
+				.div(ethers.BigNumber.from(poolTotalSupply)),
+		)
+	}
 	return (
 		<>
 			<div style={{ width: '96%' }}>
@@ -153,6 +179,14 @@ const Principal = ({
 					</h2>
 					{!disabled && (
 						<SimpleButton onClick={manage}>Manage</SimpleButton>
+					)}
+					{amountToken0 && amountToken1 && (
+						<div className='pool-info-text'>
+							<label>
+								{convertEthHelper(amountToken1, 4)} NODE /{' '}
+								{convertEthHelper(amountToken0, 4)} ETH
+							</label>
+						</div>
 					)}
 				</SpaceBetween>
 				<h2>
@@ -369,9 +403,12 @@ const Withdraw = ({
 	hasLiquidityPool,
 	withdraw,
 	disabled,
+	stakePoolInfo,
 }) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
+	const [displayAmountLpTokens, setDisplayAmountLpTokens] =
+		useState<string>(undefined)
 
 	const setAmountPercentage = useCallback(
 		(percentage: number): void => {
@@ -383,6 +420,38 @@ const Withdraw = ({
 			const newAmount = _stakedLpTokens.times(percentage).div(100)
 			setAmount(newAmount.times(10 ** 18).toFixed(0))
 			setDisplayAmount(convertEthHelper(newAmount, 6, false))
+			setValueTokensLp(newAmount)
+		},
+		[stakedLpTokens],
+	)
+
+	const setValueTokensLp = useCallback(
+		(newAmountLpToken: BigNumber): void => {
+			const { reserves, poolTotalSupply } = stakePoolInfo
+			let amountToken0
+			let amountToken1
+			if (reserves && newAmountLpToken && stakedLpTokens > 0) {
+				const [_reserve0, _reserve1] = reserves
+				const newAmountLpTokenBigNumber = ethers.utils.parseEther(
+					newAmountLpToken.toString(),
+				)
+				amountToken0 = ethers.utils.formatEther(
+					newAmountLpTokenBigNumber
+						.mul(ethers.BigNumber.from(_reserve0))
+						.div(ethers.BigNumber.from(poolTotalSupply)),
+				)
+				amountToken1 = ethers.utils.formatEther(
+					newAmountLpTokenBigNumber
+						.mul(ethers.BigNumber.from(_reserve1))
+						.div(ethers.BigNumber.from(poolTotalSupply)),
+				)
+				setDisplayAmountLpTokens(
+					`${convertEthHelper(
+						amountToken1,
+						4,
+					)} NODE / ${convertEthHelper(amountToken0, 4)} ETH`,
+				)
+			}
 		},
 		[stakedLpTokens],
 	)
@@ -442,6 +511,11 @@ const Withdraw = ({
 							100%
 						</Inter500Green>
 					</div>
+					{displayAmountLpTokens && (
+						<div className='pool-tokens-text'>
+							<label>{displayAmountLpTokens}</label>
+						</div>
+					)}
 				</div>
 				<GreenButton
 					onClick={() => withdraw(amount)}
