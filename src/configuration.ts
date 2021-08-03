@@ -18,6 +18,7 @@ const config: GlobalConfig = {
 	// Used for adding netnworks to user wallet, useless since just xDAI is not
 	// included in metamask by default and its rpc endpoint is not infura
 	INFURA_API_KEY: process.env.NEXT_PUBLIC_INFURA_API_KEY,
+	BLOCKNATIVE_DAPP_ID: process.env.BLOCKNATIVE_DAPP_ID,	
 }
 
 config.MAINNET_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_NODE_URL

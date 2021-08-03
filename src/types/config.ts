@@ -28,4 +28,5 @@ export interface GlobalConfig extends EnvConfig {
 		[key: number]: NetworkConfig
 	}
 	INFURA_API_KEY: string
+	BLOCKNATIVE_DAPP_ID: string
 }
