@@ -336,7 +336,7 @@ function Rewards() {
 											utils.formatEther(xDaiClaimable),
 										).toFixed(2)}
 									</h1>
-									<h2>NODE</h2>
+									<h2>xNODE</h2>
 								</BigCurrency>
 								<div>
 									<h3>Claimable</h3>
@@ -371,7 +371,7 @@ function Rewards() {
 											utils.formatEther(xDaiLocked),
 										).toFixed(2)}
 									</h1>
-									<h2>NODE</h2>
+									<h2>xNODE</h2>
 								</BigCurrency>
 								<div>
 									<h3>In Reservoir</h3>
