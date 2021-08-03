@@ -1,4 +1,3 @@
-import Notify from 'bnc-notify'
 import Onboard from 'bnc-onboard'
 import config from '../configuration'
 
@@ -7,11 +6,9 @@ const networkId = config.MAINNET_NETWORK_NUMBER
 // const rpcUrl = 'https://localhost:3001'
 const apiUrl = process.env.REACT_APP_API_URL
 // const staging = process.env.REACT_APP_STAGING
-const dappId = '87d29f3f-7a35-4b9b-84ef-d61be96ae7e3'
 
 export function initOnboard(subscriptions) {
 	return Onboard({
-		dappId,
 		hideBranding: false,
 		networkId,
 		apiUrl,
@@ -24,13 +21,5 @@ export function initOnboard(subscriptions) {
 			{ checkName: 'connect' },
 			{ checkName: 'accounts' },
 		],
-	})
-}
-
-export function initNotify() {
-	return Notify({
-		dappId,
-		networkId,
-		apiUrl,
 	})
 }
