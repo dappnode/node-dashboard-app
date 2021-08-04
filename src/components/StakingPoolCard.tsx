@@ -11,6 +11,7 @@ import {
 } from '../lib/stakingPool'
 import { useOnboard } from '../hooks/useOnboard'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
+import { isMainnet } from '../lib/web3-utils'
 
 const { NETWORKS_CONFIG } = config
 
@@ -37,12 +38,20 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		tokensInPool: 0,
 		tokensInPoolUSD: 0,
 		APR: null,
-		earned: { amount: new BigNumber(0), token: 'NODE' },
+		earned: {
+			amount: new BigNumber(0),
+			token: 'NODE',
+			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
+		},
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
 		stakedLpTokens: 0,
 		notStakedLpTokensWei: 0,
-		earned: { amount: new BigNumber(0), token: 'NODE' },
+		earned: {
+			amount: new BigNumber(0),
+			token: 'NODE',
+			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
+		},
 	})
 	const { address, provider, network: walletNetwork, isReady } = useOnboard()
 

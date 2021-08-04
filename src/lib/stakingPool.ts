@@ -10,6 +10,7 @@ import { networkProviders } from './networkProvider'
 import * as stakeToast from './notifications/stake'
 import * as harvestToast from './notifications/harvest'
 import * as withdrawToast from './notifications/withdraw'
+import { isMainnet } from './web3-utils'
 
 const { MAINNET_CONFIG } = config
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
@@ -94,7 +95,11 @@ export const fetchStakePoolInfo = async (
 		tokensInPool: toBigNumber(totalSupply),
 		stakedLpTokens: 0,
 		APR,
-		earned: { amount: new BigNumber(0), token: 'NODE' },
+		earned: {
+			amount: new BigNumber(0),
+			token: 'NODE',
+			displayToken: 'NODE',
+		},
 		reserves,
 		poolTotalSupply,
 	}
@@ -113,7 +118,11 @@ export const fetchUserInfo = async (
 		validAddress = ethers.utils.getAddress(address)
 	} catch (_) {
 		return {
-			earned: { amount: new BigNumber(0), token: config.TOKEN_NAME },
+			earned: {
+				amount: new BigNumber(0),
+				token: config.TOKEN_NAME,
+				displayToken: config.TOKEN_NAME,
+			},
 			stakedLpTokens: 0,
 		}
 	}
@@ -132,6 +141,7 @@ export const fetchUserInfo = async (
 		earned: {
 			amount: new BigNumber(ethers.utils.formatEther(earned)),
 			token: config.TOKEN_NAME,
+			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
 		notStakedLpTokensWei: notStakedLpTokensWei.toString(),
 	}

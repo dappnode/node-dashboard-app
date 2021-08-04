@@ -48,7 +48,9 @@ const Connection = ({ nodedrop }) => {
 								ethers.utils.formatEther(tokenBalance),
 								4,
 							)}{' '}
-							Node
+							{network === config.MAINNET_NETWORK_NUMBER
+								? 'NODE'
+								: 'xNODE'}
 						</p>
 					</NavbarButton>
 					<NavbarButton>

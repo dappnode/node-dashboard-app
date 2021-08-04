@@ -63,7 +63,7 @@ function Dashboard() {
 				/>
 				<StakingPoolCard
 					name='NODE'
-					platform='NODE Staking'
+					platform='xNODE Staking'
 					option='NODE'
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'

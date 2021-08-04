@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 interface Earned {
 	amount: BigNumber
 	token: string
+	displayToken: string
 }
 export interface StakeUserInfo {
 	stakedLpTokens?: BigNumber | number
