@@ -4,13 +4,15 @@ import { TransactionResponse, Web3Provider } from '@ethersproject/providers'
 import BRIDGE_ABI from '../artifacts/BridgeToken.json'
 import { abi as UNI_ABI } from '../artifacts/UNI.json'
 import { abi as LM_ABI } from '../artifacts/UnipoolVested.json'
-import { config, MAINNET_CONFIG } from '../configuration'
+import config from '../configuration'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { networkProviders } from './networkProvider'
 import * as stakeToast from './notifications/stake'
 import * as harvestToast from './notifications/harvest'
 import * as withdrawToast from './notifications/withdraw'
+import { isMainnet } from './web3-utils'
 
+const { MAINNET_CONFIG } = config
 const toBigNumber = (eb: ethers.BigNumber): BigNumber =>
 	new BigNumber(eb.toString())
 
@@ -25,11 +27,13 @@ export const fetchStakePoolInfo = async (
 
 	let APR
 	let totalSupply
+	let reserves
+	let poolTotalSupply
 
 	if (hasLiquidityPool) {
 		const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 		const [
-			reserves,
+			_reserves,
 			_token0,
 			_pooltotalSupply,
 			_totalSupply,
@@ -49,8 +53,10 @@ export const fetchStakePoolInfo = async (
 		])
 
 		totalSupply = _totalSupply
+		reserves = _reserves
+		poolTotalSupply = _pooltotalSupply
 
-		const [_reserve0, _reserve1] = reserves
+		const [_reserve0, _reserve1] = _reserves
 		const reserve =
 			_token0.toLowerCase() === MAINNET_CONFIG.TOKEN_ADDRESS.toLowerCase()
 				? toBigNumber(_reserve0)
@@ -89,7 +95,13 @@ export const fetchStakePoolInfo = async (
 		tokensInPool: toBigNumber(totalSupply),
 		stakedLpTokens: 0,
 		APR,
-		earned: { amount: new BigNumber(0), token: 'NODE' },
+		earned: {
+			amount: new BigNumber(0),
+			token: 'NODE',
+			displayToken: 'NODE',
+		},
+		reserves,
+		poolTotalSupply,
 	}
 }
 
@@ -106,7 +118,11 @@ export const fetchUserInfo = async (
 		validAddress = ethers.utils.getAddress(address)
 	} catch (_) {
 		return {
-			earned: { amount: new BigNumber(0), token: config.TOKEN_NAME },
+			earned: {
+				amount: new BigNumber(0),
+				token: config.TOKEN_NAME,
+				displayToken: config.TOKEN_NAME,
+			},
 			stakedLpTokens: 0,
 		}
 	}
@@ -125,6 +141,7 @@ export const fetchUserInfo = async (
 		earned: {
 			amount: new BigNumber(ethers.utils.formatEther(earned)),
 			token: config.TOKEN_NAME,
+			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
 		notStakedLpTokensWei: notStakedLpTokensWei.toString(),
 	}
@@ -259,6 +276,9 @@ export async function stakeTokens(
 		.stakeWithPermit(
 			ethers.BigNumber.from(amount.toString()),
 			rawPermitCall.data,
+			{
+				gasLimit: 200_000,
+			},
 		)
 
 	stakeToast.showPendingStake(

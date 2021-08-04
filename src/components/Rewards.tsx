@@ -12,7 +12,6 @@ import { BigCurrency, GreenButton } from './Styles'
 import { useOnboard } from '../hooks/useOnboard'
 
 import { abi as TOKEN_DISTRO_ABI } from '../artifacts/TokenDistro.json'
-import { config, NETWORKS_CONFIG } from '../configuration'
 import { networkProviders } from '../lib/networkProvider'
 import {
 	showConfirmedClaim,
@@ -21,6 +20,9 @@ import {
 } from '../lib/notifications/claim'
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
+import config from '../configuration'
+
+const { NETWORKS_CONFIG } = config
 
 interface ITokenDistro {
 	claimable: BigNumber
@@ -334,7 +336,7 @@ function Rewards() {
 											utils.formatEther(xDaiClaimable),
 										).toFixed(2)}
 									</h1>
-									<h2>NODE</h2>
+									<h2>xNODE</h2>
 								</BigCurrency>
 								<div>
 									<h3>Claimable</h3>
@@ -369,7 +371,7 @@ function Rewards() {
 											utils.formatEther(xDaiLocked),
 										).toFixed(2)}
 									</h1>
-									<h2>NODE</h2>
+									<h2>xNODE</h2>
 								</BigCurrency>
 								<div>
 									<h3>In Reservoir</h3>

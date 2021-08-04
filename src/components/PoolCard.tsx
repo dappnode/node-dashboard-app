@@ -44,7 +44,7 @@ function PoolCard({
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
-	const { stakedLpTokens, notStakedLpTokensWei } = stakePoolInfo
+	const { stakedLpTokens, notStakedLpTokensWei, earned } = stakePoolInfo
 
 	return (
 		<PoolCardSection
@@ -78,6 +78,7 @@ function PoolCard({
 					close={() => setPoolState('default')}
 					hasLiquidityPool={hasLiquidityPool}
 					disabled={disabled}
+					displayToken={earned.displayToken}
 				/>
 			)}
 			{poolState === 'deposit' && (
@@ -88,6 +89,7 @@ function PoolCard({
 					hasLiquidityPool={hasLiquidityPool}
 					deposit={handleStake}
 					close={() => setPoolState('default')}
+					displayToken={earned.displayToken}
 				/>
 			)}
 			{poolState === 'withdraw' && (
@@ -97,6 +99,8 @@ function PoolCard({
 					close={() => setPoolState('default')}
 					hasLiquidityPool={hasLiquidityPool}
 					disabled={disabled}
+					stakePoolInfo={stakePoolInfo}
+					displayToken={earned.displayToken}
 				/>
 			)}
 		</PoolCardSection>
@@ -116,7 +120,32 @@ const Principal = ({
 	disabled = false,
 	network,
 }) => {
-	const { APR, stakedLpTokens, earned, provideLiquidityLink } = stakePoolInfo
+	const {
+		APR,
+		stakedLpTokens,
+		earned,
+		provideLiquidityLink,
+		reserves,
+		poolTotalSupply,
+	} = stakePoolInfo
+	let amountToken0
+	let amountToken1
+	if (reserves && stakedLpTokens && stakedLpTokens > 0) {
+		const [_reserve0, _reserve1] = reserves
+		const stakedLpTokensBigNumber = ethers.utils.parseEther(
+			stakedLpTokens.toString(),
+		)
+		amountToken0 = ethers.utils.formatEther(
+			stakedLpTokensBigNumber
+				.mul(ethers.BigNumber.from(_reserve0))
+				.div(ethers.BigNumber.from(poolTotalSupply)),
+		)
+		amountToken1 = ethers.utils.formatEther(
+			stakedLpTokensBigNumber
+				.mul(ethers.BigNumber.from(_reserve1))
+				.div(ethers.BigNumber.from(poolTotalSupply)),
+		)
+	}
 	return (
 		<>
 			<div style={{ width: '96%' }}>
@@ -125,7 +154,8 @@ const Principal = ({
 					<label>{platform}</label>
 				</SpaceBetween>
 				<h1>
-					<img alt='logo' src={logo} /> {name}
+					<img alt='logo' src={logo} />
+					{isMainnet(network) ? name : earned.displayToken}
 				</h1>
 				<SpaceBetween>
 					<h2>
@@ -144,7 +174,9 @@ const Principal = ({
 				</SpaceBetween>
 				<SpaceBetween>
 					<h2>
-						<b>{`${hasLiquidityPool ? 'LP' : 'NODE'} token:`}</b>{' '}
+						<b>{`${
+							hasLiquidityPool ? 'LP' : earned.displayToken
+						} token:`}</b>{' '}
 						{stakedLpTokens && (
 							<div className='pool-info-text'>
 								{convertEthHelper(stakedLpTokens, 6)}
@@ -154,6 +186,14 @@ const Principal = ({
 					{!disabled && (
 						<SimpleButton onClick={manage}>Manage</SimpleButton>
 					)}
+					{amountToken0 && amountToken1 && (
+						<div className='pool-info-text'>
+							<label>
+								{convertEthHelper(amountToken1, 4)} NODE /{' '}
+								{convertEthHelper(amountToken0, 4)} ETH
+							</label>
+						</div>
+					)}
 				</SpaceBetween>
 				<h2>
 					<b>Earned:</b>{' '}
@@ -162,7 +202,7 @@ const Principal = ({
 							<Earned>
 								{convertEthHelper(earned.amount, 4)}
 							</Earned>
-							<Token>{earned.token}</Token>
+							<Token>{earned.displayToken}</Token>
 						</div>
 					)}
 				</h2>
@@ -194,7 +234,7 @@ const Principal = ({
 					<Button disabled={disabled} onClick={deposit}>
 						{hasLiquidityPool
 							? 'Stake LP tokens'
-							: 'Stake NODE tokens'}
+							: `Stake ${earned.displayToken} tokens`}
 					</Button>
 				)}
 				{earned.amount.gt(0) && (
@@ -219,6 +259,7 @@ const Manage = ({
 	disabled,
 	hasLiquidityPool,
 	notStakedLpTokensWei,
+	displayToken,
 }) => (
 	<FullHeightCenter>
 		<ClosePool onClick={close}>
@@ -226,11 +267,11 @@ const Manage = ({
 		</ClosePool>
 		<div>
 			<Inter600>
-				Manage your {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				Manage your {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
 			</Inter600>
 			<Inter400>
 				You currently have <b>{convertEthHelper(stakedLpTokens, 4)}</b>{' '}
-				staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens and{' '}
+				staked {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens and{' '}
 				<b>
 					{convertEthHelper(
 						ethers.utils.formatEther(notStakedLpTokensWei),
@@ -240,10 +281,10 @@ const Manage = ({
 				in your wallet.
 			</Inter400>
 			<Button disabled={disabled} onClick={deposit}>
-				Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				Deposit {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
 			</Button>
 			<Button disabled={disabled} onClick={withdraw}>
-				Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+				Withdraw {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
 			</Button>
 		</div>
 	</FullHeightCenter>
@@ -256,6 +297,7 @@ interface DepositProps {
 	hasLiquidityPool: boolean
 	notStakedLpTokensWei: string
 	disabled: boolean
+	displayToken: string
 }
 const Deposit = ({
 	close,
@@ -264,6 +306,7 @@ const Deposit = ({
 	notStakedLpTokensWei,
 	hasLiquidityPool,
 	disabled,
+	displayToken,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
@@ -294,20 +337,20 @@ const Deposit = ({
 			</ClosePool>
 			<div>
 				<Inter600>
-					Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+					Deposit {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
 				</Inter600>
 				<Inter400>
 					You currently have{' '}
 					<b>{convertEthHelper(stakedLpTokens, 6)}</b> staked{' '}
-					{`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens. Deposit more
-					to accrue more rewards.
+					{`${hasLiquidityPool ? 'LP' : displayToken}`} tokens.
+					Deposit more to accrue more rewards.
 				</Inter400>
 				<div>
 					<label>
 						{`Balance: ${convertEthHelper(
 							ethers.utils.formatEther(notStakedLpTokensWei),
 							4,
-						)} ${hasLiquidityPool ? 'LP tokens' : 'NODE'}`}
+						)} ${hasLiquidityPool ? 'LP tokens' : displayToken}`}
 					</label>
 					<Input
 						type='number'
@@ -356,7 +399,7 @@ const Deposit = ({
 						bn(amount).gt(bn(notStakedLpTokensWei))
 					}
 				>
-					Deposit {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+					Deposit {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
 				</GreenButton>
 			</div>
 		</FullHeightCenter>
@@ -369,9 +412,13 @@ const Withdraw = ({
 	hasLiquidityPool,
 	withdraw,
 	disabled,
+	stakePoolInfo,
+	displayToken,
 }) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
+	const [displayAmountLpTokens, setDisplayAmountLpTokens] =
+		useState<string>(undefined)
 
 	const setAmountPercentage = useCallback(
 		(percentage: number): void => {
@@ -383,6 +430,38 @@ const Withdraw = ({
 			const newAmount = _stakedLpTokens.times(percentage).div(100)
 			setAmount(newAmount.times(10 ** 18).toFixed(0))
 			setDisplayAmount(convertEthHelper(newAmount, 6, false))
+			setValueTokensLp(newAmount)
+		},
+		[stakedLpTokens],
+	)
+
+	const setValueTokensLp = useCallback(
+		(newAmountLpToken: BigNumber): void => {
+			const { reserves, poolTotalSupply } = stakePoolInfo
+			let amountToken0
+			let amountToken1
+			if (reserves && newAmountLpToken && stakedLpTokens > 0) {
+				const [_reserve0, _reserve1] = reserves
+				const newAmountLpTokenBigNumber = ethers.utils.parseEther(
+					newAmountLpToken.toString(),
+				)
+				amountToken0 = ethers.utils.formatEther(
+					newAmountLpTokenBigNumber
+						.mul(ethers.BigNumber.from(_reserve0))
+						.div(ethers.BigNumber.from(poolTotalSupply)),
+				)
+				amountToken1 = ethers.utils.formatEther(
+					newAmountLpTokenBigNumber
+						.mul(ethers.BigNumber.from(_reserve1))
+						.div(ethers.BigNumber.from(poolTotalSupply)),
+				)
+				setDisplayAmountLpTokens(
+					`${convertEthHelper(
+						amountToken1,
+						4,
+					)} NODE / ${convertEthHelper(amountToken0, 4)} ETH`,
+				)
+			}
 		},
 		[stakedLpTokens],
 	)
@@ -398,12 +477,14 @@ const Withdraw = ({
 			</ClosePool>
 			<div>
 				<Inter600>
-					Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+					{`Withdraw ${
+						hasLiquidityPool ? 'LP' : displayToken
+					} tokens`}
 				</Inter600>
 				<Inter400>
 					You currently have {convertEthHelper(stakedLpTokens, 6)}{' '}
-					staked {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens. Enter
-					the amount you’d like to withdraw.
+					staked {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens.
+					Enter the amount you’d like to withdraw.
 				</Inter400>
 				<div>
 					<Input
@@ -442,6 +523,11 @@ const Withdraw = ({
 							100%
 						</Inter500Green>
 					</div>
+					{displayAmountLpTokens && (
+						<div className='pool-tokens-text'>
+							<label>{displayAmountLpTokens}</label>
+						</div>
+					)}
 				</div>
 				<GreenButton
 					onClick={() => withdraw(amount)}
@@ -455,7 +541,9 @@ const Withdraw = ({
 						)
 					}
 				>
-					Withdraw {`${hasLiquidityPool ? 'LP' : 'NODE'}`} tokens
+					{`Withdraw ${
+						hasLiquidityPool ? 'LP' : displayToken
+					} tokens`}
 				</GreenButton>
 			</div>
 		</FullHeightCenter>

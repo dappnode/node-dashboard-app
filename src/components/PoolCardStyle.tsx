@@ -99,6 +99,17 @@ export const SpaceBetween = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	flex-wrap: wrap;
+	div {
+		label {
+			font-family: Inter;
+			font-style: normal;
+			font-size: 12px;
+			line-height: 12px;
+			letter-spacing: 0em;
+			color: gray;
+			text-transform: uppercase;
+		}
+	}
 `
 
 export const Earned = styled.h6`

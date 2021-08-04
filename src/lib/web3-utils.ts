@@ -1,4 +1,4 @@
-import { config } from '../configuration'
+import config from '../configuration'
 
 export const DEFAULT_LOCAL_CHAIN = 'private'
 
@@ -32,12 +32,14 @@ export function getNetworkType(chainId) {
 	return DEFAULT_LOCAL_CHAIN
 }
 
+const { MAINNET_NETWORK_NUMBER, XDAI_NETWORK_NUMBER } = config
+
 // TODO: Add DN network id
 export function networkAllowed(chainId: number | string): boolean {
 	const chainIdNumber = Number(chainId)
 	return (
-		chainIdNumber === config.MAINNET_NETWORK_NUMBER ||
-		chainIdNumber === config.XDAI_NETWORK_NUMBER
+		chainIdNumber === MAINNET_NETWORK_NUMBER ||
+		chainIdNumber === XDAI_NETWORK_NUMBER
 	)
 }
 

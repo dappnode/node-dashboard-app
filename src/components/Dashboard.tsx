@@ -4,7 +4,9 @@ import Rewards from './Rewards'
 import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 
 import StakingPoolCard from './StakingPoolCard'
-import { config, MAINNET_CONFIG } from '../configuration'
+import config from '../configuration'
+
+const { MAINNET_CONFIG } = config
 
 function Dashboard() {
 	return (
@@ -61,7 +63,7 @@ function Dashboard() {
 				/>
 				<StakingPoolCard
 					name='NODE'
-					platform='NODE Staking'
+					platform='xNODE Staking'
 					option='NODE'
 					composition='100% NODE'
 					logo='/assets/dn-logo.svg'
