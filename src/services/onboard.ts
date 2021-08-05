@@ -19,7 +19,10 @@ export function initOnboard(subscriptions) {
 			wallets: [{ walletName: 'metamask' },
 			{
 			  walletName: "walletConnect",
-			  infuraKey: config.INFURA_API_KEY
+			  rpc: {
+				[config.MAINNET_NETWORK_NUMBER]: config.MAINNET_CONFIG.nodeUrl,
+				[config.XDAI_NETWORK_NUMBER]: config.XDAI_CONFIG.nodeUrl
+			  },
 			}],
 		},
 		walletCheck: [

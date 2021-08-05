@@ -14,7 +14,7 @@
     "@ethersproject/address": "^5.4.0",
     "@ethersproject/providers": "^5.4.1",
     "bignumber.js": "^9.0.1",
-    "bnc-onboard": "^1.27.0",
+    "bnc-onboard": "^1.32.0",
     "eth-permit": "^0.1.10",
     "ethers": "^5.4.1",
     "next": "11.0.0",
