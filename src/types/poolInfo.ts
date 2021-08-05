@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-interface Earned {
+export interface Earned {
 	amount: BigNumber
 	token: string
 	displayToken: string

@@ -2,11 +2,13 @@ import React, { useCallback, useState } from 'react'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import APRDetails from './APRDetails'
+import EarnedDetails from './EarnedDetails'
 import {
 	FullHeightCenter,
 	GreenButton,
 	Input,
 	Inter400,
+	Inter500,
 	Inter500Green,
 	Inter600,
 	SimpleButton,
@@ -197,6 +199,10 @@ const Principal = ({
 				</SpaceBetween>
 				<h2>
 					<b>Earned:</b>{' '}
+					<EarnedDetails
+						isMainnet={isMainnet(network)}
+						earned={earned}
+					/>
 					{earned && (
 						<div className='pool-info-text'>
 							<Earned>
