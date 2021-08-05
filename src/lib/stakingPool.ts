@@ -277,7 +277,7 @@ export async function stakeTokens(
 			ethers.BigNumber.from(amount.toString()),
 			rawPermitCall.data,
 			{
-				gasLimit: 200_000,
+				gasLimit: 300_000,
 			},
 		)
 
