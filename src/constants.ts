@@ -9,13 +9,11 @@ export const networksParams = {
 			symbol: 'ETH', // 2-6 characters long
 			decimals: 18,
 		},
-		rpcUrls: ['https://web3.dappnode.net/'],
 		blockExplorerUrls: ['https://etherscan.io'],
 	},
 	100: {
 		chainId: '0x64',
 		chainName: 'xDAI Chain',
-		rpcUrls: ['https://rpc.xdaichain.com/'],
 		iconUrls: [
 			'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/xdai/info/logo.png',
 		],
@@ -29,7 +27,6 @@ export const networksParams = {
 	4: {
 		chainId: '0x4',
 		chainName: 'Rinkeby',
-		rpcUrls: [`https://rinkeby.infura.io/v3/${config.INFURA_API_KEY}/`],
 		nativeCurrency: {
 			name: 'Rinkeby ETH',
 			symbol: 'ETH',
@@ -40,7 +37,6 @@ export const networksParams = {
 	5: {
 		chainId: '0x5',
 		chainName: 'Goerli',
-		rpcUrls: [`https://goerli.infura.io/v3/${config.INFURA_API_KEY}/`],
 		nativeCurrency: {
 			name: 'Goerli ETH',
 			symbol: 'ETH',
