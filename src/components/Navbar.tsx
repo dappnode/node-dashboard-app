@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import ConnectionInfo from './ConnectionInfo'
 
-import { Inter700 } from './Styles'
+import { Inter700, GreenButton } from './Styles'
 
 function Navbar({ openSidebar, nodedrop, title }) {
 	return (
@@ -11,6 +12,15 @@ function Navbar({ openSidebar, nodedrop, title }) {
 				<div onClick={openSidebar} aria-hidden='true'>
 					<img src='/assets/mini-logo.svg' alt='logo' />
 					<Inter700>{title}</Inter700>
+					{nodedrop ? (
+						<Link href='/'>
+							<GreenButton>Go to dashboard!</GreenButton>
+						</Link>
+					) : (
+						<Link href='/nodedrop'>
+							<GreenButton>Claim your airdrop!</GreenButton>
+						</Link>
+					)}
 				</div>
 				<div>
 					<ConnectionInfo nodedrop={nodedrop} />
@@ -31,6 +41,9 @@ const ConnectedLine = styled.div`
 const NavbarSection = styled.section`
 	background-color: transparent;
 	height: 72px;
+	@media only screen and (max-width: 768px) {
+		height: auto;
+	}
 	text-align: center;
 	overflow: hidden;
 	position: relative;
@@ -45,6 +58,9 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	flex-direction: row;
+	@media only screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 	h1 {
 		font-size: 24px;
 		display: flex;
