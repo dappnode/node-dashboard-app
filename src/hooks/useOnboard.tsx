@@ -13,6 +13,7 @@ import { initOnboard } from '../services/onboard'
 type OnboardContextData = {
 	connect(): Promise<void>
 	disconnect(): void
+	changeWallet(): void
 	isReady: boolean
 	address: string
 	network: number
@@ -87,9 +88,24 @@ export function OnboardProvider({ children }: OnboardProviderProps) {
 		window.localStorage.removeItem('selectedWallet')
 	}
 
+	function changeWallet() {
+		disconnect()
+		setTimeout(() => {
+			connect()
+		}, 100)
+	}
+
 	return (
 		<OnboardContext.Provider
-			value={{ address, network, isReady, provider, connect, disconnect }}
+			value={{
+				address,
+				network,
+				isReady,
+				provider,
+				connect,
+				disconnect,
+				changeWallet,
+			}}
 		>
 			{children}
 		</OnboardContext.Provider>

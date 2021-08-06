@@ -16,8 +16,12 @@ import { convertEthHelper } from '../lib/numbers'
 import { useTokenBalance } from '../hooks/useTokenBalance'
 
 const Connection = ({ nodedrop }) => {
-	const { address, network } = useOnboard()
+	const { address, network, changeWallet } = useOnboard()
 	const { tokenBalance } = useTokenBalance()
+
+	function selectWallet() {
+		changeWallet()
+	}
 
 	return (
 		<>
@@ -53,14 +57,27 @@ const Connection = ({ nodedrop }) => {
 								: 'xNODE'}
 						</p>
 					</NavbarButton>
-					<NavbarButton>
+					<NavbarAddressButton
+						onClick={() => selectWallet()}
+						border={
+							network === config.MAINNET_NETWORK_NUMBER
+								? '2px solid #86bde4'
+								: '2px solid #86e4dd'
+						}
+					>
 						<p>{shortenAddress(address)}</p>
-					</NavbarButton>
+					</NavbarAddressButton>
 				</>
 			)}
 		</>
 	)
 }
+
+const NavbarAddressButton = styled(NavbarButton)`
+	&:hover {
+		border: ${props => props.border};
+	}
+`
 
 // eslint-disable-next-line no-unused-vars
 const ConnectWallet = styled.button`
