@@ -1,14 +1,8 @@
 import React from 'react'
-import Link from 'next/link'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import { getNetworkType, shortenAddress } from '../lib/web3-utils'
-import {
-	GreenButton,
-	LightBlueButton,
-	LightGreenButton,
-	NavbarButton,
-} from './Styles'
+import { LightBlueButton, LightGreenButton, NavbarButton } from './Styles'
 
 import { useOnboard } from '../hooks/useOnboard'
 import config from '../configuration'
@@ -25,15 +19,6 @@ const Connection = ({ nodedrop }) => {
 
 	return (
 		<>
-			{nodedrop ? (
-				<Link href='/'>
-					<GreenButton>Go to dashboard!</GreenButton>
-				</Link>
-			) : (
-				<Link href='/nodedrop'>
-					<GreenButton>Claim your airdrop!</GreenButton>
-				</Link>
-			)}
 			{network === config.MAINNET_NETWORK_NUMBER && (
 				<LightBlueButton>
 					Network: {getNetworkType(network)}{' '}
