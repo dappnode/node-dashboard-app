@@ -1,28 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import ConnectionInfo from './ConnectionInfo'
+import useMobileScreen from '../hooks/useMobileScreen'
 
 import { Inter700, GreenButton } from './Styles'
 
 function Navbar({ openSidebar, nodedrop, title }) {
+	const buttonHref = nodedrop ? '/' : '/nodedrop'
+	const buttonTitle = nodedrop ? 'Go to dashboard!' : 'Claim your airdrop!'
 	return (
 		<NavbarSection>
 			<Container>
 				<div onClick={openSidebar} aria-hidden='true'>
 					<img src='/assets/mini-logo.svg' alt='logo' />
 					<Inter700>{title}</Inter700>
-					{nodedrop ? (
-						<Link href='/'>
-							<GreenButton>Go to dashboard!</GreenButton>
-						</Link>
-					) : (
-						<Link href='/nodedrop'>
-							<GreenButton>Claim your airdrop!</GreenButton>
+					{useMobileScreen() && (
+						<Link href={buttonHref}>
+							<GreenButton>{buttonTitle}</GreenButton>
 						</Link>
 					)}
 				</div>
 				<div>
+					{!useMobileScreen() && (
+						<Link href={buttonHref}>
+							<GreenButton>{buttonTitle}</GreenButton>
+						</Link>
+					)}
 					<ConnectionInfo nodedrop={nodedrop} />
 				</div>
 			</Container>
