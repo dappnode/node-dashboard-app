@@ -127,6 +127,7 @@ const Principal = ({
 		stakedLpTokens,
 		earned,
 		provideLiquidityLink,
+		getMoreDNLink,
 		reserves,
 		poolTotalSupply,
 	} = stakePoolInfo
@@ -170,7 +171,7 @@ const Principal = ({
 					</h2>
 					<APRDetails
 						APR={APR}
-						provideLiquidityLink={provideLiquidityLink}
+						getMoreDNLink={getMoreDNLink}
 						disabled={disabled}
 					/>
 				</SpaceBetween>

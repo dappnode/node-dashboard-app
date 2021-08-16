@@ -14,7 +14,7 @@ import { convertEthHelper } from '../lib/numbers'
 
 interface APRDetailsProps {
 	APR: BigNumber | null
-	provideLiquidityLink: string
+	getMoreDNLink: string
 	disabled: boolean
 }
 
@@ -43,7 +43,7 @@ const computeValues = (APR: BigNumber): RoiValues => {
 
 const APRDetails: React.FC<APRDetailsProps> = ({
 	APR,
-	provideLiquidityLink = '',
+	getMoreDNLink = '',
 	disabled = false,
 }) => {
 	if (!APR) return null
@@ -81,10 +81,7 @@ const APRDetails: React.FC<APRDetailsProps> = ({
 					<div className='actions'>
 						<WhiteGreenButtonLink
 							onClick={() => {
-								const win = window.open(
-									provideLiquidityLink,
-									'_blank',
-								)
+								const win = window.open(getMoreDNLink, '_blank')
 								if (win) win.focus()
 							}}
 							disabled={disabled}
