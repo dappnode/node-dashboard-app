@@ -94,6 +94,31 @@ export const ClosePool = styled.button`
 	right: 0;
 `
 
+export const HeaderPool = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 10px;
+`
+
+export const ToggleMode = styled.button`
+	background: transparent;
+	border: solid 0px transparent;
+	width: auto;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	font-family: 'Inter-Bold';
+	font-style: normal;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 15px;
+	color: #2fbcb2;
+	img {
+		margin-right: 2px;
+	}
+`
+
 export const SpaceBetween = styled.div`
 	display: flex;
 	align-items: center;

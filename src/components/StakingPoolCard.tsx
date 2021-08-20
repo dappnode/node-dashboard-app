@@ -6,6 +6,8 @@ import {
 	fetchStakePoolInfo,
 	fetchUserInfo,
 	stakeTokens,
+	approve,
+	stakeTokensWithoutPermit,
 	harvestTokens,
 	withdrawTokens,
 } from '../lib/stakingPool'
@@ -43,6 +45,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			token: 'NODE',
 			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
+		allowanceLpTokens: 0,
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
 		stakedLpTokens: 0,
@@ -52,6 +55,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			token: 'NODE',
 			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
+		allowanceLpTokens: 0,
 	})
 	const { address, provider, network: walletNetwork, isReady } = useOnboard()
 
@@ -111,6 +115,24 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		)
 	}
 
+	async function handleApprove(amount: string) {
+		await approve(
+			amount,
+			NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			provider,
+		)
+	}
+
+	async function handleStakeWithoutPermit(amount: string) {
+		await stakeTokensWithoutPermit(
+			amount,
+			NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			provider,
+		)
+	}
+
 	async function handleHarvest() {
 		const signer = provider.getSigner()
 		await harvestTokens(
@@ -144,6 +166,8 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				...stakeUserInfo,
 			}}
 			handleStake={handleStake}
+			handleApprove={handleApprove}
+			handleStakeWithoutPermit={handleStakeWithoutPermit}
 			handleHarvest={handleHarvest}
 			handleWithdraw={handleWithdraw}
 			hasLiquidityPool={name !== 'NODE'}
