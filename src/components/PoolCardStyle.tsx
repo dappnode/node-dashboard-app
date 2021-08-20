@@ -110,7 +110,6 @@ export const ToggleMode = styled.button`
 	cursor: pointer;
 	font-family: 'Inter-Bold';
 	font-style: normal;
-	font-weight: bold;
 	font-size: 12px;
 	line-height: 15px;
 	color: #2fbcb2;
