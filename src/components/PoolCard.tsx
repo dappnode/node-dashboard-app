@@ -17,12 +17,12 @@ import {
 	Button,
 	ClosePool,
 	HeaderPool,
-	ToggleMode,
 	Earned,
 	PoolCardSection,
 	SpaceBetween,
 	Token,
 } from './PoolCardStyle'
+import ToggleButton from './ToggleButton'
 import { bn, convertEthHelper } from '../lib/numbers'
 import NetworkLabel from './NetworkLabel'
 import { isMainnet } from '../lib/web3-utils'
@@ -336,7 +336,7 @@ const Deposit = ({
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
 	const [permitMode, setPermitMode] = useState<boolean>(false)
-	const [approveOnce, setApproveOnce] = useState<boolean>(true)
+	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
 		(percentage: number): void => {
@@ -361,17 +361,12 @@ const Deposit = ({
 		<FullHeightCenter>
 			{platform === 'xNODE Staking' && (
 				<HeaderPool>
-					<ToggleMode onClick={() => setPermitMode(prev => !prev)}>
-						<img
-							alt='toggle'
-							src={
-								permitMode
-									? '/assets/toggle_on_black_24dp.svg'
-									: '/assets/toggle_off_black_24dp.svg'
-							}
-						/>
-						{permitMode ? 'Permit mode' : 'Approval mode'}
-					</ToggleMode>
+					<ToggleButton
+						checked={permitMode}
+						onClick={() => setPermitMode(prev => !prev)}
+						text='Approval mode'
+						selectedText='Permit mode'
+					/>
 				</HeaderPool>
 			)}
 			<ClosePool onClick={close}>
@@ -438,7 +433,7 @@ const Deposit = ({
 						<>
 							<GreenButton
 								onClick={() =>
-									approveOnce
+									!approvePermanently
 										? approve(amount)
 										: approve(
 												ethers.constants.MaxUint256.sub(
@@ -456,19 +451,14 @@ const Deposit = ({
 							>
 								Approve {`${displayToken}`}
 							</GreenButton>
-							<ToggleMode
-								onClick={() => setApproveOnce(prev => !prev)}
-							>
-								<img
-									alt='toggle'
-									src={
-										approveOnce
-											? '/assets/toggle_on_black_24dp.svg'
-											: '/assets/toggle_off_black_24dp.svg'
-									}
-								/>
-								{approveOnce ? 'This time' : 'Permanently'}
-							</ToggleMode>
+							<ToggleButton
+								checked={approvePermanently}
+								onClick={() =>
+									setApprovePermanently(prev => !prev)
+								}
+								text='This time'
+								selectedText='Permanently'
+							/>
 						</>
 					)}
 				{!permitMode &&
