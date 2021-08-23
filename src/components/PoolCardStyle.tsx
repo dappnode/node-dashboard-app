@@ -94,6 +94,13 @@ export const ClosePool = styled.button`
 	right: 0;
 `
 
+export const HeaderPool = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 10px;
+`
+
 export const SpaceBetween = styled.div`
 	display: flex;
 	align-items: center;

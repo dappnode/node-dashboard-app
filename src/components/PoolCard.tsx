@@ -16,17 +16,21 @@ import {
 import {
 	Button,
 	ClosePool,
+	HeaderPool,
 	Earned,
 	PoolCardSection,
 	SpaceBetween,
 	Token,
 } from './PoolCardStyle'
+import ToggleButton from './ToggleButton'
 import { bn, convertEthHelper } from '../lib/numbers'
 import NetworkLabel from './NetworkLabel'
 import { isMainnet } from '../lib/web3-utils'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
+	handleApprove: (amount: string) => void
+	handleStakeWithoutPermit: (amount: string) => void
 	disabled: boolean
 	network: number
 	[key: string]: any
@@ -39,6 +43,8 @@ function PoolCard({
 	logo,
 	hasLiquidityPool = false,
 	handleStake,
+	handleApprove,
+	handleStakeWithoutPermit,
 	handleHarvest,
 	handleWithdraw,
 	disabled,
@@ -46,7 +52,8 @@ function PoolCard({
 }: PoolCardProps) {
 	const [poolState, setPoolState] = useState('default')
 
-	const { stakedLpTokens, notStakedLpTokensWei, earned } = stakePoolInfo
+	const { stakedLpTokens, notStakedLpTokensWei, earned, allowanceLpTokens } =
+		stakePoolInfo
 
 	return (
 		<PoolCardSection
@@ -90,8 +97,12 @@ function PoolCard({
 					notStakedLpTokensWei={notStakedLpTokensWei}
 					hasLiquidityPool={hasLiquidityPool}
 					deposit={handleStake}
+					approve={handleApprove}
+					depositWithoutPermit={handleStakeWithoutPermit}
 					close={() => setPoolState('default')}
 					displayToken={earned.displayToken}
+					allowanceLpTokens={allowanceLpTokens}
+					platform={platform}
 				/>
 			)}
 			{poolState === 'withdraw' && (
@@ -300,23 +311,33 @@ const Manage = ({
 interface DepositProps {
 	close: () => void
 	deposit: (amount: string) => void
+	approve: (amount: string) => void
+	depositWithoutPermit: (amount: string) => void
 	stakedLpTokens: string
 	hasLiquidityPool: boolean
 	notStakedLpTokensWei: string
 	disabled: boolean
 	displayToken: string
+	allowanceLpTokens: string
+	platform: string
 }
 const Deposit = ({
 	close,
 	deposit,
+	approve,
+	depositWithoutPermit,
 	stakedLpTokens,
 	notStakedLpTokensWei,
 	hasLiquidityPool,
 	disabled,
 	displayToken,
+	allowanceLpTokens,
+	platform,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
+	const [permitMode, setPermitMode] = useState<boolean>(false)
+	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
 		(percentage: number): void => {
@@ -339,6 +360,16 @@ const Deposit = ({
 
 	return (
 		<FullHeightCenter>
+			{platform === 'xNODE Staking' && (
+				<HeaderPool>
+					<ToggleButton
+						checked={permitMode}
+						onClick={() => setPermitMode(prev => !prev)}
+						text='Approval mode'
+						selectedText='Permit mode'
+					/>
+				</HeaderPool>
+			)}
 			<ClosePool onClick={close}>
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
@@ -396,18 +427,74 @@ const Deposit = ({
 						</Inter500Green>
 					</div>
 				</div>
-				<GreenButton
-					onClick={() => deposit(amount)}
-					className='long'
-					style={{ marginTop: '16px' }}
-					disabled={
-						disabled ||
-						bn(amount).isZero() ||
-						bn(amount).gt(bn(notStakedLpTokensWei))
-					}
-				>
-					Deposit {`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
-				</GreenButton>
+				{!permitMode &&
+					(bn(amount).gt(bn(allowanceLpTokens)) ||
+						allowanceLpTokens ===
+							ethers.constants.MaxUint256.toString()) && (
+						<>
+							<GreenButton
+								onClick={() =>
+									!approvePermanently
+										? approve(amount)
+										: approve(
+												ethers.constants.MaxUint256.sub(
+													1,
+												).toString(),
+										  )
+								}
+								className='long'
+								style={{ marginTop: '16px' }}
+								disabled={
+									disabled ||
+									bn(amount).isZero() ||
+									bn(amount).gt(bn(notStakedLpTokensWei))
+								}
+							>
+								Approve {`${displayToken}`}
+							</GreenButton>
+							<ToggleButton
+								checked={approvePermanently}
+								onClick={() =>
+									setApprovePermanently(prev => !prev)
+								}
+								text='This time'
+								selectedText='Permanently'
+							/>
+						</>
+					)}
+				{!permitMode &&
+					bn(amount).lte(bn(allowanceLpTokens)) &&
+					allowanceLpTokens !==
+						ethers.constants.MaxUint256.toString() && (
+						<GreenButton
+							onClick={() => depositWithoutPermit(amount)}
+							className='long'
+							style={{ marginTop: '16px' }}
+							disabled={
+								disabled ||
+								bn(amount).isZero() ||
+								bn(amount).gt(bn(notStakedLpTokensWei))
+							}
+						>
+							Deposit{' '}
+							{`${hasLiquidityPool ? 'LP' : displayToken}`} tokens
+						</GreenButton>
+					)}
+				{permitMode && (
+					<GreenButton
+						onClick={() => deposit(amount)}
+						className='long'
+						style={{ marginTop: '16px' }}
+						disabled={
+							disabled ||
+							bn(amount).isZero() ||
+							bn(amount).gt(bn(notStakedLpTokensWei))
+						}
+					>
+						Deposit {`${hasLiquidityPool ? 'LP' : displayToken}`}{' '}
+						tokens
+					</GreenButton>
+				)}
 			</div>
 		</FullHeightCenter>
 	)

@@ -130,11 +130,13 @@ export const fetchUserInfo = async (
 	const lmContract = new Contract(lmAddress, LM_ABI, provider)
 	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
 
-	const [stakedLpTokens, earned, notStakedLpTokensWei] = await Promise.all([
-		lmContract.balanceOf(validAddress),
-		lmContract.earned(validAddress),
-		poolContract.balanceOf(validAddress),
-	])
+	const [stakedLpTokens, earned, notStakedLpTokensWei, allowanceLpTokens] =
+		await Promise.all([
+			lmContract.balanceOf(validAddress),
+			lmContract.earned(validAddress),
+			poolContract.balanceOf(validAddress),
+			poolContract.allowance(validAddress, lmAddress),
+		])
 
 	return {
 		stakedLpTokens: new BigNumber(ethers.utils.formatEther(stakedLpTokens)),
@@ -144,6 +146,7 @@ export const fetchUserInfo = async (
 			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
 		notStakedLpTokensWei: notStakedLpTokensWei.toString(),
+		allowanceLpTokens: allowanceLpTokens.toString(),
 	}
 }
 
@@ -286,6 +289,59 @@ export async function stakeTokens(
 		provider.network.chainId,
 		txResponse.hash,
 	)
+
+	const { status } = await txResponse.wait()
+
+	if (status) {
+		stakeToast.showConfirmedStake(provider.network.chainId, txResponse.hash)
+	} else {
+		stakeToast.showFailedStake(provider.network.chainId, txResponse.hash)
+	}
+}
+
+export async function approve(
+	amount: string,
+	poolAddress: string,
+	lmAddress: string,
+	provider: Web3Provider,
+): Promise<TransactionResponse> {
+	if (amount === '0') return
+
+	const signer = provider.getSigner()
+
+	const poolContract = new Contract(poolAddress, UNI_ABI, provider)
+	const txResponse: TransactionResponse = await poolContract
+		.connect(signer.connectUnchecked())
+		.approve(lmAddress, amount)
+
+	stakeToast.showPendingApproval(provider.network.chainId, txResponse.hash)
+
+	const { status } = await txResponse.wait()
+
+	if (status) {
+		stakeToast.showConfirmedApproval(
+			provider.network.chainId,
+			txResponse.hash,
+		)
+	} else {
+		stakeToast.showFailedApproval(provider.network.chainId, txResponse.hash)
+	}
+}
+
+export async function stakeTokensWithoutPermit(
+	amount: string,
+	poolAddress: string,
+	lmAddress: string,
+	provider: Web3Provider,
+): Promise<TransactionResponse> {
+	if (amount === '0') return
+
+	const signer = provider.getSigner()
+
+	const lmContract = new Contract(lmAddress, LM_ABI, signer)
+	const txResponse: TransactionResponse = await lmContract
+		.connect(signer.connectUnchecked())
+		.stake(amount)
 
 	const { status } = await txResponse.wait()
 

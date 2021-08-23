@@ -9,6 +9,7 @@ export interface StakeUserInfo {
 	stakedLpTokens?: BigNumber | number
 	notStakedLpTokensWei?: BigNumber | number
 	earned?: Earned
+	allowanceLpTokens?: BigNumber | number
 }
 export interface StakePoolInfo extends StakeUserInfo {
 	tokensInPool?: BigNumber | number
