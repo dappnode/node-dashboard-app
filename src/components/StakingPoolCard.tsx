@@ -23,6 +23,7 @@ interface StakingPoolCardProps {
 	platform: string
 	network: number
 	provideLiquidityLink: string
+	getMoreDNLink: string
 }
 
 const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
@@ -33,6 +34,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	platform,
 	network,
 	provideLiquidityLink = '',
+	getMoreDNLink = '',
 }) => {
 	const [stakePoolInfo, setStakePoolInfo] = useState<StakePoolInfo>({
 		tokensInPool: 0,
@@ -140,6 +142,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			composition={composition}
 			stakePoolInfo={{
 				provideLiquidityLink,
+				getMoreDNLink,
 				...stakePoolInfo,
 				...stakeUserInfo,
 			}}

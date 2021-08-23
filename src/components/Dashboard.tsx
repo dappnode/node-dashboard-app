@@ -6,7 +6,7 @@ import { Inter700, SpaceBetween, WhiteGreenLink } from './Styles'
 import StakingPoolCard from './StakingPoolCard'
 import config from '../configuration'
 
-const { MAINNET_CONFIG } = config
+const { MAINNET_CONFIG, XDAI_CONFIG } = config
 
 function Dashboard() {
 	return (
@@ -42,6 +42,7 @@ function Dashboard() {
 					logo='/assets/dn-eth-logos.svg'
 					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink={`https://app.uniswap.org/#/add/v2/ETH/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
+					getMoreDNLink={`https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${MAINNET_CONFIG.TOKEN_ADDRESS}&use=V2`}
 				/>
 				<StakingPoolCard
 					name='NODE/ETH'
@@ -51,6 +52,7 @@ function Dashboard() {
 					logo='/assets/dn-eth-logos.svg'
 					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink={`https://app.sushi.com/add/ETH/${MAINNET_CONFIG.TOKEN_ADDRESS}`}
+					getMoreDNLink={`https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=${MAINNET_CONFIG.TOKEN_ADDRESS}`}
 				/>
 				<StakingPoolCard
 					name='NODE'
@@ -60,6 +62,7 @@ function Dashboard() {
 					logo='/assets/dn-logo.svg'
 					network={config.MAINNET_NETWORK_NUMBER}
 					provideLiquidityLink=''
+					getMoreDNLink={`https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${MAINNET_CONFIG.TOKEN_ADDRESS}&use=V2`}
 				/>
 				<StakingPoolCard
 					name='NODE'
@@ -69,6 +72,7 @@ function Dashboard() {
 					logo='/assets/dn-logo.svg'
 					network={config.XDAI_NETWORK_NUMBER}
 					provideLiquidityLink=''
+					getMoreDNLink={`https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${MAINNET_CONFIG.TOKEN_ADDRESS}&use=V2`}
 				/>
 			</PoolsContainer>
 		</DashboardSection>
