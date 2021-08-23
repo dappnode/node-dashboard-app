@@ -6,6 +6,8 @@ import {
 	fetchStakePoolInfo,
 	fetchUserInfo,
 	stakeTokens,
+	approve,
+	stakeTokensWithoutPermit,
 	harvestTokens,
 	withdrawTokens,
 } from '../lib/stakingPool'
@@ -23,6 +25,7 @@ interface StakingPoolCardProps {
 	platform: string
 	network: number
 	provideLiquidityLink: string
+	getMoreDNLink: string
 }
 
 const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
@@ -33,6 +36,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 	platform,
 	network,
 	provideLiquidityLink = '',
+	getMoreDNLink = '',
 }) => {
 	const [stakePoolInfo, setStakePoolInfo] = useState<StakePoolInfo>({
 		tokensInPool: 0,
@@ -43,6 +47,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			token: 'NODE',
 			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
+		allowanceLpTokens: 0,
 	})
 	const [stakeUserInfo, setStakeUserInfo] = useState<StakeUserInfo>({
 		stakedLpTokens: 0,
@@ -52,6 +57,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			token: 'NODE',
 			displayToken: isMainnet(network) ? 'NODE' : 'xNODE',
 		},
+		allowanceLpTokens: 0,
 	})
 	const { address, provider, network: walletNetwork, isReady } = useOnboard()
 
@@ -111,6 +117,24 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		)
 	}
 
+	async function handleApprove(amount: string) {
+		await approve(
+			amount,
+			NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			provider,
+		)
+	}
+
+	async function handleStakeWithoutPermit(amount: string) {
+		await stakeTokensWithoutPermit(
+			amount,
+			NETWORKS_CONFIG[network][option].POOL_ADDRESS,
+			NETWORKS_CONFIG[network][option].LM_ADDRESS,
+			provider,
+		)
+	}
+
 	async function handleHarvest() {
 		const signer = provider.getSigner()
 		await harvestTokens(
@@ -140,10 +164,13 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 			composition={composition}
 			stakePoolInfo={{
 				provideLiquidityLink,
+				getMoreDNLink,
 				...stakePoolInfo,
 				...stakeUserInfo,
 			}}
 			handleStake={handleStake}
+			handleApprove={handleApprove}
+			handleStakeWithoutPermit={handleStakeWithoutPermit}
 			handleHarvest={handleHarvest}
 			handleWithdraw={handleWithdraw}
 			hasLiquidityPool={name !== 'NODE'}
