@@ -1,17 +1,40 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import BurgerMenu from 'react-burger-menu'
+import { constants, utils } from 'ethers'
 import ConnectionInfo from './ConnectionInfo'
 import {
-	Inter700,
 	Inter500,
 	Inter400,
-	Input,
 	RoundedCard,
 	BigCurrency,
 	GreenButton,
 	WhiteGreenButtonLink,
+	Inter500Green,
 } from './Styles'
+import useMobileScreen from '../hooks/useMobileScreen'
+import { useOnboard } from '../hooks/useOnboard'
+import { isMainnet, shortenAddress } from '../lib/web3-utils'
+import { convertEthHelper } from '../lib/numbers'
+import { useTokenBalance } from '../hooks/useTokenBalance'
+import AppContext from '../hooks/AppContext'
+import config from '../configuration'
+
+const { MAINNET_CONFIG } = config
+
+interface SideBarBalance {
+	total: string
+	walletDN: string
+	walletMainnet: string
+	stakedLP: string
+	stakedBalance: string
+	harvestDN: string
+	harvestMainnet: string
+	lockedDN: string
+	lockedMainnet: string
+	claimableDN: string
+	claimableMainnet: string
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 class MenuWrap extends Component<{}, { hidden: boolean }> {
@@ -52,6 +75,159 @@ class MenuWrap extends Component<{}, { hidden: boolean }> {
 
 function Sidebar({ isOpen, closeSidebar }) {
 	const Menu = BurgerMenu.slide
+	const [copyText, setCopyText] = useState<string>('Copy')
+	const { address, network, disconnect } = useOnboard()
+	const { tokenBalanceDN, tokenBalanceMainnet } = useTokenBalance()
+	const [sideBarBalance, setSideBarBalance] = useState<SideBarBalance>({
+		total: '',
+		walletDN: '',
+		walletMainnet: '',
+		stakedLP: '',
+		stakedBalance: '',
+		harvestDN: '',
+		harvestMainnet: '',
+		lockedDN: '',
+		lockedMainnet: '',
+		claimableDN: '',
+		claimableMainnet: '',
+	})
+
+	const appContext = useContext(AppContext)
+
+	function copyAddressToClipboard() {
+		navigator.clipboard.writeText(address)
+		setCopyText('Copied')
+		setTimeout(() => {
+			setCopyText('Copy')
+		}, 1000)
+	}
+
+	function disconnectWallet() {
+		disconnect()
+		closeSidebar()
+	}
+
+	function updateTokenBalance() {
+		const total = convertEthHelper(
+			utils.formatEther(
+				tokenBalanceDN
+					.add(tokenBalanceMainnet)
+					.add(
+						utils.parseEther(
+							appContext.uniswap?.earned?.amount?.toString() ||
+								'0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.sushiswap?.earned?.amount?.toString() ||
+								'0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.uniswapLPNODE?.toString() || '0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.sushiswapLPNODE?.toString() || '0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.streamDN?.stakedLpTokens?.toString() ||
+								'0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.streamDN?.earned?.amount?.toString() ||
+								'0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.streamMainnet?.stakedLpTokens?.toString() ||
+								'0',
+						),
+					)
+					.add(
+						utils.parseEther(
+							appContext.streamMainnet?.earned?.amount?.toString() ||
+								'0',
+						),
+					)
+					.add(appContext.xDaiLocked ?? constants.Zero)
+					.add(appContext.ethLocked ?? constants.Zero),
+			),
+			4,
+		)
+		const walletDN = convertEthHelper(utils.formatEther(tokenBalanceDN), 4)
+		const walletMainnet = convertEthHelper(
+			utils.formatEther(tokenBalanceMainnet),
+			4,
+		)
+		const stakedLP = convertEthHelper(
+			parseFloat(appContext.uniswapLPNODE?.toString() || '0') +
+				parseFloat(appContext.sushiswapLPNODE?.toString() || '0'),
+			4,
+		)
+		const stakedBalance = convertEthHelper(
+			appContext.streamDN?.stakedLpTokens?.toNumber() +
+				appContext.streamMainnet?.stakedLpTokens?.toNumber(),
+			4,
+		)
+		const harvestDN = convertEthHelper(
+			appContext.streamDN?.earned?.amount?.toNumber(),
+			4,
+		)
+		const harvestMainnet = convertEthHelper(
+			appContext.uniswap?.earned?.amount?.toNumber() +
+				appContext.sushiswap?.earned?.amount?.toNumber() +
+				appContext.streamMainnet?.earned?.amount?.toNumber(),
+			4,
+		)
+		const lockedDN = parseFloat(
+			utils.formatEther(appContext.xDaiLocked || constants.Zero),
+		).toFixed(4)
+		const lockedMainnet = parseFloat(
+			utils.formatEther(appContext.ethLocked || constants.Zero),
+		).toFixed(4)
+		const claimableDN = parseFloat(
+			utils.formatEther(appContext.xDaiClaimable || constants.Zero),
+		).toFixed(4)
+		const claimableMainnet = parseFloat(
+			utils.formatEther(appContext.ethClaimable || constants.Zero),
+		).toFixed(4)
+		setSideBarBalance({
+			total,
+			walletDN,
+			walletMainnet,
+			stakedLP,
+			stakedBalance,
+			harvestDN,
+			harvestMainnet,
+			lockedDN,
+			lockedMainnet,
+			claimableDN,
+			claimableMainnet,
+		})
+	}
+
+	useEffect(() => {
+		updateTokenBalance()
+	}, [
+		address,
+		appContext.uniswap,
+		appContext.sushiswap,
+		appContext.streamMainnet,
+		appContext.streamDN,
+		appContext.xDaiClaimable,
+		appContext.ethClaimable,
+		appContext.xDaiLocked,
+		appContext.ethLocked,
+	])
 
 	return (
 		<MenuWrap>
@@ -62,55 +238,152 @@ function Sidebar({ isOpen, closeSidebar }) {
 				right
 				isOpen={isOpen}
 				customBurgerIcon={false}
-				width={464}
+				width={!useMobileScreen() ? 440 : '100%'}
 				onClose={closeSidebar}
 			>
 				<Top>
 					<ConnectionInfo />
 				</Top>
 				<div style={{ padding: '0 15px' }}>
-					<Inter700>Your NODE balance</Inter700>
+					<BalanceBox>
+						<Inter500>
+							<b>Connected wallet</b>
+						</Inter500>
+						<DisconnectButton onClick={disconnectWallet}>
+							Disconnect
+						</DisconnectButton>
+					</BalanceBox>
+					<SidebarCard>
+						<SpaceBetween>
+							<Inter400>
+								Address
+								{address && (
+									<div>
+										<b>{shortenAddress(address)}</b>
+									</div>
+								)}
+							</Inter400>
+							<Inter500Green onClick={copyAddressToClipboard}>
+								{copyText}
+							</Inter500Green>
+						</SpaceBetween>
+						<SpaceBetween>
+							<Inter400>
+								Network{' '}
+								<div>
+									<b>
+										{isMainnet(network)
+											? 'Ethereum Mainnet'
+											: 'xDai'}
+									</b>
+								</div>
+							</Inter400>
+							{/* <Inter500Green
+								onClick={() => {
+									const win = window.open(
+										'https://omni.xdaichain.com/bridge',
+										'_blank',
+									)
+									if (win) win.focus()
+								}}
+							>
+								Learn how to change{' '}
+								<img
+									alt='link'
+									src='/assets/external-link-green.svg'
+								/>
+							</Inter500Green> */}
+						</SpaceBetween>
+						<SpaceBetween>
+							<div />
+							<GreenButton
+								disabled={false}
+								className='long'
+								onClick={() => {
+									const win = window.open(
+										'https://omni.xdaichain.com/bridge',
+										'_blank',
+									)
+									if (win) win.focus()
+								}}
+							>
+								Transfer funds
+							</GreenButton>
+						</SpaceBetween>
+					</SidebarCard>
+					<br />
+					<Inter500>
+						<b>Your NODE balance</b>
+					</Inter500>
 					<SidebarCard>
 						<div>
 							<BigCurrency>
-								<h1>163.20</h1>
+								<h1>{sideBarBalance.total}</h1>
 								<h2>NODE</h2>
 							</BigCurrency>
 							<br />
 							<BalanceBox>
-								<Inter500>NODE in your xDai wallet</Inter500>
-								<Inter400>40</Inter400>
+								<Inter500>NODE in your ETH wallet</Inter500>
+								<Inter400>
+									{sideBarBalance.walletMainnet}
+								</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>NODE in your ETH wallet</Inter500>
-								<Inter400>40</Inter400>
+								<Inter500>xNODE in your xDai wallet</Inter500>
+								<Inter400>{sideBarBalance.walletDN}</Inter400>
 							</BalanceBox>
 							<BalanceBox>
 								<Inter500>NODE in LP</Inter500>
-								<Inter400>40</Inter400>
+								<Inter400>{sideBarBalance.stakedLP}</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>Staked balance</Inter500>
-								<Inter400>103.20</Inter400>
+								<Inter500>NODE in Staking</Inter500>
+								<Inter400>
+									{sideBarBalance.stakedBalance}
+								</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>Locked in xDai Network</Inter500>
-								<Inter400>103.20</Inter400>
+								<Inter500>Pending harvest in ETH</Inter500>
+								<Inter400>
+									{sideBarBalance.harvestMainnet}
+								</Inter400>
+							</BalanceBox>
+							<BalanceBox>
+								<Inter500>Pending harvest in xDai</Inter500>
+								<Inter400>{sideBarBalance.harvestDN}</Inter400>
 							</BalanceBox>
 							<BalanceBox>
 								<Inter500>Locked in ETH Network</Inter500>
-								<Inter400>103.20</Inter400>
+								<Inter400>
+									{sideBarBalance.lockedMainnet}
+								</Inter400>
 							</BalanceBox>
 							<BalanceBox>
-								<Inter500>Claimable in xDai Network</Inter500>
-								<Inter400>103.20</Inter400>
+								<Inter500>Locked in xDai Network</Inter500>
+								<Inter400>{sideBarBalance.lockedDN}</Inter400>
 							</BalanceBox>
 							<BalanceBox>
 								<Inter500>Claimable in ETH Network</Inter500>
-								<Inter400>103.20</Inter400>
+								<Inter400>
+									{sideBarBalance.claimableMainnet}
+								</Inter400>
+							</BalanceBox>
+							<BalanceBox>
+								<Inter500>Claimable in xDai Network</Inter500>
+								<Inter400>
+									{sideBarBalance.claimableDN}
+								</Inter400>
 							</BalanceBox>
 							<br />
-							<WhiteGreenButtonLink>
+							<WhiteGreenButtonLink
+								onClick={() => {
+									const win = window.open(
+										`https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${MAINNET_CONFIG.TOKEN_ADDRESS}&use=V2`,
+										'_blank',
+									)
+									if (win) win.focus()
+								}}
+							>
 								Get more NODE{' '}
 								<img
 									alt='link'
@@ -118,12 +391,6 @@ function Sidebar({ isOpen, closeSidebar }) {
 								/>
 							</WhiteGreenButtonLink>
 						</div>
-					</SidebarCard>
-					<br />
-					<Inter700>Check Address for rewards</Inter700>
-					<SidebarCard>
-						<Input type='text' placeholder='Enter an address' />
-						<GreenButton>CHECK FOR REWARDS</GreenButton>
 					</SidebarCard>
 					<br />
 				</div>
@@ -155,6 +422,28 @@ const Top = styled.div`
 	&:focus-visible {
 		outline: none;
 	}
+`
+
+export const SpaceBetween = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	div {
+		label {
+			font-family: Inter;
+			font-style: normal;
+			font-size: 12px;
+			line-height: 12px;
+			letter-spacing: 0em;
+			color: gray;
+			text-transform: uppercase;
+		}
+	}
+`
+
+const DisconnectButton = styled(Inter500Green)`
+	color: #222a29;
 `
 
 export default Sidebar

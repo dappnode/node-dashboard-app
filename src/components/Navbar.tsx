@@ -9,10 +9,11 @@ import { Inter700, GreenButton } from './Styles'
 function Navbar({ openSidebar, nodedrop, title }) {
 	const buttonHref = nodedrop ? '/' : '/nodedrop'
 	const buttonTitle = nodedrop ? 'Go to dashboard!' : 'Claim your airdrop!'
+
 	return (
 		<NavbarSection>
 			<Container>
-				<div onClick={openSidebar} aria-hidden='true'>
+				<div aria-hidden='true'>
 					<img src='/assets/mini-logo.svg' alt='logo' />
 					<Inter700>{title}</Inter700>
 					{useMobileScreen() && (
@@ -21,13 +22,13 @@ function Navbar({ openSidebar, nodedrop, title }) {
 						</Link>
 					)}
 				</div>
-				<div>
+				<div onClick={openSidebar} role='button' tabIndex={0}>
 					{!useMobileScreen() && (
 						<Link href={buttonHref}>
 							<GreenButton>{buttonTitle}</GreenButton>
 						</Link>
 					)}
-					<ConnectionInfo nodedrop={nodedrop} />
+					<ConnectionInfo />
 				</div>
 			</Container>
 		</NavbarSection>
