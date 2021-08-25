@@ -336,7 +336,9 @@ const Deposit = ({
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
-	const [permitMode, setPermitMode] = useState<boolean>(false)
+	const [permitMode, setPermitMode] = useState<boolean>(
+		platform !== 'xNODE Staking',
+	)
 	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
@@ -367,6 +369,7 @@ const Deposit = ({
 						onClick={() => setPermitMode(prev => !prev)}
 						text='Approval mode'
 						selectedText='Permit mode'
+						disabled={disabled}
 					/>
 				</HeaderPool>
 			)}
@@ -396,6 +399,7 @@ const Deposit = ({
 						value={displayAmount}
 						disabled={disabled}
 						onChange={e => onChange(e.target.value || '0')}
+						onWheel={e => e.target.blur()}
 					/>
 					<div>
 						<Inter500Green
@@ -459,6 +463,7 @@ const Deposit = ({
 								}
 								text='This time'
 								selectedText='Permanently'
+								disabled={disabled}
 							/>
 						</>
 					)}
@@ -587,6 +592,7 @@ const Withdraw = ({
 						placeholder='Amount'
 						value={displayAmount}
 						onChange={e => onChange(e.target.value || '0')}
+						onWheel={e => e.target.blur()}
 					/>
 					<div>
 						<Inter500Green
