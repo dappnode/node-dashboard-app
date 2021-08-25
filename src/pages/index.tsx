@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 
@@ -7,11 +7,12 @@ import Dashboard from '../components/Dashboard'
 import { useOnboard } from '../hooks/useOnboard'
 import config from '../configuration'
 import Footer from '../components/Footer'
+import Sidebar from '../components/SideBar'
 
 function Home() {
 	const { network } = useOnboard()
 
-	const [, setIsOpen] = useState(false)
+	const [isOpen, setIsOpen] = useState(false)
 
 	return (
 		<>
@@ -22,6 +23,10 @@ function Home() {
 				<Rectangle />
 				{/* @ts-ignore */}
 				<Main id='page-wrap' network={network}>
+					<Sidebar
+						isOpen={isOpen}
+						closeSidebar={() => setIsOpen(false)}
+					/>
 					<Navbar
 						title='DAppNode Dashboard'
 						nodedrop={false}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import PoolCard from './PoolCard'
 import config from '../configuration'
@@ -14,6 +14,7 @@ import {
 import { useOnboard } from '../hooks/useOnboard'
 import { StakePoolInfo, StakeUserInfo } from '../types/poolInfo'
 import { isMainnet } from '../lib/web3-utils'
+import AppContext from '../hooks/AppContext'
 
 const { NETWORKS_CONFIG } = config
 
@@ -59,6 +60,7 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		},
 		allowanceLpTokens: 0,
 	})
+	const appContext = useContext(AppContext)
 	const { address, provider, network: walletNetwork, isReady } = useOnboard()
 
 	const stakePoolPoll = useRef(null)
@@ -71,7 +73,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				network,
 				name !== 'NODE',
 			)
-				.then(setStakePoolInfo)
+				.then(poolInfo => {
+					setStakePoolInfo(poolInfo)
+				})
 				.catch(console.error)
 		cb()
 
@@ -84,6 +88,30 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 		}
 	}, [])
 
+	function updateStakeUserInfo(userInfo: StakeUserInfo) {
+		setStakeUserInfo(userInfo)
+		switch (option) {
+			case 'UNISWAP':
+				appContext.uniswap = userInfo
+				break
+			case 'SUSHISWAP':
+				appContext.sushiswap = userInfo
+				break
+			case 'NODE':
+				switch (platform) {
+					case 'NODE Staking':
+						appContext.streamMainnet = userInfo
+						break
+					case 'xNODE Staking':
+						appContext.streamDN = userInfo
+						break
+					default:
+				}
+				break
+			default:
+		}
+	}
+
 	const userInfoPoll = useRef(null)
 	useEffect(() => {
 		if (!address) return
@@ -94,7 +122,9 @@ const StakingPoolCard: React.FC<StakingPoolCardProps> = ({
 				NETWORKS_CONFIG[network][option].LM_ADDRESS,
 				network,
 			)
-				.then(setStakeUserInfo)
+				.then(userInfo => {
+					updateStakeUserInfo(userInfo)
+				})
 				.catch(console.error)
 
 		cb()

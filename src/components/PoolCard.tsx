@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import APRDetails from './APRDetails'
@@ -26,6 +26,7 @@ import ToggleButton from './ToggleButton'
 import { bn, convertEthHelper } from '../lib/numbers'
 import NetworkLabel from './NetworkLabel'
 import { isMainnet } from '../lib/web3-utils'
+import AppContext from '../hooks/AppContext'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
@@ -133,6 +134,7 @@ const Principal = ({
 	disabled = false,
 	network,
 }) => {
+	const appContext = useContext(AppContext)
 	const {
 		APR,
 		stakedLpTokens,
@@ -159,6 +161,16 @@ const Principal = ({
 				.mul(ethers.BigNumber.from(_reserve1))
 				.div(ethers.BigNumber.from(poolTotalSupply)),
 		)
+	}
+	switch (platform) {
+		case 'Uniswap':
+			appContext.uniswapLPNODE = amountToken1
+			break
+		case 'Sushiswap':
+			appContext.sushiswapLPNODE = amountToken1
+			break
+		default:
+			break
 	}
 	return (
 		<>
@@ -336,7 +348,9 @@ const Deposit = ({
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
-	const [permitMode, setPermitMode] = useState<boolean>(false)
+	const [permitMode, setPermitMode] = useState<boolean>(
+		platform !== 'xNODE Staking',
+	)
 	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
@@ -367,6 +381,7 @@ const Deposit = ({
 						onClick={() => setPermitMode(prev => !prev)}
 						text='Approval mode'
 						selectedText='Permit mode'
+						disabled={disabled}
 					/>
 				</HeaderPool>
 			)}
@@ -396,6 +411,7 @@ const Deposit = ({
 						value={displayAmount}
 						disabled={disabled}
 						onChange={e => onChange(e.target.value || '0')}
+						onWheel={e => e.target.blur()}
 					/>
 					<div>
 						<Inter500Green
@@ -459,6 +475,7 @@ const Deposit = ({
 								}
 								text='This time'
 								selectedText='Permanently'
+								disabled={disabled}
 							/>
 						</>
 					)}
@@ -587,6 +604,7 @@ const Withdraw = ({
 						placeholder='Amount'
 						value={displayAmount}
 						onChange={e => onChange(e.target.value || '0')}
+						onWheel={e => e.target.blur()}
 					/>
 					<div>
 						<Inter500Green

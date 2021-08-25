@@ -1,9 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function ToggleButton({ checked, onClick, text, selectedText }): JSX.Element {
+function ToggleButton({
+	checked,
+	onClick,
+	text,
+	selectedText,
+	disabled = false,
+}): JSX.Element {
 	return (
-		<ToggleMode onClick={onClick}>
+		<ToggleMode onClick={onClick} disabled={disabled}>
 			<img
 				alt='toggle'
 				src={
