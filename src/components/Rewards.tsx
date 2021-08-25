@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { BigNumber, constants, Contract, utils } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 
@@ -21,6 +21,7 @@ import {
 import AddTokenButton from './AddToken'
 import NetworkLabel from './NetworkLabel'
 import config from '../configuration'
+import AppContext from '../hooks/AppContext'
 
 const { NETWORKS_CONFIG } = config
 
@@ -44,6 +45,7 @@ function Rewards() {
 	const [xDaiClaimable, setXDaiClaimable] = useState<BigNumber>(
 		constants.Zero,
 	)
+	const appContext = useContext(AppContext)
 
 	async function handleClaim(tokenDistroAddress: string): Promise<void> {
 		if (!isAddress(tokenDistroAddress)) return
@@ -168,6 +170,11 @@ function Rewards() {
 		setEthClaimable(_ethClaimable || constants.Zero)
 		setXDaiLocked(_xDaiLocked || constants.Zero)
 		setXDaiClaimable(_xDaiClaimable || constants.Zero)
+
+		appContext.ethLocked = _ethLocked
+		appContext.ethClaimable = _ethClaimable
+		appContext.xDaiLocked = _xDaiLocked
+		appContext.xDaiClaimable = _xDaiClaimable
 	}
 
 	useEffect(() => {

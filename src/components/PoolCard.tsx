@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useContext } from 'react'
 import { ethers } from 'ethers'
 import BigNumber from 'bignumber.js'
 import APRDetails from './APRDetails'
@@ -26,6 +26,7 @@ import ToggleButton from './ToggleButton'
 import { bn, convertEthHelper } from '../lib/numbers'
 import NetworkLabel from './NetworkLabel'
 import { isMainnet } from '../lib/web3-utils'
+import AppContext from '../hooks/AppContext'
 
 type PoolCardProps = {
 	handleStake: (amount: string) => void
@@ -133,6 +134,7 @@ const Principal = ({
 	disabled = false,
 	network,
 }) => {
+	const appContext = useContext(AppContext)
 	const {
 		APR,
 		stakedLpTokens,
@@ -159,6 +161,16 @@ const Principal = ({
 				.mul(ethers.BigNumber.from(_reserve1))
 				.div(ethers.BigNumber.from(poolTotalSupply)),
 		)
+	}
+	switch (platform) {
+		case 'Uniswap':
+			appContext.uniswapLPNODE = amountToken1
+			break
+		case 'Sushiswap':
+			appContext.sushiswapLPNODE = amountToken1
+			break
+		default:
+			break
 	}
 	return (
 		<>
