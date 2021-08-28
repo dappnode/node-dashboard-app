@@ -103,7 +103,7 @@ function PoolCard({
 					close={() => setPoolState('default')}
 					displayToken={earned.displayToken}
 					allowanceLpTokens={allowanceLpTokens}
-					platform={platform}
+					network={network}
 				/>
 			)}
 			{poolState === 'withdraw' && (
@@ -331,7 +331,7 @@ interface DepositProps {
 	disabled: boolean
 	displayToken: string
 	allowanceLpTokens: string
-	platform: string
+	network: number
 }
 const Deposit = ({
 	close,
@@ -344,13 +344,11 @@ const Deposit = ({
 	disabled,
 	displayToken,
 	allowanceLpTokens,
-	platform,
+	network,
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
-	const [permitMode, setPermitMode] = useState<boolean>(
-		platform !== 'xNODE Staking',
-	)
+	const [permitMode, setPermitMode] = useState<boolean>(isMainnet(network))
 	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
@@ -374,17 +372,15 @@ const Deposit = ({
 
 	return (
 		<FullHeightCenter>
-			{platform === 'xNODE Staking' && (
-				<HeaderPool>
-					<ToggleButton
-						checked={permitMode}
-						onClick={() => setPermitMode(prev => !prev)}
-						text='Approval mode'
-						selectedText='Permit mode'
-						disabled={disabled}
-					/>
-				</HeaderPool>
-			)}
+			<HeaderPool>
+				<ToggleButton
+					checked={permitMode}
+					onClick={() => setPermitMode(prev => !prev)}
+					text='Approval mode'
+					selectedText='Permit mode'
+					disabled={disabled}
+				/>
+			</HeaderPool>
 			<ClosePool onClick={close}>
 				<img alt='close' src='/assets/closePool.svg' />
 			</ClosePool>
