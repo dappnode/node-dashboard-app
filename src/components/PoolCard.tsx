@@ -149,7 +149,7 @@ const Principal = ({
 	if (reserves && stakedLpTokens && stakedLpTokens > 0) {
 		const [_reserve0, _reserve1] = reserves
 		const stakedLpTokensBigNumber = ethers.utils.parseEther(
-			stakedLpTokens.toString(),
+			stakedLpTokens.toString(10),
 		)
 		amountToken0 = ethers.utils.formatEther(
 			stakedLpTokensBigNumber
@@ -550,7 +550,7 @@ const Withdraw = ({
 			if (reserves && newAmountLpToken && stakedLpTokens > 0) {
 				const [_reserve0, _reserve1] = reserves
 				const newAmountLpTokenBigNumber = ethers.utils.parseEther(
-					newAmountLpToken.toString(),
+					newAmountLpToken.toString(10),
 				)
 				amountToken0 = ethers.utils.formatEther(
 					newAmountLpTokenBigNumber

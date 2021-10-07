@@ -108,20 +108,22 @@ function Sidebar({ isOpen, closeSidebar }) {
 	}
 
 	function updateTokenBalance() {
+		console.log(appContext.streamDN?.stakedLpTokens?.toString(10))
 		const total = convertEthHelper(
 			utils.formatEther(
 				tokenBalanceDN
 					.add(tokenBalanceMainnet)
 					.add(
 						utils.parseEther(
-							appContext.uniswap?.earned?.amount?.toString() ||
+							appContext.uniswap?.earned?.amount?.toString(10) ||
 								'0',
 						),
 					)
 					.add(
 						utils.parseEther(
-							appContext.sushiswap?.earned?.amount?.toString() ||
-								'0',
+							appContext.sushiswap?.earned?.amount?.toString(
+								10,
+							) || '0',
 						),
 					)
 					.add(
@@ -136,26 +138,28 @@ function Sidebar({ isOpen, closeSidebar }) {
 					)
 					.add(
 						utils.parseEther(
-							appContext.streamDN?.stakedLpTokens?.toString() ||
+							appContext.streamDN?.stakedLpTokens?.toString(10) ||
 								'0',
 						),
 					)
 					.add(
 						utils.parseEther(
-							appContext.streamDN?.earned?.amount?.toString() ||
+							appContext.streamDN?.earned?.amount?.toString(10) ||
 								'0',
 						),
 					)
 					.add(
 						utils.parseEther(
-							appContext.streamMainnet?.stakedLpTokens?.toString() ||
-								'0',
+							appContext.streamMainnet?.stakedLpTokens?.toString(
+								10,
+							) || '0',
 						),
 					)
 					.add(
 						utils.parseEther(
-							appContext.streamMainnet?.earned?.amount?.toString() ||
-								'0',
+							appContext.streamMainnet?.earned?.amount?.toString(
+								10,
+							) || '0',
 						),
 					)
 					.add(appContext.xDaiLocked ?? constants.Zero)
