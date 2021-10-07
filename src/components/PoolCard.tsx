@@ -348,7 +348,7 @@ const Deposit = ({
 }: DepositProps) => {
 	const [amount, setAmount] = useState<string>('0')
 	const [displayAmount, setDisplayAmount] = useState('0')
-	const [permitMode, setPermitMode] = useState<boolean>(isMainnet(network))
+	const [permitMode, setPermitMode] = useState<boolean>(true)
 	const [approvePermanently, setApprovePermanently] = useState<boolean>(false)
 
 	const setAmountPercentage = useCallback(
