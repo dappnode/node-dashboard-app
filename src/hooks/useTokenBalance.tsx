@@ -6,7 +6,7 @@ import React, {
 	useEffect,
 	useState,
 } from 'react'
-import { constants, Contract, ethers } from 'ethers'
+import { Contract, ethers } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import { useOnboard } from './useOnboard'
 import config from '../configuration'
@@ -46,10 +46,10 @@ export const TokenBalanceProvider: FC<TokenBalanceProps> = ({ children }) => {
 		}
 	}
 
-	function requestContract(networkConfig): Contract | null {
+	function requestContract(networkId, networkConfig): Contract | null {
 		if (networkConfig) {
 			const tokenAddress = networkConfig.TOKEN_ADDRESS
-			const provider = networkProviders[network]
+			const provider = networkProviders[networkId]
 
 			const ERC20ABI = [
 				// read balanceOf
@@ -69,7 +69,10 @@ export const TokenBalanceProvider: FC<TokenBalanceProps> = ({ children }) => {
 
 	function fetchBalanceDN() {
 		const networkConfig = NETWORKS_CONFIG[config.XDAI_NETWORK_NUMBER]
-		const contract = requestContract(networkConfig)
+		const contract = requestContract(
+			config.XDAI_NETWORK_NUMBER,
+			networkConfig,
+		)
 		if (contract) {
 			contract
 				.balanceOf(address)
@@ -80,7 +83,10 @@ export const TokenBalanceProvider: FC<TokenBalanceProps> = ({ children }) => {
 
 	function fetchBalanceMainnet() {
 		const networkConfig = NETWORKS_CONFIG[config.MAINNET_NETWORK_NUMBER]
-		const contract = requestContract(networkConfig)
+		const contract = requestContract(
+			config.MAINNET_NETWORK_NUMBER,
+			networkConfig,
+		)
 		if (contract) {
 			contract
 				.balanceOf(address)
@@ -102,7 +108,7 @@ export const TokenBalanceProvider: FC<TokenBalanceProps> = ({ children }) => {
 			}
 
 			const networkConfig = NETWORKS_CONFIG[network]
-			const contract = requestContract(networkConfig)
+			const contract = requestContract(network, networkConfig)
 			if (contract) {
 				contract
 					.balanceOf(address)
@@ -113,11 +119,11 @@ export const TokenBalanceProvider: FC<TokenBalanceProps> = ({ children }) => {
 			} else {
 				setTokenBalance(ZERO)
 			}
+			fetchBalanceDN()
+			fetchBalanceMainnet()
 		}
 
 		fetchUserBalance()
-		fetchBalanceDN()
-		fetchBalanceMainnet()
 
 		interval = setInterval(fetchUserBalance, 15000)
 
