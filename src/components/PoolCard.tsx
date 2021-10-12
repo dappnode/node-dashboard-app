@@ -172,6 +172,34 @@ const Principal = ({
 		default:
 			break
 	}
+
+	// Calculate NODEstream Claimable and In Reservoir
+	let earnedAmount = 0
+	let claimablePercent = 0
+	let claimablePercentRounded = 0
+	let heldPercent = 0
+	let heldPercentRounded = 0
+
+	if (earned) {
+		// starting time: 1626552000 -> Sat Jul 17 2021 22:00:00 GMT+0200 (Central European Summer Time)
+		// duration 94672800 secs
+		const durationSecs = 94672800
+		const defaultHeldMainnetPercent = 10
+		earnedAmount = earned.amount.toNumber()
+		const claimableSecs =
+			(new Date().getTime() -
+				new Date('Sat Jul 17 2021 22:00:00 GMT+0200').getTime()) /
+			1000
+		claimablePercent = (claimableSecs * 100) / durationSecs
+		heldPercent = 100 - claimablePercent
+		if (isMainnet(network)) {
+			claimablePercent += defaultHeldMainnetPercent
+			heldPercent -= defaultHeldMainnetPercent
+		}
+		claimablePercentRounded = Math.round(claimablePercent * 100) / 100
+		heldPercentRounded = Math.round(heldPercent * 100) / 100
+	}
+
 	return (
 		<>
 			<div style={{ width: '96%' }}>
@@ -223,10 +251,6 @@ const Principal = ({
 				</SpaceBetween>
 				<h2>
 					<b>Earned:</b>{' '}
-					<EarnedDetails
-						isMainnet={isMainnet(network)}
-						earned={earned}
-					/>
 					{earned && (
 						<div className='pool-info-text'>
 							<Earned>
@@ -236,6 +260,27 @@ const Principal = ({
 						</div>
 					)}
 				</h2>
+				{earned.amount.gt(0) && (
+					<h2 style={{ marginTop: '2px' }}>
+						<b>You will receive:</b>{' '}
+						<EarnedDetails
+							earnedAmount={earnedAmount}
+							claimablePercent={claimablePercent}
+							claimablePercentRounded={claimablePercentRounded}
+							heldPercent={heldPercent}
+							heldPercentRounded={heldPercentRounded}
+							displayToken={earned.displayToken}
+						/>
+						<div className='pool-info-text'>
+							{earnedAmount > 0 &&
+								`${(
+									earnedAmount *
+									(claimablePercent / 100)
+								).toFixed(4)} ${earned.displayToken} `}
+							({claimablePercentRounded}%)
+						</div>
+					</h2>
+				)}
 			</div>
 			<div style={{ minWidth: '100%' }}>
 				{hasLiquidityPool && (
