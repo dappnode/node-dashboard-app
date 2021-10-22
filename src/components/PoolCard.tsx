@@ -195,7 +195,7 @@ const Principal = ({
 					<APRDetails
 						APR={APR}
 						getMoreDNLink={getMoreDNLink}
-						disabled={disabled}
+						disabled={false}
 					/>
 				</SpaceBetween>
 				<SpaceBetween>
