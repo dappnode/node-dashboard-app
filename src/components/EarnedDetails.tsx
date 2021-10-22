@@ -6,35 +6,24 @@ import { Earned } from '../types/poolInfo'
 import { SimpleButton, SpaceBetween } from './Styles'
 
 interface EarnedDetailsProps {
-	isMainnet: boolean
-	earned?: Earned
+	earnedAmount: number
+	claimablePercent: number
+	claimablePercentRounded: number
+	heldPercent: number
+	heldPercentRounded: number
+	displayToken: string
 }
 
 const EarnedDetails: React.FC<EarnedDetailsProps> = ({
-	isMainnet = true,
-	earned,
+	earnedAmount,
+	claimablePercent,
+	claimablePercentRounded,
+	heldPercent,
+	heldPercentRounded,
+	displayToken,
 }) => {
-	let claimablePercent = 0
-	let heldPercent = 0
-	if (!earned) return null
+	if (claimablePercent <= 0) return null
 
-	// starting time: 1626552000 -> Sat Jul 17 2021 22:00:00 GMT+0200 (Central European Summer Time)
-	// duration 94672800 secs
-	const durationSecs = 94672800
-	const defaultHeldMainnetPercent = 10
-	const earnedAmount = earned.amount.toNumber()
-	const claimableSecs =
-		(new Date().getTime() -
-			new Date('Sat Jul 17 2021 22:00:00 GMT+0200').getTime()) /
-		1000
-	claimablePercent = (claimableSecs * 100) / durationSecs
-	heldPercent = 100 - claimablePercent
-	if (isMainnet) {
-		claimablePercent += defaultHeldMainnetPercent
-		heldPercent -= defaultHeldMainnetPercent
-	}
-	const claimablePercentRounded = Math.round(claimablePercent * 100) / 100
-	const heldPercentRounded = Math.round(heldPercent * 100) / 100
 	return (
 		<StyledTooltip
 			trigger={<PopupOpenButton> ? </PopupOpenButton>}
@@ -51,7 +40,7 @@ const EarnedDetails: React.FC<EarnedDetailsProps> = ({
 									`${(
 										earnedAmount *
 										(claimablePercent / 100)
-									).toFixed(4)} ${earned.displayToken} `}
+									).toFixed(4)} ${displayToken} `}
 								({claimablePercentRounded}%)
 							</div>
 						</h2>
@@ -64,7 +53,7 @@ const EarnedDetails: React.FC<EarnedDetailsProps> = ({
 									`${(
 										earnedAmount *
 										(heldPercent / 100)
-									).toFixed(4)} ${earned.displayToken} `}
+									).toFixed(4)} ${displayToken} `}
 								({heldPercentRounded}%)
 							</div>
 						</h2>
