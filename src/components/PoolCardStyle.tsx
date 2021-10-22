@@ -16,7 +16,7 @@ export const PoolCardSection = styled.section<PoolCardSectionProps>`
 	border: ${props => (props.disabled ? '1px solid #dde3e3' : props.border)};
 	background: ${props => (props.disabled ? '#F4F6F6' : 'white')};
 	min-width: calc(100% - 24px);
-	height: 380px;
+	height: 420px;
 	padding: 16px;
 	position: relative;
 	box-shadow: 0px 2px 2px rgba(8, 43, 41, 0.04),
