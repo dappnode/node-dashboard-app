@@ -47,7 +47,7 @@ const EarnedDetails: React.FC<EarnedDetailsProps> = ({
 					</SpaceBetween>
 					<SpaceBetween>
 						<h2>
-							<b>Held in Reservoir:</b>{' '}
+							<b>Transferable to Reservoir:</b>{' '}
 							<div className='pool-info-text'>
 								{earnedAmount > 0 &&
 									`${(
