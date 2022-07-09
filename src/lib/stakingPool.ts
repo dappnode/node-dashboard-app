@@ -273,6 +273,7 @@ export async function stakeTokens(
 					amount,
 			  )
 			: await permitTokensXDai(provider, poolAddress, lmAddress)
+	await new Promise(f => setTimeout(f, 500))
 
 	const txResponse: TransactionResponse = await lmContract
 		.connect(signer.connectUnchecked())
