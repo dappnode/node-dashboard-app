@@ -22,6 +22,6 @@ const config: GlobalConfig = {
 }
 
 config.MAINNET_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_NODE_URL
-config.XDAI_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_XDAI_NODE_URL
+config.XDAI_CONFIG.nodeUrl = "https://rpc.gnosischain.com"
 
 export default config
