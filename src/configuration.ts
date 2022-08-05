@@ -13,7 +13,7 @@ const config: GlobalConfig = {
 	...envConfig,
 	NETWORKS_CONFIG: {
 		[envConfig.MAINNET_NETWORK_NUMBER]: envConfig.MAINNET_CONFIG,
-		[envConfig.XDAI_NETWORK_NUMBER]: envConfig.XDAI_CONFIG,
+		[envConfig.GNOSIS_NETWORK_NUMBER]: envConfig.GNOSIS_CONFIG,
 	},
 	// Used for adding netnworks to user wallet, useless since just xDAI is not
 	// included in metamask by default and its rpc endpoint is not infura
@@ -22,6 +22,6 @@ const config: GlobalConfig = {
 }
 
 config.MAINNET_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_NODE_URL
-config.XDAI_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_XDAI_NODE_URL
+config.GNOSIS_CONFIG.nodeUrl = process.env.NEXT_PUBLIC_GNOSIS_NODE_URL
 
 export default config
