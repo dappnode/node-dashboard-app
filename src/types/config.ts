@@ -16,9 +16,9 @@ interface NetworkConfig {
 }
 export interface EnvConfig {
 	MAINNET_NETWORK_NUMBER: number
-	XDAI_NETWORK_NUMBER: number
+	GNOSIS_NETWORK_NUMBER: number
 	MAINNET_CONFIG: NetworkConfig
-	XDAI_CONFIG: NetworkConfig
+	GNOSIS_CONFIG: NetworkConfig
 }
 
 export interface GlobalConfig extends EnvConfig {

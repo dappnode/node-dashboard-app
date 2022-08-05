@@ -46,7 +46,7 @@ const handleMainBackground = network => {
 			return `
         background: url('/assets/eth-background.svg'), linear-gradient(116.82deg, #C8E4F8 0%, #EEF6FC 100%, #F4F6F6 100%);
       `
-		case config.XDAI_NETWORK_NUMBER:
+		case config.GNOSIS_NETWORK_NUMBER:
 			return `
         background: url('/assets/dn-background.svg'), linear-gradient(116.82deg, #c7eeec 0%, #f4f6f6 100%);
       `
