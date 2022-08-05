@@ -13,10 +13,7 @@ export const networksParams = {
 	},
 	100: {
 		chainId: '0x64',
-		chainName: 'xDAI Chain',
-		iconUrls: [
-			'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/xdai/info/logo.png',
-		],
+		chainName: 'Gnosis Chain',
 		nativeCurrency: {
 			name: 'xDAI',
 			symbol: 'xDAI',
