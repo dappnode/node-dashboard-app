@@ -6,6 +6,9 @@ const apiUrl = process.env.REACT_APP_API_URL
 const dappId = config.BLOCKNATIVE_DAPP_ID
 
 export function initOnboard(subscriptions) {
+	console.log("hey")
+	console.log(config.MAINNET_CONFIG.nodeUrl)
+	console.log(config.XDAI_CONFIG.nodeUrl)
 	return Onboard({
 		dappId,
 		hideBranding: false,
