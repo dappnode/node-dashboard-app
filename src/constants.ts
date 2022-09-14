@@ -23,6 +23,7 @@ export const networksParams = {
 			decimals: 18,
 		},
 		blockExplorerUrls: ['https://blockscout.com/xdai/mainnet'],
+		rpcUrls: ['https://rpc.gnosischain.com'],
 	},
 	4: {
 		chainId: '0x4',
