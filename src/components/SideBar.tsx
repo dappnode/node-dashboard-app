@@ -108,7 +108,6 @@ function Sidebar({ isOpen, closeSidebar }) {
 	}
 
 	function updateTokenBalance() {
-		console.log(appContext.streamDN?.stakedLpTokens?.toString(10))
 		const total = convertEthHelper(
 			utils.formatEther(
 				tokenBalanceDN
